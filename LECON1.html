@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leçon 1 : Donnée, Information et Informatique</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ka-green: #147a73;
+            --ka-blue: #1865f2;
+            --bg-light: #f7f8fa;
+            --border-color: #dcdcdc;
+            --text-color: #333;
+            --box-bg: #ffffff;
+            --yellow-bg-light: #fff9e6;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-color);
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        /* --- En-tête Principal --- */
+        .main-header {
+            background-color: var(--ka-green);
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* --- Conteneur du contenu --- */
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--ka-green);
+        }
+        
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.8rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-top: 2.5rem; }
+        h3 { font-size: 1.3rem; margin-top: 2rem; }
+
+        a { color: var(--ka-blue); text-decoration: none; font-weight: 700; }
+        a:hover { text-decoration: underline; }
+
+        /* --- Sommaire de la leçon --- */
+        .lesson-nav {
+            background-color: var(--box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .lesson-nav h3 {
+            margin-top: 0;
+            color: var(--text-color);
+        }
+        .lesson-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .lesson-nav li a {
+            display: block;
+            padding: 0.5rem 0;
+        }
+
+        /* --- Blocs de contenu stylisés --- */
+        .definition-box {
+            background-color: var(--box-bg);
+            border-left: 5px solid var(--ka-green);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .definition-box strong { color: var(--ka-green); }
+
+        .example-box {
+            background-color: #e6f2ff;
+            border-left: 5px solid var(--ka-blue);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .key-principle-box {
+            background-color: var(--yellow-bg-light);
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .summary-diagram pre {
+            background-color: #eef1f4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        Informatique | Notions Fondamentales
+    </header>
+
+    <div class="container">
+        <h1>Leçon 1 : Donnée, Information et Informatique</h1>
+
+        <nav class="lesson-nav">
+            <h3>📖 Dans cette leçon :</h3>
+            <ul>
+                <li><a href="#section1">1. De la Donnée à la Connaissance</a></li>
+                <li><a href="#section2">2. Le Traitement de l'Information</a></li>
+                <li><a href="#section3">3. Définition de l'Informatique</a></li>
+                <li><a href="#section4">4. Schémas Bilan</a></li>
+            </ul>
+        </nav>
+
+        <article class="lesson-content">
+
+            <section id="section1">
+                <h2>1. De la Donnée à la Connaissance</h2>
+                <p>En informatique, on manipule des concepts qu'il faut bien distinguer.</p>
+
+                <h3>La Donnée (Data)</h3>
+                <div class="definition-box">
+                    <strong>Définition :</strong> C'est un fait brut (un mot, un chiffre), sans contexte ni signification particulière.
+                </div>
+                <div class="example-box">
+                    <strong>Exemples :</strong> <code>17</code>, <code>Karim</code>, <code>Froid</code>.
+                </div>
+
+                <h3>L'Information</h3>
+                <div class="definition-box">
+                    <strong>Définition :</strong> C'est une donnée à laquelle on a ajouté un <strong>contexte</strong> pour lui donner un <strong>sens</strong>.
+                </div>
+                <div class="example-box">
+                    <strong>Exemple :</strong> La donnée <code>17</code> devient l'information : "La température extérieure est de <strong>17</strong> degrés."
+                </div>
+
+                <h3>La Connaissance (Knowledge)</h3>
+                <div class="definition-box">
+                    <strong>Définition :</strong> C'est la compréhension et l'interprétation des informations qui nous permettent de <strong>prendre une décision</strong> ou d'<strong>agir</strong>.
+                </div>
+                <div class="example-box">
+                    <strong>Exemple :</strong> Avec l'information "La température est de 17 degrés", j'obtiens la connaissance : "<strong>Je sais que je dois porter une veste</strong>."
+                </div>
+            </section>
+
+            <section id="section2">
+                <h2>2. Le Traitement de l'Information</h2>
+                <p>Pour passer de la donnée à l'information, on effectue un <strong>traitement</strong>.</p>
+                <div class="definition-box">
+                    <strong>Définition :</strong> Le traitement est l'ensemble des actions (calcul, tri, comparaison...) appliquées sur des données pour les transformer en informations utiles.
+                </div>
+                <h3>Le Modèle IPO</h3>
+                <p>Le traitement suit un schéma simple appelé IPO :</p>
+                <ul>
+                    <li><strong>I - Input (Entrée) :</strong> Les <strong>données</strong> qu'on fournit à la machine.</li>
+                    <li><strong>P - Process (Traitement) :</strong> Les actions que la machine effectue.</li>
+                    <li><strong>O - Output (Sortie) :</strong> Les <strong>informations</strong> qui en résultent.</li>
+                </ul>
+
+                <div class="key-principle-box">
+                    <h3>Principe Clé : Le GIGO (Garbage In, Garbage Out)</h3>
+                    <p><strong>Signification :</strong> "Déchets en entrée, Déchets en sortie".</p>
+                    <p><strong>Règle :</strong> Si les données que l'on donne à l'ordinateur sont fausses ou de mauvaise qualité <strong>(Garbage In)</strong>, les informations qu'il produira seront inévitablement fausses ou inutiles <strong>(Garbage Out)</strong>.</p>
+                </div>
+            </section>
+
+            <section id="section3">
+                <h2>3. Définition de l'Informatique</h2>
+                <div class="definition-box">
+                    <strong>Définition :</strong> L'informatique est la science du <strong>traitement automatique</strong> de l'information par une machine (l'ordinateur).
+                </div>
+                <p>Le mot-clé est <strong>Automatique</strong> : cela signifie que l'ordinateur fait le traitement <strong>tout seul</strong>, très vite et sans se fatiguer, en suivant les instructions d'un <strong>programme</strong>.</p>
+            </section>
+
+            <section id="section4">
+                <h2>4. Schémas Bilan</h2>
+                <div class="summary-diagram">
+                    <h3>La Pyramide du Savoir :</h3>
+<pre>
+      ▲
+     / \
+    / C \   <-- CONNAISSANCE (Je décide)
+   /-----\
+  / INFOS \  <-- INFORMATION (Ça a un sens)
+ /---------\
+/  DONNÉES  \ <-- DONNÉES (Faits bruts)
+-------------
+</pre>
+                </div>
+                 <div class="summary-diagram">
+                    <h3>Le Processus Informatique :</h3>
+<pre>
++-----------+        +--------------------------+        +----------------+
+|  DONNÉES  |        |  TRAITEMENT AUTOMATIQUE  |        |  INFORMATIONS  |
+| (Input)   |   -->  |  (Fait par l'ordinateur) |   -->  |   (Output)     |
++-----------+        +--------------------------+        +----------------+
+</pre>
+                </div>
+            </section>
+        </article>
+    </div>
+</body>
+</html>
