@@ -1,1 +1,274 @@
-<h1>test site aghbalou</h1>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours d'Informatique | Accueil</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --theme-color: #00B2A9;
+            --accent-blue: #3498DB;
+            --accent-purple: #9B59B6;
+            --accent-green: #2ECC71;
+            --accent-grey: #95A5A6;
+            --bg-light: #F5F7F8;
+            --text-dark: #34495E;
+            --card-bg: #FFFFFF;
+            --border-color: #EAECEE;
+            --font-main: 'Nunito', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            margin: 80px 0 0 0; /* Marge pour la barre de navigation fixe */
+            line-height: 1.6;
+        }
+
+        /* --- Barre de Navigation --- */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+        .nav-logo {
+            font-size: 1.5em;
+            font-weight: 800;
+            color: var(--theme-color);
+        }
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .nav-links li a {
+            padding: 10px 15px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+        .nav-links li a:hover, .nav-links li a.active {
+            color: var(--theme-color);
+        }
+
+        /* --- Bannière d'accueil --- */
+        .hero-banner {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .hero-banner h1 {
+            margin: 0;
+            font-size: 3em;
+            font-weight: 800;
+        }
+        .hero-banner p {
+            font-size: 1.4em;
+            margin: 10px 0 0;
+            opacity: 0.9;
+        }
+
+        /* --- Conteneur Principal --- */
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 40px;
+            color: var(--text-dark);
+        }
+
+        /* --- Grille des Modules --- */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .module-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.4em;
+        }
+
+        .status-tag {
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.8em;
+            font-weight: 700;
+            color: white;
+        }
+        .status-encours { background-color: var(--accent-green); }
+        .status-avenir { background-color: var(--accent-grey); }
+        .status-termine { background-color: var(--accent-purple); }
+
+        .card-body {
+            padding: 25px;
+            flex-grow: 1; /* Permet au corps de grandir */
+        }
+        
+        .card-footer {
+            padding: 25px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        /* --- Boutons --- */
+        .btn {
+            display: inline-block;
+            background-color: var(--theme-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1em;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            text-decoration: none;
+        }
+        
+        /* --- Footer --- */
+        .site-footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: #7f8c8d;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-logo">InfoLycée</div>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Accueil</a></li>
+            <li><a href="#">Modules</a></li>
+            <li><a href="#">Calendrier</a></li>
+            <li><a href="#">Ressources</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </header>
+
+    <section class="hero-banner">
+        <h1>Bienvenue dans l'Aventure du Code !</h1>
+        <p>Votre espace pour apprendre, créer et explorer l'informatique.</p>
+    </section>
+
+    <main class="container">
+        <h2 class="section-title">Explore les Modules</h2>
+        
+        <div class="modules-grid">
+            
+            <div class="module-card">
+                <div class="card-header">
+                    <h3>Module 1</h3>
+                    <span class="status-tag status-encours">En cours</span>
+                </div>
+                <div class="card-body">
+                    <h4>Systèmes Informatiques</h4>
+                    <p>Découvre les secrets qui font fonctionner ton ordinateur, du hardware au software, en passant par le langage binaire.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="./unité1.html" class="btn">Commencer le Module</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <div class="card-header">
+                    <h3>Module 2</h3>
+                    <span class="status-tag status-avenir">À venir</span>
+                </div>
+                <div class="card-body">
+                    <h4>Algorithmes & Python</h4>
+                    <p>Apprends à penser comme un programmeur et à donner des instructions à la machine pour résoudre des problèmes concrets.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn">Voir le Module</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <div class="card-header">
+                    <h3>Module 3</h3>
+                    <span class="status-tag status-avenir">À venir</span>
+                </div>
+                <div class="card-body">
+                    <h4>Le Web & HTML/CSS</h4>
+                    <p>Crée tes propres pages web ! Découvre les langages qui construisent tous les sites que tu visites chaque jour.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn">Voir le Module</a>
+                </div>
+            </div>
+            
+            <div class="module-card">
+                <div class="card-header">
+                    <h3>Module Pilote</h3>
+                    <span class="status-tag status-termine">Terminé</span>
+                </div>
+                <div class="card-body">
+                    <h4>Introduction à Scratch</h4>
+                    <p>Une introduction ludique à la logique de la programmation par blocs pour créer des animations et des petits jeux.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn">Revoir le Module</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    
+    <footer class="site-footer">
+        <p>&copy; 2025 - [Votre Nom] - Enseignant en Informatique</p>
+    </footer>
+
+</body>
+</html>
