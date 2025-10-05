@@ -3,32 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cours d'Informatique | Accueil</title>
+    <title>Cours d'Informatique | Hub Pédagogique</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
-
+    
     <style>
+        /* --- Nouvelle Palette : Dégradés Turquoise/Bleu --- */
         :root {
-            --theme-color: #00B2A9;
-            --accent-blue: #3498DB;
-            --accent-purple: #9B59B6;
-            --accent-green: #2ECC71;
-            --accent-grey: #95A5A6;
-            --bg-light: #F5F7F8;
-            --text-dark: #34495E;
+            /* Couleurs de base (Thème Principal) */
+            --theme-start: #1abc9c; /* Turquoise/Teal clair */
+            --theme-end: #148f77;   /* Teal foncé pour le dégradé principal */
+            --accent-color: #3498db; /* Bleu Vif pour les liens/icônes */
+            
+            /* Couleurs Primaires */
+            --text-dark: #34495e; /* Gris Ardoise (Calme) pour le corps de texte */
+            --bg-light: #f9fbfd; /* Fond très pale (presque blanc cassé) pour la clarté */
+            
+            /* Couleurs de Statut et d'Accentuation */
+            --status-encours: #2ecc71; /* Vert Émeraude (Succès/Progression) */
+            --status-termine: #9b59b6; /* Améthyste (Fini/Réalisé) */
+            --danger-color: #e74c3c; /* Rouge Pomegranate (Alerte/Urgent) */
+            
+            /* UI Elements */
             --card-bg: #FFFFFF;
-            --border-color: #EAECEE;
+            --header-bg-light: #ecf0ff; /* Fond de carte en-tête très léger (léger bleuté) */
+            --border-color: #dfe6e9; /* Bordure très légère et douce */
             --font-main: 'Nunito', sans-serif;
+            
+            /* Dégradés */
+            --main-gradient: linear-gradient(135deg, var(--theme-start) 0%, var(--theme-end) 100%);
+            --button-gradient: linear-gradient(135deg, var(--theme-start), var(--accent-color));
+            
+            /* --- Nouveaux Dégradés pour les statuts de Module --- */
+            --gradient-encours: linear-gradient(135deg, #2ecc71, #27ae60);      /* Vert */
+            --gradient-logiciels: linear-gradient(135deg, #3498db, #2980b9);    /* Bleu Océan (M02) */
+            --gradient-algorithmique: linear-gradient(135deg, #9b59b6, #8e44ad); /* Violet (M03) */
+            --gradient-reseaux: linear-gradient(135deg, #f39c12, #e67e22);      /* Orange Solaire (M04) */
         }
 
         body {
             font-family: var(--font-main);
             background-color: var(--bg-light);
             color: var(--text-dark);
-            margin: 80px 0 0 0; /* Marge pour la barre de navigation fixe */
+            margin: 70px 0 0 0; 
             line-height: 1.6;
+            transition: margin-left 0.3s;
+        }
+        
+        p, ul, ol {
+            font-size: 1.05em;
         }
 
         /* --- Barre de Navigation --- */
@@ -49,7 +74,8 @@
         .nav-logo {
             font-size: 1.5em;
             font-weight: 800;
-            color: var(--theme-color);
+            color: var(--theme-end); /* Couleur sombre pour le logo */
+            cursor: pointer;
         }
         .nav-links {
             list-style: none;
@@ -63,35 +89,23 @@
             color: var(--text-dark);
             font-weight: 700;
             transition: color 0.2s;
+            cursor: pointer;
         }
         .nav-links li a:hover, .nav-links li a.active {
-            color: var(--theme-color);
+            /* Utilisation d'un gradient textuel (moins supporté, mais stylé) ou d'une couleur d'accentuation */
+            color: var(--accent-color); 
         }
 
-        /* --- Bannière d'accueil --- */
-        .hero-banner {
-            background-color: var(--accent-blue);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-        }
-        .hero-banner h1 {
-            margin: 0;
-            font-size: 3em;
-            font-weight: 800;
-        }
-        .hero-banner p {
-            font-size: 1.4em;
-            margin: 10px 0 0;
-            opacity: 0.9;
-        }
-
-        /* --- Conteneur Principal --- */
+        /* --- Conteneur Principal & Titres --- */
         .container {
             max-width: 1100px;
             margin: 50px auto;
             padding: 0 20px;
         }
+        #content > main.container {
+            margin-top: 50px; 
+        }
+
         .section-title {
             text-align: center;
             font-size: 2.5em;
@@ -99,18 +113,22 @@
             margin-bottom: 40px;
             color: var(--text-dark);
         }
+        h3 {
+            font-weight: 800;
+            font-size: 1.2em;
+            color: var(--theme-end); /* Utilisation de la couleur sombre pour les petits titres */
+        }
 
-        /* --- Grille des Modules --- */
-        .modules-grid {
+        /* --- Composants de Contenu (Cards, Tags, Boutons) --- */
+        .modules-grid, .ressources-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
-
-        .module-card {
+        .module-card, .info-card {
             background-color: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
             border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
@@ -118,20 +136,58 @@
         }
         .module-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
         }
 
         .card-header {
             padding: 20px 25px;
+            /* Remplacé par un gradient pour les headers par défaut */
+            background-image: var(--main-gradient); 
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            color: white; /* Texte blanc par défaut sur les headers colorés */
         }
-        .card-header h3 {
-            margin: 0;
-            font-size: 1.4em;
+        .card-header h3 { 
+            margin: 0; 
+            font-size: 1.4em; 
+            color: white !important; /* Force le titre en blanc sur le gradient */
         }
+        
+        /* --- Styles d'Accentuation de la Carte (Overriding gradient) --- */
+        /* M01: Généralités (En cours) -> Vert Émeraude */
+        .card-header.bg-encours { background-image: var(--gradient-encours); }
+        
+        /* M02: Logiciels (À venir) -> Bleu Océan (Nouveau) */
+        .card-header.bg-logiciels { background-image: var(--gradient-logiciels); }
+        
+        /* M03: Algorithmique (À venir) -> Violet Améthyste */
+        .card-header.bg-algorithmique { background-image: var(--gradient-algorithmique); }
+        
+        /* M04: Réseaux (À venir) -> Orange Solaire (Nouveau) */
+        .card-header.bg-reseaux { background-image: var(--gradient-reseaux); }
+        
+        /* Thème / Par Défaut */
+        .card-header.bg-theme { background-image: var(--main-gradient); }
+        
+        /* Danger / Alerte */
+        .card-header.bg-danger { background-image: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+
+        /* Couleurs du Texte des Tags à l'intérieur des Headers (fond blanc) */
+        .card-header .status-tag {
+            background-color: white; 
+        }
+
+        .card-header.bg-encours .status-tag { color: #2ecc71; }
+        .card-header.bg-logiciels .status-tag { color: #3498db; }
+        .card-header.bg-algorithmique .status-tag { color: #9b59b6; }
+        .card-header.bg-reseaux .status-tag { color: #f39c12; }
+        .card-header.bg-danger .status-tag { color: #e74c3c; }
+
 
         .status-tag {
             padding: 5px 12px;
@@ -139,14 +195,23 @@
             font-size: 0.8em;
             font-weight: 700;
             color: white;
+            white-space: nowrap;
         }
-        .status-encours { background-color: var(--accent-green); }
-        .status-avenir { background-color: var(--accent-grey); }
-        .status-termine { background-color: var(--accent-purple); }
+        /* Ces styles ne sont utiles que pour le corps de carte */
+        .status-encours { 
+            background-color: #2ecc71; 
+        }
+        .status-avenir { 
+            /* Remplacé par une couleur neutre si utilisé hors header */
+            background-color: #95a5a6; 
+        }
+        .status-termine { 
+            background-color: #9b59b6; 
+        }
 
         .card-body {
             padding: 25px;
-            flex-grow: 1; /* Permet au corps de grandir */
+            flex-grow: 1;
         }
         
         .card-footer {
@@ -155,10 +220,9 @@
             text-align: center;
         }
 
-        /* --- Boutons --- */
         .btn {
             display: inline-block;
-            background-color: var(--theme-color);
+            background-image: var(--button-gradient); /* Applique un gradient au bouton */
             color: white;
             padding: 12px 30px;
             border-radius: 50px;
@@ -167,19 +231,344 @@
             text-decoration: none;
             transition: transform 0.2s, box-shadow 0.2s;
             border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
         }
         .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transform: scale(1.03);
+            /* Augmente l'ombre pour l'effet de pression/survol */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3); 
             text-decoration: none;
         }
         
-        /* --- Footer --- */
+        /* Styles pour les boutons spécifiques (overriding le gradient par défaut) */
+        .btn-secondary {
+            background-image: none;
+            background-color: var(--accent-color);
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.4);
+        }
+        .btn-secondary:hover {
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.6);
+        }
+
+        /* --- Styles pour l'Accordéon des Modules (page: modules) --- */
+        .info-card .card-header {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .card-header .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px; 
+        }
+
+        .toggle-icon {
+            font-size: 1.2em;
+            color: white; 
+            transition: transform 0.3s ease;
+            width: 20px; 
+            text-align: center;
+        }
+        
+        .info-card.collapsed .card-body {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden; 
+        }
+
+        .info-card .card-body {
+            max-height: 2000px; 
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out, opacity 0.4s ease, visibility 0.5s;
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sequence-heading {
+            color: var(--accent-color); /* Couleur primaire pour les titres de séquence */
+            font-size: 1.3em;
+            font-weight: 800;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--header-bg-light); 
+        }
+        .sequence-heading:first-child {
+            margin-top: 0; 
+        }
+        
+        /* --- Composants Spécifiques --- */
+        .hero-banner {
+            /* Gradient Vif et étendu pour la Bannière */
+            background-image: linear-gradient(to right, var(--theme-start), var(--accent-color));
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .hero-banner h1 { margin: 0; font-size: 3em; font-weight: 800; }
+        .hero-banner p { font-size: 1.4em; margin: 10px 0 0; opacity: 0.95; }
+
+        .announcement {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            font-weight: 700;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .announcement strong { 
+            font-size: 1.1em;
+            margin-right: 5px;
+        }
+        
+        .resource-link {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: background-color 0.2s;
+            border: 1px solid var(--border-color);
+            /* Utilisation du gradient comme bordure gauche */
+            border-left: 5px solid var(--theme-end);
+            border-image: linear-gradient(to bottom, var(--theme-start), var(--theme-end)) 1; 
+        }
+        .resource-link:hover {
+            background-color: var(--header-bg-light);
+        }
+        .resource-link .icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+            color: var(--accent-color); /* Icônes en bleu vif */
+            flex-shrink: 0;
+        }
+        
+        /* Spécifique pour les liens de ressources */
+        .resource-link.border-success { border-image: var(--gradient-encours) 1; }
+        .resource-link.border-algorithmique { border-image: var(--gradient-algorithmique) 1; }
+        .resource-link.border-danger { border-image: linear-gradient(to bottom, var(--danger-color), #c0392b) 1; }
+
+        .resource-link > div {
+            flex-grow: 1;
+            min-width: 0;
+        }
+        .resource-link h4 {
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .resource-link p {
+            margin: 5px 0 0 0;
+            font-size: 0.85em;
+            color: var(--status-avenir); 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        .event-item {
+            /* Utilisation d'une bordure solide pour la simplicité, mais en couleur accentuée */
+            border-left: 5px solid var(--accent-color);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: border-left-color 0.2s;
+        }
+        .event-item.urgent { border-left-color: var(--danger-color); }
+        .event-item.project { border-left-color: var(--theme-end); }
+        .event-date {
+            width: 100px;
+            text-align: center;
+            font-weight: 800;
+            padding-right: 20px;
+            border-right: 1px solid var(--border-color);
+            color: var(--accent-color);
+            flex-shrink: 0;
+        }
+        .event-details {
+            padding-left: 20px;
+        }
+        .event-details p { margin: 0; font-size: 0.9em; }
+
+        .lesson-page-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-top: 30px;
+        }
+        .lesson-page-content h3 {
+            color: var(--theme-end);
+            font-size: 1.8em;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        .lesson-page-content h4 {
+            color: var(--accent-color);
+            font-weight: 800;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        .lesson-page-content ul {
+            list-style: disc;
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        .success-criteria ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .success-criteria ul li {
+            background-color: var(--header-bg-light);
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-left: 5px solid var(--status-encours);
+            border-radius: 5px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .success-criteria ul li:before {
+            content: '✓';
+            color: var(--status-encours);
+            font-weight: 900;
+            margin-right: 10px;
+        }
+
+        .note-content {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: var(--header-bg-light);
+            display: none;
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+        }
+        .note-content h5 {
+            color: var(--theme-end);
+            font-size: 1.2em;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 5px;
+            margin-top: 15px;
+        }
+
+        #markmap-page-container {
+            width: 100%;
+            height: calc(100vh - 180px); 
+            position: relative;
+        }
+        #markmap-svg {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border-radius: 10px;
+        }
+
         .site-footer {
             text-align: center;
-            padding: 30px;
+            padding: 20px;
             margin-top: 50px;
-            color: #7f8c8d;
+            border-top: 1px solid var(--border-color);
+            color: var(--status-avenir);
+            font-size: 0.9em;
+        }
+        
+        /* Styles pour la barre d'outils Markmap */
+        .markmap-toolbar {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50; 
+        }
+
+
+        /* Media Queries pour le Mobile */
+        @media (max-width: 768px) {
+            body {
+                font-size: 95%;
+            }
+            p, ul, ol, .card-body {
+                font-size: 1em;
+            }
+            
+            .navbar { 
+                padding: 0 10px; 
+                height: auto; 
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-logo { 
+                font-size: 1.4em; 
+                padding: 15px 0;
+                text-align: center;
+            }
+            
+            .nav-links { 
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
+                padding-bottom: 10px;
+                margin-bottom: 5px; 
+            }
+            .nav-links li {
+                text-align: center;
+            }
+            .nav-links li a {
+                padding: 10px 5px;
+                font-size: 0.85em;
+                display: block;
+                border-radius: 5px;
+            }
+            
+            body {
+                margin-top: 130px;
+            }
+
+            .container { margin: 20px auto; padding: 0 10px; }
+            
+            .modules-grid, .ressources-grid {
+                 gap: 20px;
+            }
+            .module-card, .info-card {
+                margin-bottom: 10px;
+            }
+            
+            .hero-banner h1 { font-size: 2em; }
+            .hero-banner p { font-size: 1.2em; }
+            .section-title { font-size: 1.8em; margin-bottom: 20px; }
+            .lesson-page-content { padding: 20px; }
+            
+            #markmap-page-container { 
+                height: 80vh;
+            }
+            
+            .event-date { width: 70px; font-size: 0.8em; }
+            
+            .resource-link { 
+                flex-direction: row; 
+                align-items: flex-start;
+                padding: 12px;
+            }
+            .resource-link p {
+                white-space: normal;
+            }
         }
         
     </style>
@@ -187,88 +576,891 @@
 <body>
 
     <header class="navbar">
-        <div class="nav-logo">InfoLycée</div>
-        <ul class="nav-links">
-            <li><a href="#" class="active">Accueil</a></li>
-            <li><a href="#">Modules</a></li>
-            <li><a href="#">Calendrier</a></li>
-            <li><a href="#">Ressources</a></li>
-            <li><a href="#">Contact</a></li>
+        <div class="nav-logo" onclick="navigateTo('accueil')">💻 InfoLycée</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a class="nav-link active" data-page="accueil">Accueil</a></li>
+            <li><a class="nav-link" data-page="modules">Modules</a></li>
+            <li><a class="nav-link" data-page="devoirs">Devoirs</a></li>
+            <li><a class="nav-link" data-page="calendrier">Calendrier</a></li>
+            <li><a class="nav-link" data-page="ressources">Ressources</a></li>
+            <li><a class="nav-link" data-page="contact">Contact</a></li>
         </ul>
     </header>
 
-    <section class="hero-banner">
-        <h1>Bienvenue dans l'Aventure du Code !</h1>
-        <p>Votre espace pour apprendre, créer et explorer l'informatique.</p>
-    </section>
-
-    <main class="container">
-        <h2 class="section-title">Explore les Modules</h2>
-        
-        <div class="modules-grid">
-            
-            <div class="module-card">
-                <div class="card-header">
-                    <h3>Module 1</h3>
-                    <span class="status-tag status-encours">En cours</span>
-                </div>
-                <div class="card-body">
-                    <h4>Systèmes Informatiques</h4>
-                    <p>Découvre les secrets qui font fonctionner ton ordinateur, du hardware au software, en passant par le langage binaire.</p>
-                </div>
-                <div class="card-footer">
-                    <a href="./unité1.html" class="btn">Commencer le Module</a>
-                </div>
-            </div>
-
-            <div class="module-card">
-                <div class="card-header">
-                    <h3>Module 2</h3>
-                    <span class="status-tag status-avenir">À venir</span>
-                </div>
-                <div class="card-body">
-                    <h4>Algorithmes & Python</h4>
-                    <p>Apprends à penser comme un programmeur et à donner des instructions à la machine pour résoudre des problèmes concrets.</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn">Voir le Module</a>
-                </div>
-            </div>
-
-            <div class="module-card">
-                <div class="card-header">
-                    <h3>Module 3</h3>
-                    <span class="status-tag status-avenir">À venir</span>
-                </div>
-                <div class="card-body">
-                    <h4>Le Web & HTML/CSS</h4>
-                    <p>Crée tes propres pages web ! Découvre les langages qui construisent tous les sites que tu visites chaque jour.</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn">Voir le Module</a>
-                </div>
-            </div>
-            
-            <div class="module-card">
-                <div class="card-header">
-                    <h3>Module Pilote</h3>
-                    <span class="status-tag status-termine">Terminé</span>
-                </div>
-                <div class="card-body">
-                    <h4>Introduction à Scratch</h4>
-                    <p>Une introduction ludique à la logique de la programmation par blocs pour créer des animations et des petits jeux.</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn">Revoir le Module</a>
-                </div>
-            </div>
-
-        </div>
-    </main>
+    <div id="content">
+        <!-- Contenu des pages chargé ici par JavaScript -->
+    </div>
     
     <footer class="site-footer">
-        <p>&copy; 2025 - [Votre Nom] - Enseignant en Informatique</p>
+        <p>Hub Pédagogique - &copy; 2025 - Younes TICHOUA - Enseignant en Informatique | Complèxe Pèdagogique Aghbalou</p>
     </footer>
 
+    <!-- Intégration de Markmap (Scripts mis à jour pour fiabilité et ajout de la Toolbar) -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18.12"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/index.js"></script>
+
+    <script>
+        
+        /**
+         * Bascule le contenu (card-body) d'un module entre replié et déplié.
+         * Utilise la classe 'collapsed' sur la carte parente.
+         */
+        function toggleModule(moduleId) {
+            const card = document.getElementById(moduleId);
+            if (!card) return;
+
+            const icon = card.querySelector('.toggle-icon');
+
+            const isCollapsed = card.classList.contains('collapsed');
+
+            if (isCollapsed) {
+                // Déplier
+                card.classList.remove('collapsed');
+                icon.innerHTML = '▼'; // Flèche vers le bas (ouvert)
+            } else {
+                // Replier
+                card.classList.add('collapsed');
+                icon.innerHTML = '▶'; // Flèche vers la droite (fermé)
+            }
+        }
+        
+        // Fonction utilitaire pour basculer la visibilité du texte
+        function toggleNoteContent(id) {
+            const content = document.getElementById(id);
+            const button = document.querySelector(`[onclick="toggleNoteContent('${id}')"]`);
+            
+            // NOTE: Mise à jour des gradients des boutons pour rester cohérent
+            const gradientShow = 'linear-gradient(135deg, var(--theme-start), var(--accent-color))'; 
+            const gradientHide = 'linear-gradient(135deg, var(--status-termine), #8e44ad)'; // Gradient violet pour masquer
+            
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                button.textContent = 'Afficher les Notes de Cours Détaillées ➕';
+                button.style.backgroundImage = gradientShow;
+            } else {
+                content.style.display = 'block';
+                button.textContent = 'Masquer les Notes de Cours Détaillées ➖';
+                button.style.backgroundImage = gradientHide;
+            }
+        }
+        
+        // --- Contenu Markdown de la Carte Mentale (Intégré en JS pour la Markmap) ---
+        const mindmapMarkdownS01 = `
+# 🧠 M01-S01-L01 : Information, Traitement et Informatique
+
+## 1. Concepts Fondamentaux (D-I-C)
+### Donnée (Data)
+* **Matière Première** : Symbole brut, non interprété (ex: "18", "Rouge", "1011").
+* **Signification** : Aucune en soi.
+### Information
+* **Donnée Traitée** : Structurée et mise en contexte.
+* **Exemple** : La donnée "18" devient "La température de la salle est 18°C".
+* **Utilité** : Apporte une signification.
+### Connaissance
+* **Utilisation de l'Information** : Capacité à prendre une décision.
+* **Exemple** : La consigne est 22°C. Si l'information est 18°C, la connaissance indique qu'il faut allumer le chauffage.
+
+## 2. Traitement de l'Information
+### Cycle IPO (Input-Process-Output)
+* **Définition** : Modèle de base de tout système informatique.
+* **I - Entrée (Input)** : Acquisition des données (Capteur, Clavier, Souris).
+* **P - Traitement (Process)** : Manipulation des données (Calculs, Tri, Algorithmes). Rôle du **CPU**.
+* **O - Sortie (Output)** : Restitution des résultats (Écran, Imprimante, Actionneur).
+
+## 3. L'Informatique
+### Origine du Mot
+* **Contraction** : **INFORM**ation + **AUTOMAT**ique.
+### Définition Simple
+* **C'est la science du traitement rationnel et **automatique** de l'information.**
+### Importance de l'Automatisme
+* Permet d'exécuter des tâches répétitives sans intervention humaine.
+        `;
+        
+        const mindmapMarkdownS02 = `
+# ⚙️ M01-S02-L02 : Schéma Fonctionnel de l'Ordinateur
+
+## 1. Architecture de Von Neumann
+### Principe Fondateur
+* **Programme et Données** : Sont stockés dans la même mémoire (Mémoire Centrale).
+### Composants Clés
+* **Unité Centrale (CPU)** : Cerveau de la machine.
+* **Mémoire Centrale (RAM/ROM)** : Stocke temporairement les programmes et les données.
+* **Unités d'Entrée/Sortie (E/S)** : Périphériques d'interaction (clavier, écran, disque dur).
+
+## 2. Rôles des Unités
+### Unité Arithmétique et Logique (UAL)
+* **Fonction** : Effectue les calculs (+, -, *, /) et les comparaisons logiques (ET, OU, NON).
+### Unité de Commande et de Contrôle (CU)
+* **Fonction** : Dirige toutes les opérations ; séquence les instructions (Bus de Commandes).
+### Mémoire Centrale (RAM)
+* **Caractéristique** : Volatile (perte d'information à l'arrêt).
+* **Rôle** : Espace de travail du CPU.
+
+## 3. Les BUS (Canaux de Communication)
+### Bus de Données
+* **Rôle** : Transport de l'information (Données et Instructions) entre les unités.
+### Bus d'Adresses
+* **Rôle** : Indique l'emplacement exact (l'adresse) en mémoire où le CPU veut lire ou écrire.
+### Bus de Commandes
+* **Rôle** : Transporte les signaux de contrôle (Lecture, Écriture, etc.).
+        `;
+        
+        // Stocke les mindmaps pour un accès facile
+        const mindmaps = {
+            'S01': { title: 'M01-S01-L01 : Information, Traitement et Informatique', content: mindmapMarkdownS01 },
+            'S02': { title: 'M01-S02-L02 : Schéma Fonctionnel d’un Ordinateur', content: mindmapMarkdownS02 }
+            // Ajoutez d'autres séquences ici
+        };
+
+        // État pour savoir quelle mindmap charger
+        let currentMindmapKey = 'S01'; 
+
+
+        // --- Fonctions Markmap (MISE À JOUR) ---
+        function renderMarkmap(markdownContent, mapTitle) {
+            // Vérification que les objets Markmap nécessaires sont chargés
+            if (typeof window.markmap === 'undefined' || !window.markmap.lib || !window.markmap.view || !window.markmap.Toolbar) {
+                console.error("Markmap n'est pas complètement chargé (manque lib, view ou toolbar).");
+                return;
+            }
+
+            const svgElement = document.getElementById('markmap-svg');
+            const svgSelector = 'svg#markmap-svg';
+            if (!svgElement) {
+                console.error("Élément SVG Markmap non trouvé.");
+                return;
+            }
+            
+            const titleElement = document.getElementById('markmapTitle');
+            if (titleElement) {
+                titleElement.textContent = '🗺️ Carte Mentale Interactive : ' + mapTitle;
+            }
+
+            try {
+                // On s'assure d'avoir les classes nécessaires
+                const { Markmap, transformer, Toolbar } = window.markmap; 
+                
+                // 1. Transformer le Markdown en données Markmap (root)
+                const { root } = transformer.transform(markdownContent);
+                
+                // 2. Initialiser ou mettre à jour Markmap
+                if (!window.mm) {
+                    // Créer une nouvelle instance
+                    window.mm = Markmap.create(svgSelector, null, root);
+
+                    // 3. Ajouter la Toolbar une seule fois
+                    const toolbarContainer = document.getElementById('markmap-page-container');
+                    const toolbar = new Toolbar(window.mm);
+                    const toolbarElement = toolbar.render();
+                    
+                    // Nettoyage de l'ancienne toolbar si elle existe (pour rechargement)
+                    const oldToolbar = toolbarContainer.querySelector('.markmap-toolbar');
+                    if (oldToolbar) oldToolbar.remove();
+                    
+                    toolbarElement.setAttribute("style", "position:absolute;bottom:20px;right:20px; z-index: 50;");
+                    toolbarContainer.append(toolbarElement);
+
+                } else {
+                    // Mettre à jour l'instance existante
+                    window.mm.setData(root);
+                }
+
+                // Ajuster la vue pour centrer le contenu
+                if (window.mm && window.mm.fit) {
+                    window.mm.fit();
+                }
+
+            } catch (error) {
+                console.error("Erreur lors du rendu de Markmap:", error);
+                const container = document.getElementById('markmap-page-container');
+                if (container) {
+                     container.innerHTML = '<p style="text-align:center; padding: 50px; color: var(--danger-color);">Erreur : Impossible de charger la carte mentale interactive. Assurez-vous d\'avoir au moins deux niveaux de titre dans votre Markdown. (Vérifiez la console).</p>';
+                }
+            }
+        }
+        
+        function waitForMarkmap(key) {
+            // Vérifie la disponibilité de l'objet Markmap avant de tenter le rendu
+            if (typeof window.markmap !== 'undefined' && typeof window.markmap.lib !== 'undefined') {
+                const mindmapData = mindmaps[key];
+                if (mindmapData) {
+                    renderMarkmap(mindmapData.content, mindmapData.title);
+                } else {
+                    renderMarkmap('# Erreur : Mindmap Introuvable', 'Erreur de Chargement');
+                }
+            } else {
+                // Tente à nouveau après un court délai si les scripts ne sont pas encore prêts
+                setTimeout(() => waitForMarkmap(key), 50);
+            }
+        }
+
+
+        // --- Modèle de Données (Simule le contenu des pages) ---
+        const lesson01Overview = "Cette leçon introduit les concepts fondamentaux : donnée, information, connaissance. Nous découvrons le cycle IPO (Entrée – Traitement – Sortie) et construisons une définition de l'Informatique.";
+        const lessonM01S02L02Overview = "Cette séquence vous emmène au cœur de la machine. Vous explorerez les composantes essentielles (hardware) qui permettent à un ordinateur de fonctionner et d'exécuter des programmes, en particulier son schéma fonctionnel.";
+        
+        const pageContent = {
+            accueil: `
+                <section class="hero-banner">
+                    <h1>Bienvenue dans Aghbalou-info !</h1>
+                    <p>Votre espace centralisé pour apprendre, créer et explorer l'informatique.</p>
+                </section>
+                <main class="container">
+                    <div class="announcement">
+                        <strong>⚠️ URGENT :</strong> Le Devoir I (Cycle IPO) est dû ce **Vendredi 10 Octobre** ! Rendez-vous dans l'onglet **Devoirs**.
+                    </div>
+                    <h2 class="section-title">Explore les Modules</h2>
+                    
+                    <div class="modules-grid">
+                        <div class="module-card">
+                            <div class="card-header bg-encours">
+                                <h3>M01 - Généralités sur les Systèmes Informatiques</h3>
+                                <span class="status-tag status-encours">En cours</span>
+                            </div>
+                            <div class="card-body">
+                                <h4>Séquence 1 : Définitions et vocabulaire de base</h4>
+                                <p>Introduction aux concepts clés : Donnée, Information, Traitement, IPO, Système Informatique.</p>
+                                <ul>
+                                    <li>📝 Leçon 1 : Information, traitement et Informatique (Actif)</li>
+                                    <li>🔗 Séquence 2 : Structure de base d’un ordinateur</li>
+                                </ul>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn" onclick="navigateTo('modules')">Accéder aux Leçons</button>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <!-- NOUVEAU GRADIENT : BLEU OCÉAN pour Logiciels -->
+                            <div class="card-header bg-logiciels">
+                                <h3>M02 - Les Logiciels</h3>
+                                <span class="status-tag status-avenir" style="background-color:white; color:#3498db;">À venir</span>
+                            </div>
+                            <div class="card-body">
+                                <h4>Séquences : Système d’exploitation, Traitement de texte, Tableur</h4>
+                                <p>Apprenez à utiliser efficacement votre ordinateur en maîtrisant les logiciels fondamentaux : OS, Word et Excel.</p>
+                                <ul>
+                                    <li>🔗 Séquence 1 : Système d’exploitation</li>
+                                    <li>🔗 Séquence 2 : Traitement de texte</li>
+                                </ul>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-secondary" style="background-image:none;" onclick="navigateTo('modules')">Voir le Plan Complet</button>
+                            </div>
+                        </div>
+                        
+                        <div class="module-card">
+                            <!-- GRADIENT VIOLET pour Algorithmique -->
+                            <div class="card-header bg-algorithmique">
+                                <h3>M03 - Algorithmique et Programmation</h3>
+                                <span class="status-tag status-termine" style="background-color:white; color:#9b59b6;">À venir</span>
+                            </div>
+                            <div class="card-body">
+                                <h4>Séquences : Algorithme et structures de contrôle, Langage de programmation</h4>
+                                <p>Découvrez la logique de la programmation. Apprenez à concevoir des algorithmes pour résoudre des problèmes complexes.</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-secondary" style="background-image:none;" onclick="navigateTo('modules')">Voir le Plan Complet</button>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <!-- NOUVEAU GRADIENT : ORANGE SOLAIRE pour Réseaux -->
+                            <div class="card-header bg-reseaux">
+                                <h3>M04 - Réseaux et Internet</h3>
+                            <span class="status-tag" style="background-color:white; color:#f39c12;">À venir</span>
+                            </div>
+                            <div class="card-body">
+                                <h4>Séquences : Notion de réseau informatique, Réseau Internet</h4>
+                                <p>Comprenez comment les machines communiquent : typologie, topologie des réseaux et les services essentiels d'Internet.</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-secondary" style="background-image:none;" onclick="navigateTo('modules')">Voir le Plan Complet</button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            `,
+            modules: `
+                <main class="container">
+                    <h2 class="section-title">📚 Plan d'Études Détaillé : Modules et Leçons</h2>
+                    <p style="text-align:center; margin-bottom: 30px;">Cliquez sur l'en-tête d'un module pour le déplier/replier.</p>
+                    
+                    <!-- Module 1 Détaillé : Statut EN COURS (sera déplié par JS) -->
+                    <div class="info-card mb-8" id="module01">
+                        <div class="card-header bg-encours" onclick="toggleModule('module01')">
+                            <h3>Module 1 : Généralités sur les Systèmes Informatiques</h3>
+                            <div class="header-controls">
+                                <span class="status-tag status-encours">En cours</span>
+                                <span class="toggle-icon">▼</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            
+                            <!-- Séquence 1 -->
+                            <div class="sequence-heading">Séquence 1 : Définitions et vocabulaire de base</div>
+                            
+                            <!-- Leçon 1 S1 M1 -->
+                            <a href="#" onclick="event.preventDefault(); navigateTo('sequence01')" class="resource-link border-success" style="cursor:pointer;">
+                                <span class="icon">💡</span>
+                                <div>
+                                    <h4 style="margin:0;">Leçon 1 : Information, traitement et Informatique</h4>
+                                    <p>Concepts fondamentaux (Donnée, Info, Connaissance) et cycle IPO.</p>
+                                </div>
+                            </a>
+                            <!-- Leçon 2 S1 M1 -->
+                            <a href="#" onclick="event.preventDefault(); navigateTo('sequence01-L2')" class="resource-link" style="cursor:pointer;">
+                                <span class="icon">💻</span>
+                                <div>
+                                    <h4 style="margin:0;">Leçon 2 : Système informatique, Représentation de l'information</h4>
+                                    <p>Comment l'ordinateur organise les concepts (À venir).</p>
+                                </div>
+                            </a>
+
+                            <!-- Séquence 2 -->
+                            <div class="sequence-heading">Séquence 2 : Structure de base d’un ordinateur</div>
+                             <!-- Leçon 2 S2 M1 -->
+                            <a href="#" onclick="event.preventDefault(); navigateTo('sequence02')" class="resource-link border-success" style="cursor:pointer;">
+                                <span class="icon">⚙️</span>
+                                <div>
+                                    <h4 style="margin:0;">Leçon 2 : Schéma fonctionnel d’un ordinateur</h4>
+                                    <p>Les unités Entrée-Traitement-Sortie connectées (Disponible).</p>
+                                </div>
+                            </a>
+                             <!-- Leçon 1 S2 M1 -->
+                            <a href="#" onclick="event.preventDefault(); navigateTo('sequence02-L1')" class="resource-link" style="cursor:pointer;">
+                                <span class="icon">🖥️</span>
+                                <div>
+                                    <h4 style="margin:0;">Leçon 1 : Ordinateur, Catégories des ordinateurs</h4>
+                                    <p>Les différents types de machines et leurs rôles (À venir).</p>
+                                </div>
+                            </a>
+                             <!-- Leçon 3 S2 M1 -->
+                            <a href="#" onclick="event.preventDefault(); navigateTo('sequence02-L3')" class="resource-link" style="cursor:pointer;">
+                                <span class="icon">🧠</span>
+                                <div>
+                                    <h4 style="margin:0;">Leçon 3 : CPU et Mémoire centrale</h4>
+                                    <p>Le rôle du cerveau de l'ordinateur (À venir).</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Module 2 Détaillé : Statut LOGICIELS (Bleu Océan) -->
+                    <div class="info-card mb-8 collapsed" id="module02">
+                        <div class="card-header bg-logiciels" onclick="toggleModule('module02')">
+                            <h3>Module 2 : Les Logiciels</h3>
+                             <div class="header-controls">
+                                <span class="status-tag" style="background-color:white; color:#3498db;">À venir</span>
+                                <span class="toggle-icon">▶</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="sequence-heading">Séquence 1 : Système d’exploitation</div>
+                            <p>Leçons : Fonctionnalités de base, Environnement d’un système, Gestion des fichiers et dossiers.</p>
+                            
+                            <div class="sequence-heading">Séquence 2 : Traitement de texte</div>
+                            <p>Leçons : Interface et outils de base, Élaboration d’un document.</p>
+                            
+                            <div class="sequence-heading">Séquence 3 : Tableur</div>
+                            <p>Leçons : Fonctionnalités, Création de tableaux, Réalisation de graphiques.</p>
+                        </div>
+                    </div>
+
+                    <!-- Module 3 Détaillé : Statut ALGORITHMIQUE (Violet Améthyste) -->
+                    <div class="info-card mb-8 collapsed" id="module03">
+                        <div class="card-header bg-algorithmique" onclick="toggleModule('module03')">
+                            <h3>Module 3 : Algorithmique et Programmation</h3>
+                            <div class="header-controls">
+                                <span class="status-tag status-termine">À venir</span>
+                                <span class="toggle-icon">▶</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="sequence-heading">Séquence 1 : Algorithme et structures de contrôle</div>
+                            <p>Leçons : Notion d’algorithme, Instructions de base, Structures de contrôle.</p>
+                            
+                            <div class="sequence-heading">Séquence 2 : Langage de programmation</div>
+                            <p>Leçons : Notion de programme, Langages de programmation, Transcription d’un algorithme en code.</p>
+                        </div>
+                    </div>
+
+                    <!-- Module 4 Détaillé : Statut RÉSEAUX (Orange Solaire) -->
+                    <div class="info-card mb-8 collapsed" id="module04">
+                        <div class="card-header bg-reseaux" onclick="toggleModule('module04')">
+                            <h3>Module 4 : Réseaux et Internet</h3>
+                            <div class="header-controls">
+                                <span class="status-tag" style="background-color:white; color:#f39c12;">À venir</span>
+                                <span class="toggle-icon">▶</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="sequence-heading">Séquence 1 : Notion de réseau informatique</div>
+                            <p>Leçons : Définition et utilité, Typologie des réseaux, Topologies des réseaux.</p>
+                            
+                            <div class="sequence-heading">Séquence 2 : Réseau Internet</div>
+                            <p>Leçons : Définition d’Internet, Services Internet, Avantages et inconvénients d’Internet.</p>
+                        </div>
+                    </div>
+                </main>
+            `,
+            // --- PAGE DE SÉQUENCE DÉTAILLÉE (M01-S01-L01) ---
+            sequence01: `
+                <main class="container">
+                    <h2 class="section-title">📘 M01-S01-L01 : Information, Traitement et Informatique</h2>
+                    <button class="btn btn-secondary" style="background-image:none;" onclick="navigateTo('modules')">
+                        ← Retour aux Modules
+                    </button>
+
+                    <div class="lesson-page-content">
+                        <h2>Aperçu de la Leçon</h2>
+                        <p id="lesson01OverviewText">${lesson01Overview}</p>
+                        
+                        <h3>Objectifs Pédagogiques</h3>
+                        <p>À la fin de cette leçon, vous serez capable de :</p>
+                        <ul>
+                            <li><strong>Distinguer</strong> les notions de donnée, information et connaissance.</li>
+                            <li><strong>Expliquer</strong> la notion de traitement et le cycle IPO.</li>
+                            <li><strong>Définir</strong> le terme « informatique » dans un contexte technique et simple.</li>
+                        </ul>
+
+                        <h3 style="border-bottom-color: var(--status-encours);">Critères de Réussite (« Je peux… »)</h3>
+                        <div class="success-criteria">
+                            <ul>
+                                <li>Je peux donner un exemple de <strong>donnée</strong> et le transformer en <strong>information</strong>.</li>
+                                <li>Je peux décrire <strong>Entrée – Traitement – Sortie</strong> pour un cas réel (ex: un distributeur).</li>
+                                <li>Je peux expliquer ce que signifie <strong>automatique</strong> et définir <strong>l’informatique</strong> simplement.</li>
+                            </ul>
+                        </div>
+
+                        <h3>Ressources et Activités</h3>
+                        <p>Utilisez ces ressources et réalisez les activités suivantes pour maîtriser les objectifs.</p>
+                        
+                        <h4>1. Travail Pratique : Cycle IPO</h4>
+                        <a href="URL_EXERCICE_IPO" target="_blank" class="resource-link border-success">
+                            <span class="icon" style="color:var(--status-encours);">🔗</span>
+                            <div>
+                                <h4 style="margin:0; color:var(--text-dark);">Fiche d'Exercice : Analyser un Système</h4>
+                                <p>Complétez la fiche IPO vierge pour trois systèmes différents (ex : ATM, Thermomètre, Feu de circulation).</p>
+                            </div>
+                        </a>
+                        
+                        <h4>2. Évaluation Formative</h4>
+                        <button class="btn" style="background-image: var(--gradient-algorithmique); margin-top: 10px;">
+                            Lancer le Mini-Quiz (4 Questions)
+                        </button>
+                        
+                        
+                        <!-- NOUVELLE SECTION : NOTES EMPILÉES / TEXTE DE COURS -->
+                        <h3 style="border-bottom-color: var(--accent-color); margin-top: 40px;">Notes de Cours Détaillées (Version Web)</h3>
+                        <p>Cliquez pour lire le résumé complet de la séquence directement sur cette page.</p>
+
+                        <button class="btn" style="background-image: linear-gradient(135deg, #1abc9c, #3498db); margin-top: 10px;" onclick="toggleNoteContent('notesSequence01')">
+                            Afficher les Notes de Cours Détaillées ➕
+                        </button>
+                        
+                        <div id="notesSequence01" class="note-content">
+                            <h5>1. Définitions Fondamentales</h5>
+                            
+                            <p>
+                                <strong>La Donnée :</strong> C'est la matière première. Un symbole brut, non interprété (ex : un nombre "18", le mot "Janvier", une image). La donnée n'a pas de sens en soi.
+                            </p>
+                            
+                            <p>
+                                <strong>L'Information :</strong> C'est la donnée traitée, structurée et mise en contexte. Elle apporte une signification. Ex: Si nous savons que "18" est la température (18&deg;C) d'une pièce, c'est une information.
+                            </p>
+                            
+                            <p>
+                                <strong>La Connaissance :</strong> C'est la capacité à utiliser l'information dans une situation donnée pour prendre une décision. Ex: Si la température est 18&deg;C et que la consigne est 22&deg;C, vous avez la connaissance qu'il faut allumer le chauffage.
+                            </p>
+                            
+                            <h5>2. Le Cycle IPO (Input - Process - Output)</h5>
+                            
+                            <p>
+                                Le <strong>traitement de l'information</strong> suit toujours un cycle en trois étapes :
+                                <ul>
+                                    <li><strong>I - Entrée (Input) :</strong> Acquisition des données brutes (clavier, souris, capteurs).</li>
+                                    <li><strong>P - Traitement (Process) :</strong> Manipulation des données selon des règles ou algorithmes (calculs, tri, mise en forme). C'est le rôle du CPU.</li>
+                                    <li><strong>O - Sortie (Output) :</strong> Restitution de l'information (écran, imprimante, haut-parleurs).</li>
+                                </ul>
+                                <strong>Exemple :</strong> Taper un mot. Entrée (touches clavier) → Traitement (affichage des lettres) → Sortie (mot sur l'écran).
+                            </p>
+                            
+                            <h5>3. Définition de l'Informatique</h5>
+                            <p>
+                                Le terme <strong>Informatique</strong> est la contraction de <strong>Information</strong> et <strong>Automatique</strong>. C'est donc la science du traitement rationnel, notamment à l'aide de machines (ordinateurs), de l'information considérée comme le support des connaissances et des communications. En bref : <strong>Traitement Automatique de l'Information</strong>.
+                            </p>
+                        </div>
+
+
+                        <!-- SECTION : LIENS PDF / FICHIERS -->
+                        <h3 style="border-bottom-color: var(--danger-color); margin-top: 40px;">Documents à Télécharger (PDF/Mindmap)</h3>
+                        
+                        <div class="notes-section">
+                            <p>Téléchargez les notes complètes pour l'étude et la révision.</p>
+                            
+                            <!-- 1. Lien vers le Knowledge Organizer (Fiche Résumé) -->
+                            <a href="URL_KNOWLEDGE_ORGANIZER_S01.pdf" target="_blank" class="resource-link border-success">
+                                <span class="icon" style="color:var(--status-encours);">📘</span>
+                                <div>
+                                    <h4 style="margin:0; color:var(--text-dark);">Knowledge Organizer (Fiche Résumé)</h4>
+                                    <p>Document essentiel pour la révision rapide et l'auto-évaluation.</p>
+                                </div>
+                            </a>
+                            
+                            <!-- 2. Lien vers la Mindmap (Carte Mentale) - Navigue vers la page Markmap -->
+                            <a href="#" onclick="event.preventDefault(); navigateToMarkmap('S01')" class="resource-link border-algorithmique">
+                                <span class="icon" style="color:var(--status-termine);">🧠</span>
+                                <div>
+                                    <h4 style="margin:0; color:var(--text-dark);">Carte Mentale Interactive de la Séquence</h4>
+                                    <p>Visualisation interactive de la leçon avec Markmap.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </main>
+            `,
+            // --- PAGE DE SÉQUENCE DÉTAILLÉE (M01-S02-L02) ---
+            sequence02: `
+                <main class="container">
+                    <h2 class="section-title">⚙️ M01-S02-L02 : Schéma Fonctionnel d’un Ordinateur</h2>
+                    <button class="btn btn-secondary" style="background-image:none;" onclick="navigateTo('modules')">
+                        ← Retour aux Modules
+                    </button>
+
+                    <div class="lesson-page-content">
+                        <h2>Aperçu de la Leçon</h2>
+                        <p id="lessonM01S02L02OverviewText">${lessonM01S02L02Overview}</p>
+                        
+                        <h3>Objectifs Pédagogiques</h3>
+                        <ul>
+                            <li><strong>Identifier</strong> les unités fonctionnelles de l'architecture de Von Neumann.</li>
+                            <li><strong>Expliquer</strong> le rôle du CPU, de la RAM et des périphériques.</li>
+                            <li><strong>Décrire</strong> le flux d'information (bus de données, d'adresses et de commandes).</li>
+                        </ul>
+
+                        <h3>Ressources et Activités</h3>
+                        
+                        <!-- 1. Lien vers la Mindmap (Carte Mentale) - Navigue vers la page Markmap -->
+                        <a href="#" onclick="event.preventDefault(); navigateToMarkmap('S02')" class="resource-link border-algorithmique">
+                            <span class="icon" style="color:var(--status-termine);">🧠</span>
+                            <div>
+                                <h4 style="margin:0; color:var(--text-dark);">Carte Mentale Interactive de la Séquence (Schéma Fonctionnel)</h4>
+                                <p>Visualisation interactive de la leçon avec Markmap.</p>
+                            </div>
+                        </a>
+                        
+                        <h4>Vidéo Pédagogique (12 minutes)</h4>
+                        <a href="https://www.youtube.com/watch?v=AD-3nVI3-_U" target="_blank" class="resource-link border-danger">
+                            <span class="icon" style="color: var(--danger-color);">▶️</span>
+                            <div>
+                                <h4 style="margin:0; color:var(--text-dark);">Vidéo : Le Hardware expliqué simplement</h4>
+                                <p>Regardez avant de lire les notes de cours pour une introduction visuelle.</p>
+                            </div>
+                        </a>
+                        
+                        <h4>Notes de cours (PDF)</h4>
+                        <a href="URL_PDF_ARCHITECTURE_MATERIELLE" target="_blank" class="resource-link border-success">
+                            <span class="icon" style="color: var(--status-encours);">📄</span>
+                            <div>
+                                <h4 style="margin:0; color:var(--text-dark);">Télécharger les notes complètes</h4>
+                                <p>Contient les schémas détaillés de l'architecture Von Neumann.</p>
+                            </div>
+                        </a>
+                    </div>
+                </main>
+            `,
+            // --- PAGES NON DÉTAILLÉES (Placeholders pour les leçons futures) ---
+            'sequence01-L2': `
+                <main class="container">
+                    <h2 class="section-title" style="color: var(--text-dark);">⏳ M01-S01-L02 : Système informatique, Représentation de l'information</h2>
+                    <p style="text-align:center;">Cette leçon est en cours de préparation et sera disponible prochainement.</p>
+                    <div style="text-align:center; margin-top: 30px;">
+                        <button class="btn btn-secondary" style="background-image:none;" onclick="navigateTo('modules')">Retour aux Modules</button>
+                    </div>
+                </main>
+            `,
+            'sequence02-L1': `
+                <main class="container">
+                    <h2 class="section-title" style="color: var(--text-dark);">⏳ M01-S02-L01 : Ordinateur, Catégories des ordinateurs</h2>
+                    <p style="text-align:center;">Cette leçon est en cours de préparation et sera disponible prochainement.</p>
+                    <div style="text-align:center; margin-top: 30px;">
+                        <button class="btn btn-secondary" style="background-image:none;" onclick="navigateTo('modules')">Retour aux Modules</button>
+                    </div>
+                </main>
+            `,
+            'sequence02-L3': `
+                <main class="container">
+                    <h2 class="section-title" style="color: var(--text-dark);">⏳ M01-S02-L03 : CPU et Mémoire centrale</h2>
+                    <p style="text-align:center;">Cette leçon est en cours de préparation et sera disponible prochainement.</p>
+                    <div style="text-align:center; margin-top: 30px;">
+                        <button class="btn btn-secondary" style="background-image:none;" onclick="navigateTo('modules')">Retour aux Modules</button>
+                    </div>
+                </main>
+            `,
+            // --- PAGE CALENDRIER (POUR L'EXEMPLE) ---
+            calendrier: `
+                <main class="container">
+                    <h2 class="section-title">📅 Calendrier des Événements</h2>
+                    <p style="text-align:center; margin-bottom: 30px;">Toutes les dates importantes : devoirs, examens et sessions de rattrapage.</p>
+
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <div class="event-item urgent">
+                            <div class="event-date">10 Oct.<br><span>URGENT</span></div>
+                            <div class="event-details">
+                                <h4>Soumission Devoir I (Cycle IPO)</h4>
+                                <p>Date limite : 23h59. À soumettre via Google Forms.</p>
+                            </div>
+                        </div>
+                        <div class="event-item project">
+                            <div class="event-date">15 Oct.<br><span>PROJET</span></div>
+                            <div class="event-details">
+                                <h4>Lancement du Projet Web</h4>
+                                <p>Présentation des objectifs du Projet M03. Début de la phase de planification.</p>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">24 Oct.<br><span>EXAMEN</span></div>
+                            <div class="event-details">
+                                <h4>Examen Sommatif M01</h4>
+                                <p>Évaluation de l'ensemble du Module 1 (Concepts, Architecture).</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            `,
+            // --- PAGE MARKMAP INTERACTIVE (MAIN PAGE) ---
+            markmap: `
+                <main class="container">
+                    <h2 class="section-title" id="markmapTitle">🗺️ Carte Mentale Interactive</h2>
+                    <button class="btn btn-secondary" style="background-image:none; margin-bottom: 20px;" onclick="navigateTo('modules')">
+                        ← Retour aux Modules
+                    </button>
+
+                    <div id="markmap-page-container">
+                        <svg id="markmap-svg"></svg>
+                    </div>
+                </main>
+            `,
+            devoirs: `
+                <main class="container">
+                    <h2 class="section-title">📝 Travaux et Évaluations</h2>
+                    <p style="text-align:center; margin-bottom: 30px;">Vérifiez les instructions et les dates limites. <strong>Tout retard sera pénalisé</strong>.</p>
+                    
+                    <div class="modules-grid">
+                        <div class="info-card">
+                             <div class="card-header bg-danger">
+                                <h3>Devoir I - Cycle IPO</h3>
+                                <span class="status-tag" style="background-color: white; color: var(--danger-color);">⚠️ URGENT</span>
+                            </div>
+                            <div class="card-body">
+                                <p class="font-bold"><strong>Date limite : Vendredi 10 Octobre à 23h59</strong></p>
+                                <p>Analyse et description du cycle IPO d'un système complexe (ex : un distributeur automatique).</p>
+                                <ul class="mt-3" style="list-style: disc; margin-left: 20px;">
+                                    <li>Points : 20% de la note finale du module.</li>
+                                    <li>Lien de soumission : <a href="URL_GOOGLE_FORMS" target="_blank" style="color:var(--accent-color); font-weight:700;">Soumettre ici</a></li>
+                                </ul>
+                            </div>
+                            <div class="card-footer">
+                                <a href="URL_INSTRUCTIONS_PDF" target="_blank" class="btn" style="background-image: var(--gradient-encours);">Télécharger les Instructions</a>
+                            </div>
+                        </div>
+
+                         <div class="info-card">
+                             <div class="card-header bg-logiciels">
+                                <h3>Projet Final Web</h3>
+                                <span class="status-tag" style="background-color: white; color: #3498db;">Planification</span>
+                            </div>
+                            <div class="card-body">
+                                <p class="font-bold"><strong>Début : 15 Octobre</strong></p>
+                                <p>Création d'un petit site web interactif sur un sujet de votre choix. Évaluation sur la structure HTML/CSS.</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="URL_GRILLE_EVALUATION" target="_blank" class="btn btn-secondary" style="background-image:none;">Grille d'Évaluation</a>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            `,
+            // --- PAGE RESSOURCES (CORRIGÉE) ---
+            ressources: `
+                <main class="container">
+                    <h2 class="section-title">🔗 Outils et Ressources Utiles</h2>
+                    <p style="text-align:center; margin-bottom: 30px;">Logiciels, liens de référence et guides pour vous aider à coder.</p>
+                    
+                    <div class="ressources-grid">
+                        <a href="https://code.visualstudio.com/" target="_blank" class="resource-link" style="border-image: linear-gradient(to bottom, #007ACC, #005A9C) 1;">
+                            <span class="icon" style="color:#007ACC;">🧑‍💻</span>
+                            <div>
+                                <h4>Visual Studio Code (VS Code)</h4>
+                            <p>L'éditeur de code recommandé pour tous nos projets.</p>
+                            </div>
+                        </a>
+                        <a href="https://www.python.org/" target="_blank" class="resource-link" style="border-image: linear-gradient(to bottom, #306998, #34495e) 1;">
+                            <span class="icon" style="color:#306998;">🐍</span>
+                            <div>
+                                <h4>Site Officiel Python</h4>
+                                <p>Téléchargement et documentation pour le Module 2.</p>
+                            </div>
+                        </a>
+                        <a href="https://validator.w3.org/" target="_blank" class="resource-link" style="border-image: linear-gradient(to bottom, #F39C12, #D4AC0D) 1;">
+                            <span class="icon" style="color:#F39C12;">🔍</span>
+                            <div>
+                                <h4>Validateur HTML/CSS du W3C</h4>
+                                <p>Vérifiez la conformité de votre code web.</p>
+                            </div>
+                        </a>
+                        <a href="https://fr.wikipedia.org/wiki/Informatique" target="_blank" class="resource-link" style="border-image: linear-gradient(to bottom, #95A5A6, #7f8c8d) 1;">
+                            <span class="icon" style="color:#95A5A6;">📖</span>
+                            <div>
+                                <h4>Ressources théoriques générales</h4>
+                                <p>Pour approfondir les concepts généraux de l'informatique.</p>
+                            </div>
+                        </a>
+                    </div>
+                </main>
+            `,
+            // --- PAGE CONTACT (MISE À JOUR) ---
+            contact: `
+                <main class="container">
+                    <h2 class="section-title">✉️ Contacter l'Enseignant</h2>
+                    <div style="max-width: 600px; margin: 0 auto;" class="info-card">
+                        <div class="card-body">
+                            <h4 style="color: var(--text-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px;">Informations de Contact</h4>
+                            
+                            <!-- Email -->
+                            <a href="mailto:younes.tichoua@taalim.ma" class="resource-link" style="border-image: linear-gradient(to bottom, var(--accent-color), #2980b9) 1;">
+                                <span class="icon" style="color:var(--accent-color);">📧</span>
+                                <div>
+                                    <h4>Email Professionnel</h4>
+                                    <p>younes.tichoua@taalim.ma </p>
+                                </div>
+                            </a>
+
+                            <!-- Bureau -->
+                            <div class="resource-link border-success">
+                                <span class="icon" style="color:var(--status-encours);">📍</span>
+                                <div>
+                                    <h4>Disponibilité au Bureau</h4>
+                                    <p>Salle <strong>06</strong> - Les <strong>Mercredis après-midi</strong> de 14h à 18h.</p>
+                                </div>
+                            </div>
+
+                            <!-- Support -->
+                            <div class="resource-link border-algorithmique">
+                                <span class="icon" style="color:var(--status-termine);">💬</span>
+                                <div>
+                                    <h4>Questions Générales</h4>
+                                    <p>Utilisez le canal de support de votre classe (Slack/Teams).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            `
+        };
+
+
+        // --- Fonction de Navigation vers la carte mentale ---
+        function navigateToMarkmap(key) {
+            currentMindmapKey = key; 
+            navigateTo('markmap'); 
+        }
+        
+        // --- Fonction de Navigation Générique ---
+        function navigateTo(pageName) {
+            const contentDiv = document.getElementById('content');
+            
+            // 1. Charger le contenu
+            if (pageContent[pageName]) {
+                contentDiv.innerHTML = pageContent[pageName];
+            } else {
+                console.error("Page non trouvée pour la clé:", pageName);
+                contentDiv.innerHTML = `
+                    <main class="container">
+                        <h2 class="section-title" style="color: var(--danger-color);">Page Non Trouvée (404)</h2>
+                        <p style="text-align:center;">Désolé, la page demandée n'existe pas ou n'a pas encore été créée.</p>
+                        <div style="text-align:center; margin-top: 30px;">
+                            <button class="btn" onclick="navigateTo('accueil')">Retour à l'Accueil</button>
+                        </div>
+                    </main>
+                `;
+            }
+
+            // 2. Mettre à jour le lien actif dans la barre de navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            let activePage = pageName;
+            if (pageName.startsWith('sequence') || pageName === 'markmap') {
+                activePage = 'modules'; 
+            }
+            
+            const activeLink = document.querySelector(`.nav-link[data-page="${activePage}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+
+            // 3. Action spécifique pour la page Modules (Gestion de l'Accordéon DYNAMIQUE)
+            if (pageName === 'modules') {
+                setTimeout(() => {
+                    const moduleCards = document.querySelectorAll('.info-card');
+                    
+                    moduleCards.forEach(card => {
+                        const statusTag = card.querySelector('.status-tag');
+                        
+                        // Détermine si le module doit être déplié
+                        const shouldBeActive = statusTag && (
+                            statusTag.textContent.toLowerCase().includes('actif') || 
+                            statusTag.textContent.toLowerCase().includes('en cours')
+                        );
+                        
+                        const icon = card.querySelector('.toggle-icon');
+
+                        if (shouldBeActive) {
+                            // C'est le module actif, il doit être déplié
+                            card.classList.remove('collapsed');
+                            if (icon) icon.innerHTML = '▼';
+                        } else {
+                            // Les autres modules sont repliés
+                            card.classList.add('collapsed');
+                            if (icon) icon.innerHTML = '▶';
+                        }
+                    });
+                }, 50); // Petit délai pour laisser le DOM se charger après l'injection
+            }
+
+
+            // 4. Action spécifique pour Markmap (appel asynchrone sécurisé)
+            if (pageName === 'markmap') {
+                setTimeout(() => {
+                    waitForMarkmap(currentMindmapKey);
+                }, 100); 
+            }
+
+            // 5. Défilement vers le haut
+            window.scrollTo(0, 0);
+        }
+
+        // --- Mise en place de la navigation à l'initialisation ---
+        function setupNavigation() {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const page = link.getAttribute('data-page');
+                    navigateTo(page);
+                });
+            });
+
+            // Charger la page d'accueil au chargement initial
+            navigateTo('accueil');
+        }
+
+        // Démarrer l'application une fois que le DOM est complètement chargé
+        window.onload = setupNavigation;
+    </script>
 </body>
 </html>
