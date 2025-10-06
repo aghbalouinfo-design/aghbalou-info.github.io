@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Info-Aghbalou</title>
+
+    <!-- CONFIGURATION DU FAVICON (maintenue) -->
+    <link rel="icon" type="image/png" href="https://aghbalouinfo-design.github.io/aghbalou-info.github.io/cyberpunk-me.png">
+    <link rel="apple-touch-icon" href="https://aghbalouinfo-design.github.io/aghbalou-info.github.io/cyberpunk-me.png">
+    
     <!-- Chargement de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -13,42 +18,48 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
+            background-color: #f3f4f6; /* Fond très léger, harmonieux */
         }
 
-        /* --- Palette de Couleurs à Dégradé --- */
+        /* --- Couleurs de Thème et de Module (Vives) --- */
+        /* Couleur de Marque (Navigation/Accentuation) */
         .gradient-theme {
-            background-image: linear-gradient(to right, #20c997, #17a2b8); /* Teal Vif vers Cyan Profond */
-        }
-        
-        /* Module 1: En Cours (Vert Émeraude) */
-        .bg-encours {
-            background-image: linear-gradient(to right, #198754, #20c997); /* Vert Émeraude */
+            /* Dégradé Vert-Bleu (Teal Vif vers Cyan Profond) */
+            background-image: linear-gradient(to right, #20c997, #17a2b8); 
         }
 
-        /* Module 2: Logiciels (Bleu Océan/Profond) */
-        .bg-logiciels {
-            background-image: linear-gradient(to right, #0d6efd, #00bfff); /* Bleu Océan */
+        /* Couleurs Primaires pour chaque Module */
+        .bg-module-m01 { background-image: linear-gradient(to right, #2563eb, #3b82f6); } /* Bleu Vif */
+        .bg-module-m02 { background-image: linear-gradient(to right, #059669, #10b981); } /* Vert Émeraude */
+        .bg-module-m03 { background-image: linear-gradient(to right, #4f46e5, #6366f1); } /* Indigo Profond */
+        .bg-module-m04 { background-image: linear-gradient(to right, #dc2626, #ef4444); } /* Rouge Alerte/Archive */
+
+
+        /* --- Hiérarchie Visuelle (Opacité et Estompage) --- */
+        .module-card-active {
+            opacity: 1; /* En cours */
+        }
+        .module-card-completed {
+            opacity: 0.75; /* Terminé/Archivé */
+        }
+        .module-card-upcoming {
+            opacity: 0.60; /* À venir (grisé) */
+            filter: grayscale(20%); /* Léger grisonnement */
         }
 
-        /* Module 3: Algorithmique (Violet Améthyste) */
-        .bg-algorithmique {
-            background-image: linear-gradient(to right, #6f42c1, #a052ff); /* Violet Améthyste */
-        }
-
-        /* Module 4: Réseaux (Orange Solaire) */
-        .bg-reseaux {
-            background-image: linear-gradient(to right, #ffc107, #fd7e14); /* Orange Solaire */
-        }
 
         /* --- Effets Généraux --- */
         .module-card {
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s;
         }
 
-        .module-card:hover {
+        .module-card:hover:not(.module-card-upcoming) {
             transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            opacity: 1 !important; /* L'opacité remonte au survol */
+        }
+        .module-card:hover.module-card-upcoming {
+             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
 
         /* Amélioration Mobile */
@@ -184,7 +195,7 @@
         <!-- Footer -->
         <footer class="bg-gray-100 mt-12 py-6 text-center text-gray-600 text-sm">
             <p>&copy; 2024 Hub Pédagogique Informatique. Développé par <span class="font-bold">Younes TICHOUA</span>.</p>
-            <p>Version 3.0 | <a href="#" onclick="navigateTo('accueil')" class="text-teal-600 hover:text-teal-800">Retour à l'accueil</a></p>
+            <p>Version 3.1 | <a href="#" onclick="navigateTo('accueil')" class="text-teal-600 hover:text-teal-800">Retour à l'accueil</a></p>
         </footer>
     </div>
 
@@ -198,6 +209,7 @@
         
         // URL EXTERNE POUR LA CARTE MENTALE DE LA LEÇON 1
         const EXTERNAL_MINDMAP_URL = 'https://aghbalouinfo-design.github.io/aghbalou-info.github.io/Mindmap.html';
+        // URL de la photo de l'enseignant, utilisée dans la page Contact
         const TEACHER_PHOTO_URL = 'https://aghbalouinfo-design.github.io/aghbalou-info.github.io/cyberpunk-me.png';
 
 
@@ -209,6 +221,8 @@
             pdf: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 10a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm0-3a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm0-3a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>`,
             // Caret pour les accordéons (pointe vers le bas)
             caret: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>`,
+            // COCHE VERTE DE SUCCÈS pour les modules terminés
+            checkPro: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`,
         };
 
 
@@ -228,7 +242,7 @@
                     "Je peux schématiser le cycle de traitement de l'information.",
                     "J'utilise correctement le vocabulaire technique (Donnée, Traitement, Information, Analogique, Numérique)."
                 ],
-                // NOTES DE COURS DÉTAILLÉES pour l'exemple (Corrigées : Balises <strong> au lieu de **)
+                // NOTES DE COURS DÉTAILLÉES (avec balises <strong>)
                 detailedNotes: `
                     <h4 class="text-xl font-bold text-teal-800 mb-3">1. Le Cycle IPO (Input-Process-Output)</h4>
                     <p class="mb-4 text-gray-700">Le cœur de l'informatique repose sur ce modèle :</p>
@@ -308,7 +322,6 @@
             } else {
                 // Utilisation d'un message non-critique pour respecter les contraintes
                 console.log("Carte Mentale non disponible pour cette leçon.");
-                alert("Carte Mentale non disponible pour cette leçon.");
             }
         }
 
@@ -459,7 +472,7 @@
                     </button>`
                 : `<div class="w-full px-6 py-3 text-center bg-gray-300 text-gray-700 rounded-lg font-semibold shadow-md">🧠 Carte Mentale non disponible</div>`;
                 
-            // LOGIQUE POUR LES NOTES DÉTAILLÉES (Mise en évidence : CHANGEMENT ICI)
+            // LOGIQUE POUR LES NOTES DÉTAILLÉES 
             const detailedNotesHtml = data.detailedNotes ? `
                 <div class="bg-indigo-50 p-6 rounded-xl shadow-xl border border-indigo-200 border-l-8 border-indigo-500">
                     <details class="cursor-pointer">
@@ -549,31 +562,87 @@
                 </div>
             `;
         }
+
+        /**
+         * Fonction utilitaire pour obtenir les classes basées sur le statut et l'ID du module.
+         */
+        function getModuleClasses(moduleId, status) {
+            let colorClass, opacityClass, buttonClass, buttonText, buttonDisabled, statusTagClass;
+            const isCurrent = status === "En cours";
+            const isUpcoming = status === "À venir";
+            const isCompleted = status === "Terminé";
+
+            // 1. DÉFINITION DE LA COULEUR DU MODULE (Base)
+            switch (moduleId) {
+                case 1: colorClass = 'bg-module-m01'; break; // Bleu (Systèmes)
+                case 2: colorClass = 'bg-module-m02'; break; // Vert (Logiciels)
+                case 3: colorClass = 'bg-module-m03'; break; // Indigo (Prog)
+                case 4: colorClass = 'bg-module-m04'; break; // Rouge (Réseaux)
+                default: colorClass = 'bg-gray-500';
+            }
+
+            // 2. HIÉRARCHIE D'OPACITÉ ET DE BOUTON (Estompage)
+            if (isCurrent) {
+                opacityClass = 'module-card-active';
+                buttonClass = 'bg-white text-gray-800 shadow-md hover:bg-gray-100';
+                buttonText = 'Voir le module';
+                buttonDisabled = false;
+                statusTagClass = 'bg-white/30 text-white';
+            } else if (isCompleted) {
+                opacityClass = 'module-card-completed';
+                buttonClass = 'bg-white/70 text-gray-800 hover:bg-white';
+                buttonText = 'Revoir';
+                buttonDisabled = false;
+                statusTagClass = 'bg-white/30 text-white flex items-center space-x-1'; // Avec icône
+            } else { // À venir
+                opacityClass = 'module-card-upcoming';
+                buttonClass = 'bg-gray-400 text-gray-700 cursor-not-allowed shadow-inner';
+                buttonText = 'À venir';
+                buttonDisabled = true;
+                statusTagClass = 'bg-white/30 text-white';
+            }
+            
+            // Le texte doit toujours être blanc pour un bon contraste avec les couleurs vives (même estompées)
+            const headerClass = `${colorClass} text-white`;
+
+            return { headerClass, opacityClass, statusTagClass, buttonClass, buttonText, buttonDisabled };
+        }
         
         // --- Fonctions de Contenu des Pages (mise à jour de la page contact) ---
         const pageContent = {
             accueil: () => {
+                // NOUVEAUX STATUTS COHÉRENTS
                 const modulesForAccueil = [
-                    { id: 1, title: "M01 : Généralités sur les Systèmes Informatiques", status: "En cours", class: "bg-encours" },
-                    { id: 2, title: "M02 : Les Logiciels", status: "À venir", class: "bg-logiciels" },
-                    { id: 3, title: "M03 : Algorithmique et Programmation", status: "À venir", class: "bg-algorithmique" },
-                    { id: 4, title: "M04 : Réseaux et Internet", status: "À venir", class: "bg-reseaux" },
+                    { id: 1, title: "M01 : Généralités sur les Systèmes Informatiques", status: "En cours" },
+                    { id: 2, title: "M02 : Les Logiciels", status: "À venir" },
+                    { id: 3, title: "M03 : Algorithmique et Programmation", status: "À venir" },
+                    { id: 4, title: "M04 : Réseaux et Internet", status: "Terminé" },
                 ];
 
                 const moduleCardsHtml = modulesForAccueil.map(module => {
-                    const isActive = module.status === "En cours" || module.status === "Actif";
-                    const btnClass = isActive 
-                        ? 'gradient-theme text-white shadow-lg hover:shadow-xl' 
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300';
+                    const { headerClass, opacityClass, statusTagClass, buttonClass, buttonText, buttonDisabled } = getModuleClasses(module.id, module.status);
 
+                    // Contenu du statut pour la carte d'accueil
+                    let statusContent = `<p class="text-sm font-light">${module.status}</p>`;
+
+                    // Remplacement du texte du statut par une icône si "Terminé"
+                    let moduleStatusDisplay = module.status;
+                    if (module.status === "Terminé") {
+                        // Utilise l'icône de succès (checkPro) définie au début du script
+                        moduleStatusDisplay = `<div class="flex items-center space-x-1">${icons.checkPro} Terminé</div>`;
+                    }
+                    
                     return `
-                        <div class="module-card p-6 rounded-xl shadow-lg ${module.class}">
+                        <div class="module-card p-6 rounded-xl shadow-lg ${headerClass} ${opacityClass}">
                             <div class="text-white">
                                 <h3 class="text-xl font-extrabold mb-1">${module.title}</h3>
-                                <p class="text-sm font-light">${module.status}</p>
+                                ${statusContent}
                             </div>
-                            <a href="#" onclick="navigateTo('modules')" class="inline-block mt-4 px-6 py-2 rounded-lg font-semibold transition duration-300 ${btnClass}">
-                                Voir le module
+                            <!-- Bouton qui ne navigue que s'il n'est pas "À venir" -->
+                            <a href="${buttonDisabled ? '#' : 'javascript:void(0)'}" 
+                                onclick="${buttonDisabled ? '' : "navigateTo('modules')"}"
+                                class="inline-block mt-4 px-6 py-2 rounded-lg font-semibold transition duration-300 ${buttonClass}">
+                                ${buttonText}
                             </a>
                         </div>
                     `;
@@ -599,12 +668,12 @@
             },
 
             modules: () => {
+                // NOUVELLE STRUCTURE UTILISANT UNIQUEMENT LE STATUT POUR LA COULEUR
                 const modulesStructure = [
                     { 
                         id: 1, 
                         title: "M01 : Généralités sur les Systèmes Informatiques", 
                         status: "En cours", 
-                        class: "bg-encours",
                         sequences: [
                             { title: "Séquence 1 : Définitions et vocabulaire de base", lessons: [
                                 { title: "Leçon 1 : Information, traitement et Informatique", href: "sequence01" },
@@ -621,7 +690,6 @@
                         id: 2, 
                         title: "M02 : Les Logiciels", 
                         status: "À venir", 
-                        class: "bg-logiciels",
                         sequences: [
                             { title: "Séquence 1 : Système d’exploitation", lessons: [
                                 { title: "Leçon 1 : Fonctionnalités de base d’un système d’exploitation", href: "sequence02-S1-L1" },
@@ -643,7 +711,6 @@
                         id: 3, 
                         title: "M03 : Algorithmique et Programmation", 
                         status: "À venir", 
-                        class: "bg-algorithmique",
                         sequences: [
                             { title: "Séquence 1 : Algorithme et structures de contrôle", lessons: [
                                 { title: "Leçon 1 : Notion d’algorithme", href: "sequence03-S1-L1" },
@@ -660,8 +727,7 @@
                     { 
                         id: 4, 
                         title: "M04 : Réseaux et Internet", 
-                        status: "À venir", 
-                        class: "bg-reseaux",
+                        status: "Terminé", 
                         sequences: [
                             { title: "Séquence 1 : Notion de réseau informatique", lessons: [
                                 { title: "Leçon 1 : Définition et utilité d’un réseau", href: "sequence04-S1-L1" },
@@ -678,32 +744,53 @@
                 ];
 
                 return modulesStructure.map(module => {
+                    const { headerClass, opacityClass, statusTagClass } = getModuleClasses(module.id, module.status);
+
                     const sequencesHtml = module.sequences.map(seq => `
                         <div class="mb-4 pt-3 border-t border-gray-100">
                             <h4 class="sequence-heading text-lg font-semibold text-gray-800 mb-2 p-1 rounded bg-gray-100">${seq.title}</h4>
                             <ul class="space-y-1 pl-4 text-gray-700">
-                                ${seq.lessons.map(lesson => `
-                                    <li class="pl-2 border-l-2 border-gray-300 hover:bg-gray-50 rounded">
-                                        <!-- Utilisation de la key comme nom de page -->
-                                        <a href="#" onclick="navigateTo('${lesson.href}')" class="block py-1 text-sm">
-                                            ${lesson.title}
-                                        </a>
-                                    </li>
-                                `).join('')}
+                                ${seq.lessons.map(lesson => {
+                                    // Les leçons d'un module "À venir" sont désactivées.
+                                    const isDisabled = module.status !== "En cours" && module.status !== "Terminé";
+                                    const linkClass = isDisabled ? 'text-gray-500 cursor-not-allowed' : 'text-gray-700 hover:text-teal-600';
+                                    
+                                    // CORRECTION : Utilisation de javascript:void(0) pour éviter le rechargement de la page 
+                                    // et s'assurer que l'action onclick est bien appelée.
+                                    const linkAction = isDisabled ? 'javascript:void(0)' : `MapsTo('${lesson.href}')`;
+                                    
+                                    return `
+                                        <li class="pl-2 border-l-2 border-gray-300 hover:bg-gray-50 rounded">
+                                            <a href="#" onclick="${linkAction}" class="block py-1 text-sm ${linkClass}">
+                                                ${lesson.title}
+                                            </a>
+                                        </li>
+                                    `;
+                                }).join('')}
                             </ul>
                         </div>
                     `).join('');
+                    
+                    // Contenu du statut
+                    let statusIconText = module.status;
+                    if (module.status === "Terminé") {
+                        statusIconText = `${icons.checkPro} Terminé`;
+                    }
+
+                    // Définir M01 (id=1) comme étant le module par défaut à déplier (car il est "En cours")
+                    const isM1Active = module.id === 1;
+
 
                     return `
-                        <div class="info-card bg-white rounded-xl shadow-lg mb-6 ${module.id !== 1 ? 'collapsed' : ''}" id="module-${module.id}">
+                        <div class="info-card module-card bg-white rounded-xl shadow-lg mb-6 ${!isM1Active ? 'collapsed' : ''} ${opacityClass}" id="module-${module.id}">
                             <div 
-                                class="card-header ${module.class} p-4 rounded-t-xl text-white flex justify-between items-center cursor-pointer"
+                                class="card-header ${headerClass} p-4 rounded-t-xl flex justify-between items-center cursor-pointer"
                                 onclick="toggleModule(${module.id})"
                             >
-                                <h3 class="text-xl font-extrabold">${module.title}</h3>
+                                <h3 class="text-xl font-extrabold text-white">${module.title}</h3>
                                 <div class="flex items-center space-x-2">
-                                    <span class="status-tag bg-white/30 text-white text-xs font-semibold px-3 py-1 rounded-full">${module.status}</span>
-                                    <span class="toggle-icon text-lg">${module.id === 1 ? '▼' : '▶'}</span>
+                                    <span class="status-tag ${statusTagClass} text-xs font-semibold px-3 py-1 rounded-full text-white">${statusIconText}</span>
+                                    <span class="toggle-icon text-lg text-white">${isM1Active ? '▼' : '▶'}</span>
                                 </div>
                             </div>
                             <div class="card-body p-4 pt-0">
@@ -717,29 +804,29 @@
             // Remplacement des anciennes pages de séquence par un appel à la fonction générique
             'sequence01': () => generateLessonPage('sequence01'),
             'sequence01-L2': () => generateLessonPage('sequence01-L2'),
-            'sequence02-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M01-S02-L01 à venir...</div>`,
+            'sequence02-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M01-S02-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-L2': () => generateLessonPage('sequence02-L2'),
-            'sequence02-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M01-S02-L03 à venir...</div>`,
-            'sequence02-S1-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L01 à venir...</div>`,
-            'sequence02-S1-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L02 à venir...</div>`,
-            'sequence02-S1-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L03 à venir...</div>`,
-            'sequence02-S2-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S02-L01 à venir...</div>`,
-            'sequence02-S2-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S02-L02 à venir...</div>`,
-            'sequence02-S3-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L01 à venir...</div>`,
-            'sequence02-S3-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L02 à venir...</div>`,
-            'sequence02-S3-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L03 à venir...</div>`,
-            'sequence03-S1-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S01-L01 à venir...</div>`,
-            'sequence03-S1-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S01-L02 à venir...</div>`,
-            'sequence03-S1-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S01-L03 à venir...</div>`,
-            'sequence03-S2-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S02-L01 à venir...</div>`,
-            'sequence03-S2-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S02-L02 à venir...</div>`,
-            'sequence03-S2-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S02-L03 à venir...</div>`,
-            'sequence04-S1-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S01-L01 à venir...</div>`,
-            'sequence04-S1-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S01-L02 à venir...</div>`,
-            'sequence04-S1-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S01-L03 à venir...</div>`,
-            'sequence04-S2-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S02-L01 à venir...</div>`,
-            'sequence04-S2-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S02-L02 à venir...</div>`,
-            'sequence04-S2-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S02-L03 à venir...</div>`,
+            'sequence02-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M01-S02-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence02-S1-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence02-S1-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence02-S1-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence02-S2-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S02-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence02-S2-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S02-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence02-S3-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence02-S3-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence02-S3-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence03-S1-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S01-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence03-S1-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S01-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence03-S1-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S01-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence03-S2-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S02-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence03-S2-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S02-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence03-S2-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M03-S02-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence04-S1-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S01-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence04-S1-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S01-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence04-S1-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S01-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence04-S2-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S02-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence04-S2-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S02-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence04-S2-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S02-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
 
             devoirs: () => `
                 <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Mes Devoirs</h2>
@@ -898,24 +985,40 @@
             
             if (pageName === 'modules') {
                 setTimeout(() => {
+                    // Logique pour ouvrir M01 par défaut (le module "En cours")
+                    const modulesToOpen = ['M01 : Généralités sur les Systèmes Informatiques']; 
+                    
                     const moduleCards = document.querySelectorAll('.info-card');
                     moduleCards.forEach(card => {
-                        const statusTag = card.querySelector('.status-tag');
+                        const header = card.querySelector('.card-header h3');
+                        const icon = card.querySelector('.toggle-icon');
                         
-                        if (statusTag && (statusTag.textContent.includes('En cours') || statusTag.textContent.includes('Actif'))) {
-                            card.classList.remove('collapsed');
-                            const icon = card.querySelector('.toggle-icon');
-                            if (icon) icon.innerHTML = '▼';
-                        } else {
-                            card.classList.add('collapsed');
-                            const icon = card.querySelector('.toggle-icon');
-                            if (icon) icon.innerHTML = '▶';
+                        if (header && icon) {
+                            if (modulesToOpen.some(title => header.textContent.includes(title))) {
+                                card.classList.remove('collapsed');
+                                icon.innerHTML = '▼';
+                            } else {
+                                card.classList.add('collapsed');
+                                icon.innerHTML = '▶';
+                            }
                         }
                     });
                 }, 50); 
             }
 
             window.scrollTo(0, 0);
+        }
+
+        // CORRECTION DE L'ERREUR : Ajout de la fonction MapsTo pour qu'elle soit définie.
+        // Elle agit comme un alias pour navigateTo, assurant que le code fonctionne 
+        // même si l'utilisateur appelle accidentellement MapsTo.
+        /**
+         * Alias pour navigateTo pour corriger le ReferenceError.
+         * @param {string} pageName - Le nom de la page ou de la leçon à afficher.
+         */
+        window.MapsTo = function(pageName) {
+            console.warn("MapsTo() est obsolète. Utilisez navigateTo() à la place.");
+            navigateTo(pageName);
         }
         
         // --- Initialisation au Chargement de la Page ---
@@ -928,7 +1031,8 @@
                 userIdDisplay.innerHTML += ` | ID: <span class="font-mono">${appId}</span>`;
             }
         };
-
+        // Rendre la fonction accessible globalement pour le bouton dans le HTML
+        window.toggleModule = toggleModule; 
     </script>
 </body>
 </html>
