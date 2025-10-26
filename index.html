@@ -320,7 +320,21 @@
                 koLink: { url: "https://example.com/ko_m01_l03.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
                 mindMapUrl: null, // Pas de carte mentale pour cette leçon
                 detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
+            },
+            // M1S2L3
+            'sequence02-L3': { 
+                title: "Leçon 2 : Schéma fonctionnel d’un ordinateur",
+                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+                overview: "Exploration des composants internes et de leur rôle dans l'architecture de Von Neumann.",
+                objectives: ["Dessiner et étiqueter le schéma fonctionnel.", "Expliquer le rôle de l'UAL et de l'UC."],
+                successCriteria: ["Je peux identifier 4 composants principaux de l'UC."],
+                resourcesAndActivities: [], 
+                quiz: [],
+                koLink: { url: "https://example.com/ko_m01_l03.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+                mindMapUrl: null, // Pas de carte mentale pour cette leçon
+                detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
             }
+
         };
 
         // --- Fonctions de la Modale Carte Mentale (Maintenues mais inutilisées pour Leçon 1) ---
@@ -824,7 +838,7 @@
             'sequence01-L2': () => generateLessonPage('sequence01-L2'),
             'sequence02-L1': () => generateLessonPage('sequence02-L1'),
             'sequence02-L2': () => generateLessonPage('sequence02-L2'),
-            'sequence02-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M01-S02-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence02-L3': () => generateLessonPage('sequence02-L2'),
             'sequence02-S1-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S1-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S1-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
