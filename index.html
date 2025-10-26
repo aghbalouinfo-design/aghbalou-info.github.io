@@ -228,7 +228,7 @@
 
         // --- Données Structurées des Leçons (avec Ressources et MindMap) ---
         const lessonData = {
-            'sequence01': {
+            'sequence01-L1': {
                 title: "Leçon 1 : Information, traitement et Informatique",
                 moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
                 overview: "Cette leçon explore le cycle fondamental de l'informatique : de la donnée brute à l'information significative (le cycle IPO), en passant par l'étape cruciale du traitement. Nous abordons la notion de digitalisation (analogique/numérique).",
@@ -630,7 +630,7 @@
                     { id: 1, title: "M01 : Généralités sur les Systèmes Informatiques", status: "En cours" },
                     { id: 2, title: "M02 : Les Logiciels", status: "À venir" },
                     { id: 3, title: "M03 : Algorithmique et Programmation", status: "À venir" },
-                    { id: 4, title: "M04 : Réseaux et Internet", status: "Terminé" },
+                    { id: 4, title: "M04 : Réseaux et Internet", status: "À venir" },
                 ];
 
                 const moduleCardsHtml = modulesForAccueil.map(module => {
@@ -706,18 +706,18 @@
                         status: "À venir", 
                         sequences: [
                             { title: "Séquence 1 : Système d’exploitation", lessons: [
-                                { title: "Leçon 1 : Fonctionnalités de base d’un système d’exploitation", href: "sequence02-S1-L1" },
-                                { title: "Leçon 2 : Environnement d’un système d’exploitation", href: "sequence02-S1-L2" },
-                                { title: "Leçon 3 : Gestion des fichiers et dossiers", href: "sequence02-S1-L3" }
+                                { title: "Leçon 1 : Fonctionnalités de base d’un système d’exploitation", href: "sequence01-L1" },
+                                { title: "Leçon 2 : Environnement d’un système d’exploitation", href: "sequence01-L2" },
+                                { title: "Leçon 3 : Gestion des fichiers et dossiers", href: "sequence01-L3" }
                             ]},
                             { title: "Séquence 2 : Traitement de texte", lessons: [
-                                { title: "Leçon 1 : Interface et outils de base", href: "sequence02-S2-L1" },
-                                { title: "Leçon 2 : Élaboration d’un document", href: "sequence02-S2-L2" }
+                                { title: "Leçon 1 : Interface et outils de base", href: "sequence02-L1" },
+                                { title: "Leçon 2 : Élaboration d’un document", href: "sequence02-L2" }
                             ]},
                             { title: "Séquence 3 : Tableur", lessons: [
-                                { title: "Leçon 1 : Fonctionnalités d’un tableur", href: "sequence02-S3-L1" },
+                                { title: "Leçon 1 : Fonctionnalités d’un tableur", href: "sequence03-L1" },
                                 { title: "Leçon 2 : Création de tableaux", href: "sequence02-S3-L2" },
-                                { title: "Leçon 3 : Réalisation de graphiques", href: "sequence02-S3-L3" }
+                                { title: "Leçon 3 : Réalisation de graphiques", href: "sequence03-L3" }
                             ]}
                         ]
                     },
@@ -727,14 +727,14 @@
                         status: "À venir", 
                         sequences: [
                             { title: "Séquence 1 : Algorithme et structures de contrôle", lessons: [
-                                { title: "Leçon 1 : Notion d’algorithme", href: "sequence03-S1-L1" },
-                                { title: "Leçon 2 : Instructions de base", href: "sequence03-S1-L2" },
-                                { title: "Leçon 3 : Structures de contrôle (conditionnelles et répétitives)", href: "sequence03-S1-L3" }
+                                { title: "Leçon 1 : Notion d’algorithme", href: "sequence01-L1" },
+                                { title: "Leçon 2 : Instructions de base", href: "sequence01-L2" },
+                                { title: "Leçon 3 : Structures de contrôle (conditionnelles et répétitives)", href: "sequence01-L3" }
                             ]},
                             { title: "Séquence 2 : Langage de programmation", lessons: [
-                                { title: "Leçon 1 : Notion de programme", href: "sequence03-S2-L1" },
-                                { title: "Leçon 2 : Langages de programmation", href: "sequence03-S2-L2" },
-                                { title: "Leçon 3 : Transcription d’un algorithme en code", href: "sequence03-S2-L3" }
+                                { title: "Leçon 1 : Notion de programme", href: "sequence02-L1" },
+                                { title: "Leçon 2 : Langages de programmation", href: "sequence02-L2" },
+                                { title: "Leçon 3 : Transcription d’un algorithme en code", href: "sequence02-L3" }
                             ]}
                         ]
                     },
@@ -818,7 +818,7 @@
             // Remplacement des anciennes pages de séquence par un appel à la fonction générique
             'sequence01-L1': () => generateLessonPage('sequence01-L1'),
             'sequence01-L2': () => generateLessonPage('sequence01-L2'),
-            'sequence02-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M01-S02-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'sequence02-L1': () => generateLessonPage('sequence02-L1'),
             'sequence02-L2': () => generateLessonPage('sequence02-L2'),
             'sequence02-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M01-S02-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S1-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
