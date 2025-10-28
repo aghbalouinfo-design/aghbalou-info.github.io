@@ -166,7 +166,7 @@
                         <a href="#" onclick="navigateTo('modules')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-modules">Modules</a>
                         <a href="#" onclick="navigateTo('ressources')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-ressources">Ressources</a>
                         <a href="#" onclick="navigateTo('calendrier')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-calendrier">Calendrier</a>
-                        <a href="#" onclick="navigateTo('devoirs')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-devoirs">Devoirs</a>
+                        <a href="#" onclick="navigateTo('devoirs')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-devoirs">Devoirs & Projets</a>
                         <a href="#" onclick="navigateTo('contact')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-contact">Contact</a>
                     </div>
                 </div>
@@ -190,6 +190,7 @@
                 </div>
             </div>
         </div>
+
 
 
         <!-- Footer -->
@@ -228,90 +229,468 @@
 //------>>>>>>>ADD HERE<<<<<<<<<<----------///
         // --- Données Structurées des Leçons (avec Ressources et MindMap) ---
         const lessonData = {
-            'sequence01-L1': {
-                title: "Leçon 1 : Information, traitement et Informatique",
-                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
-                overview: "Cette leçon explore le cycle fondamental de l'informatique : de la donnée brute à l'information significative (le cycle IPO), en passant par l'étape cruciale du traitement. Nous abordons la notion de digitalisation (analogique/numérique).",
-                objectives: [
-                    "Comprendre la différence fondamentale entre une donnée et une information (cycle IPO).",
-                    "Identifier les composants de base d'une chaîne de traitement numérique.",
-                    "Être capable d'expliquer le processus d'échantillonnage et de quantification."
-                ],
-                successCriteria: [
-                    "Je peux donner au moins trois exemples d'applications de l'IA que j'utilise.", 
-                    "Je peux schématiser le cycle de traitement de l'information.",
-                    "J'utilise correctement le vocabulaire technique (Donnée, Traitement, Information, Analogique, Numérique)."
-                ],
-                // NOTES DE COURS DÉTAILLÉES (avec balises <strong>)
-                detailedNotes: `
-                    <h3> Test </h3>
-                    <h4> donnée vs information </h4>
-                    <p> une donnée fait brut sans context <br> l'information et l'attrubition de sens aux données par le bias de  <b> Traitement </b><p>
-                    
-                    <h4 class="text-xl font-bold text-teal-800 mb-3">1. Le Cycle IPO (Input-Process-Output)</h4>
-                    <p class="mb-4 text-gray-700">Le cœur de l'informatique repose sur ce modèle :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li><strong class="font-medium">Input (Entrée) :</strong> Ce sont les <strong class="font-medium">données brutes</strong> (clics de souris, texte tapé, image scannée) qui sont capturées. C'est la matière première.</li>
-                        <li><strong class="font-medium">Process (Traitement) :</strong> C'est l'exécution des instructions (<strong class="font-medium">algorithmes</strong>) par le CPU pour transformer les données. C'est ici que l'information prend forme.</li>
-                        <li><strong class="font-medium">Output (Sortie) :</strong> C'est le résultat transformé, c'est-à-dire l'<strong class="font-medium">information</strong> (un graphique, un document imprimé, un son joué). C'est le résultat utilisable.</li>
-                    </ul>
+            'M1-sequence01-L1': {
+    title: "Leçon 1 : Information, traitement et Informatique",
+    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+    
+    // ✅ OVERVIEW AMÉLIORÉ
+    overview: "Cette leçon introduit les concepts fondamentaux de l'informatique : la distinction entre donnée, information et connaissance, le rôle du traitement dans la transformation des données, et le modèle IPO (Entrée – Traitement – Sortie). Elle se termine par une définition claire de l'informatique comme science du traitement automatique de l'information.",
+    
+    objectives: [
+        "Distinguer les notions de donnée, information et connaissance, et comprendre leurs relations",
+        "Expliquer la notion de traitement et le cycle IPO",
+        "Définir le terme « informatique »"
+    ],
+    successCriteria: [
+        "Je peux donner un exemple de donnée et le transformer en information.",
+        "Je peux décrire Entrée – Traitement – Sortie pour un cas réel.",
+        "Je peux expliquer ce que signifie automatique et définir l’informatique simplement"
+    ],
 
-                    <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Digitalisation et Binaire</h4>
-                    <p class="mb-4 text-gray-700">Un ordinateur ne comprend que le système binaire (0 et 1). Pour traiter des signaux du monde réel (son, image), il doit les <strong class="font-medium">digitaliser</strong> (rendre numériques) :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li><strong class="font-medium">Signal Analogique :</strong> Continu dans le temps et en valeur (ex: le son d'une voix, la lumière naturelle).</li>
-                        <li><strong class="font-medium">Signal Numérique :</strong> Discret (interrompu) dans le temps et en valeur. Composé uniquement de 0 et de 1 (bits).</li>
-                        <li><strong class="font-medium">Processus :</strong> Il nécessite l'<strong class="font-medium">Échantillonnage</strong> (prise de mesures régulières) et la <strong class="font-medium">Quantification</strong> (attribution d'une valeur binaire à chaque mesure).</li>
-                    </ul>
-                `,
-                resourcesAndActivities: [
-                    { type: "Worksheet", title: "Fiche d'identification des termes clés (analogique/numérique, binarisation, etc.)", objective: "Vocabulaire et Mémorisation", link: "fiche_vocabulaire_L1.pdf", icon: "document" },
-                    { type: "Fiche Exercice", title: "Conversion binaire simple (niveau débutant)", objective: "Application pratique", link: "exercice_binaire_L1.pdf", icon: "document" },
-                    { type: "Fiche Tuto", title: "Tuto : Comment visualiser le codage binaire sur un tableur (Excel/Sheets)", objective: "Développement d'une compétence numérique", link: "tuto_codage_excel_L1.pdf", icon: "video" },
-                    { type: "Application", title: "Jeu interactif de QCM pour valider les acquis (App Web)", objective: "Auto-évaluation ludique", link: "#", icon: "app" },
-                ],
-                quiz: [
-                    { id: 1, question: "Vrai ou Faux : Une donnée est toujours binaire (0 ou 1).", answer: "Vrai", explanation: "Toutes les données doivent être converties en format binaire pour être traitées par un ordinateur." },
-                    { id: 2, question: "Quel est l'élément qui exécute le Traitement (Process) ?", answer: "Le CPU", explanation: "L'Unité Centrale de Traitement (CPU) est le 'cerveau' qui exécute les instructions de l'algorithme." },
-                    { id: 3, question: "L'acronyme IPO signifie :", options: ["Input-Process-Output", "Information-Programme-Ordre", "Initialisation-Procédure-Opération"], answer: "Input-Process-Output", explanation: "C'est le modèle de base du fonctionnement informatique." }
-                ],
-                koLink: { 
-                    url: "https://example.com/ko_m01_l01.pdf", 
-                    label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" 
-                },
-                mindMapUrl: EXTERNAL_MINDMAP_URL
-            },
+    // ✅ NOTES DE COURS DÉTAILLÉES (complètes et sans digitalisation)
+    detailedNotes: `
+        <h4 class="text-xl font-bold text-teal-800 mb-3">1. Donnée, Information et Connaissance</h4>
+        <p class="mb-4 text-gray-700">Ces trois notions sont essentielles pour comprendre le rôle de l'informatique :</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li><strong>Donnée :</strong> Élément brut, sans contexte (ex : 42, "Paris").</li>
+            <li><strong>Information :</strong> Donnée interprétée avec un sens (ex : "42°C" = température).</li>
+            <li><strong>Connaissance :</strong> Information intégrée et utilisée pour la prise de décision.</li>
+        </ul>
+        <p class="mb-4 text-gray-700"><em>Exemple :</em> "150" est une donnée. "150 km/h" est une information. Savoir que c'est une vitesse excessive sur route devient une connaissance.</p>
+
+        <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Le Cycle IPO (Input-Process-Output)</h4>
+        <p class="mb-4 text-gray-700">Le modèle IPO décrit le fonctionnement de tout système informatique :</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li><strong>Entrée (Input) :</strong> Les données brutes saisies (texte, clics, image).</li>
+            <li><strong>Traitement (Process) :</strong> Application d'algorithmes par le CPU pour transformer les données.</li>
+            <li><strong>Sortie (Output) :</strong> Résultat utilisable : une information (graphique, son, document).</li>
+        </ul>
+        <p class="mb-4 text-gray-700"><em>Exemple :</em> Entrée : chiffres de ventes → Traitement : calcul des totaux → Sortie : tableau récapitulatif.</p>
+
+        <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Informatique et Automatisation</h4>
+        <p class="mb-4 text-gray-700">L'informatique est la science du traitement automatique de l'information :</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li><strong>Automatique :</strong> Sans intervention humaine directe pendant le processus.</li>
+            <li><strong>Objectif :</strong> Transformer des données en informations utiles pour la décision ou l'action.</li>
+        </ul>
+        <p class="mb-4 text-gray-700"><em>Définition simple :</em> L'informatique consiste à utiliser des machines pour traiter des données et produire des informations de manière rapide et fiable.</p>
+    `,
+
+    // ✅ RESSOURCES ET ACTIVITÉS
+    resourcesAndActivities: [
+        { type: "Worksheet", title: "Fiche : Donnée vs Information vs Connaissance", objective: "Clarifier les concepts", link: "fiche_concepts_L1.pdf", icon: "document" },
+        { type: "Exercice", title: "Cas pratique : Identifier Entrée, Traitement, Sortie", objective: "Application du cycle IPO", link: "exercice_IPO_L1.pdf", icon: "document" },
+        { type: "Tuto Vidéo", title: "Comprendre le cycle IPO en 5 min", objective: "Visualisation du processus", link: "video_cycle_IPO_L1.mp4", icon: "video" },
+        { type: "Application", title: "Quiz interactif (App Web)", objective: "Auto-évaluation", link: "#", icon: "app" }
+    ],
+
+    // ✅ QUIZ
+    quiz: [
+        { id: 1, question: "Quelle est la différence entre donnée et information ?", options: ["Aucune", "La donnée est brute, l'information est interprétée", "L'information est toujours numérique"], answer: "La donnée est brute, l'information est interprétée", explanation: "Une donnée seule n'a pas de sens, elle devient information lorsqu'elle est contextualisée." },
+        { id: 2, question: "Que signifie IPO ?", options: ["Input-Process-Output", "Information-Programme-Ordre", "Initialisation-Procédure-Opération"], answer: "Input-Process-Output", explanation: "C'est le modèle de base du traitement informatique." },
+        { id: 3, question: "Vrai ou Faux : L'informatique est le traitement manuel de l'information.", answer: "Faux", explanation: "L'informatique implique un traitement automatique, sans intervention humaine directe." }
+    ],
+
+    koLink: { 
+        url: "https://example.com/ko_m01_l01.pdf", 
+        label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" 
+    },
+    mindMapUrl: EXTERNAL_MINDMAP_URL
+},
             
             // Autres leçons simplifiées
-            'sequence01-L2': { 
-                title: "Leçon 2 : Système informatique, Représentation de l'information",
-                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
-                overview: "Introduction au système binaire et distinction fondamentale entre le matériel (hardware) et le logiciel (software).",
-                objectives: ["Comprendre la nécessité du système binaire.", "Distinguer le hardware du software."],
-                successCriteria: ["Je peux expliquer pourquoi les ordinateurs utilisent le binaire."],
-                resourcesAndActivities: [], 
-                quiz: [],
-                koLink: { url: "https://example.com/ko_m01_l02.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-                mindMapUrl: null, // Pas de carte mentale pour cette leçon
-                detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
-            },
+            'M1-sequence01-L2': {
+    title: "Leçon 2 : Système informatique, Représentation de l'information",
+    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+
+    // ✅ OVERVIEW AMÉLIORÉ
+    overview: "Cette leçon explique comment l'information est représentée dans un système informatique. Nous abordons le rôle du système binaire, les conversions entre binaire et décimal, la notion de taille des fichiers numériques, et la distinction entre matériel (hardware) et logiciel (software).",
+
+    objectives: [
+        "Expliquer la notion de représentation de l’information et pourquoi on utilise le binaire en informatique",
+        "Effectuer des conversions binaire → décimal et décimal → binaire",
+        "Identifier la taille approximative de fichiers numériques courants et comparer leur taille",
+        "Distinguer le hardware du software"
+    ],
+
+    successCriteria: [
+        "Je peux expliquer pourquoi les ordinateurs utilisent le binaire",
+        "Je peux convertir un nombre décimal en binaire et inversement",
+        "Je peux estimer la taille d’un fichier texte, image ou audio",
+        "Je peux donner des exemples de hardware et de software"
+    ],
+
+    // ✅ NOTES DE COURS DÉTAILLÉES
+    detailedNotes: `
+        <h4 class="text-xl font-bold text-teal-800 mb-3">1. Représentation de l'information en informatique</h4>
+        <p class="mb-4 text-gray-700">Un ordinateur ne comprend que deux états : activé (1) ou désactivé (0). C'est pourquoi il utilise le système binaire pour représenter toute information.</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li><strong>Binaire :</strong> Base 2 (0 et 1), chaque chiffre est un bit.</li>
+            <li><strong>Pourquoi binaire ?</strong> Simplicité électronique (circuits ouverts/fermés).</li>
+        </ul>
+
+        <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Conversion binaire ↔ décimal</h4>
+        <p class="mb-4 text-gray-700">Pour comprendre la représentation, il faut savoir convertir :</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li><strong>Décimal → Binaire :</strong> Division par 2 et récupération des restes.</li>
+            <li><strong>Binaire → Décimal :</strong> Somme des puissances de 2 pour chaque bit à 1.</li>
+        </ul>
+        <p class="mb-4 text-gray-700"><em>Exemple :</em> 13 en binaire = 1101 ; 1101 en décimal = 13.</p>
+
+        <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Taille des fichiers numériques</h4>
+        <p class="mb-4 text-gray-700">La taille dépend du type de contenu :</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li><strong>Texte :</strong> Quelques Ko (ex : 1 page ≈ 2 Ko).</li>
+            <li><strong>Image :</strong> De centaines de Ko à plusieurs Mo.</li>
+            <li><strong>Audio :</strong> Plusieurs Mo (ex : 3 min MP3 ≈ 3 Mo).</li>
+        </ul>
+        <p class="mb-4 text-gray-700">Un fichier est mesuré en octets (1 octet = 8 bits). Les unités : Ko, Mo, Go.</p>
+
+        <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">4. Hardware vs Software</h4>
+        <p class="mb-4 text-gray-700">Un système informatique est composé de :</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li><strong>Hardware :</strong> Composants physiques (CPU, RAM, disque dur, clavier).</li>
+            <li><strong>Software :</strong> Programmes et systèmes (OS, applications).</li>
+        </ul>
+        <p class="mb-4 text-gray-700"><em>Exemple :</em> Windows = software ; Disque dur = hardware.</p>
+    `,
+
+    // ✅ RESSOURCES ET ACTIVITÉS
+    resourcesAndActivities: [
+        { type: "Worksheet", title: "Fiche : Pourquoi le binaire ?", objective: "Compréhension du système binaire", link: "fiche_binaire_L2.pdf", icon: "document" },
+        { type: "Exercice", title: "Conversions binaire ↔ décimal", objective: "Application pratique", link: "exercice_conversion_L2.pdf", icon: "document" },
+        { type: "Tuto Vidéo", title: "Comprendre hardware vs software", objective: "Distinction claire", link: "video_hardware_software_L2.mp4", icon: "video" },
+        { type: "Application", title: "Simulateur de conversion binaire", objective: "Pratique interactive", link: "#", icon: "app" }
+    ],
+
+    // ✅ QUIZ
+    quiz: [
+        { id: 1, question: "Pourquoi les ordinateurs utilisent-ils le binaire ?", options: ["Parce que c'est plus rapide", "Parce que les circuits électroniques ont deux états", "Parce que c'est plus simple à lire"], answer: "Parce que les circuits électroniques ont deux états", explanation: "Les ordinateurs fonctionnent avec des signaux électriques : ouvert (0) ou fermé (1)." },
+        { id: 2, question: "Combien de bits dans un octet ?", options: ["4", "8", "16"], answer: "8", explanation: "Un octet est composé de 8 bits." },
+        { id: 3, question: "Donnez un exemple de hardware :", options: ["Windows", "Clavier", "Excel"], answer: "Clavier", explanation: "Le clavier est un composant physique, donc hardware." }
+    ],
+
+    koLink: { 
+        url: "https://example.com/ko_m01_l02.pdf", 
+        label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" 
+    },
+    mindMapUrl: null
+},
             // M1S2L1
-            'sequence02-L1': { 
-                title: "Leçon 1 : Ordinateur, Catégories des ordinateurs",
-                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
-                overview: "Introduction au système binaire et distinction fondamentale entre le matériel (hardware) et le logiciel (software).",
-                objectives: ["Comprendre la nécessité du système binaire.", "Distinguer le hardware du software."],
-                successCriteria: ["Je peux expliquer pourquoi les ordinateurs utilisent le binaire."],
-                resourcesAndActivities: [], 
-                quiz: [],
-                koLink: { url: "https://example.com/ko_m01_l02.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-                mindMapUrl: null, // Pas de carte mentale pour cette leçon
-                detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
-            },
-            // M1S2L2
-            'sequence02-L2': { 
-                title: "Leçon 2 : Schéma fonctionnel d’un ordinateur",
-                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+    'M1-sequence02-L1': {
+    title: "Leçon 1 : Découverte de l'ordinateur : Rôles, familles et schéma fonctionnel",
+    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+
+    // ✅ OVERVIEW
+    overview: "Cette leçon présente la définition d’un ordinateur, ses rôles fondamentaux, les différentes familles (des superordinateurs aux smartphones) et le schéma fonctionnel de base (Entrée, Traitement, Sortie, Stockage).",
+
+    objectives: [
+        "Définir ce qu'est un ordinateur.",
+        "Identifier les différentes catégories d'ordinateurs (serveur, desktop, nano-ordinateur...).",
+        "Expliquer le schéma fonctionnel de base (Entrée, Traitement, Sortie, Stockage)."
+    ],
+
+    successCriteria: [
+        "Je peux nommer 3 types d'ordinateurs et leur usage principal.",
+        "Je peux dessiner le schéma fonctionnel simple d'un ordinateur."
+    ],
+
+    // ✅ NOTES DE COURS DÉTAILLÉES
+    detailedNotes: `
+        <h4 class="text-xl font-bold text-teal-800 mb-3">1. Qu'est-ce qu'un ordinateur ?</h4>
+        <p class="mb-4 text-gray-700">
+        Un ordinateur est une machine électronique capable de <strong>traiter automatiquement des informations</strong> selon des instructions (programmes). Il reçoit des données en entrée, les transforme et fournit des résultats en sortie.
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li><strong>Caractéristiques :</strong> Rapidité, fiabilité, capacité de stockage, automatisation.</li>
+            <li><strong>Rôle :</strong> Transformer des données en informations utiles.</li>
+        </ul>
+
+        <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Les familles d'ordinateurs</h4>
+        <p class="mb-4 text-gray-700">Les ordinateurs se déclinent en plusieurs catégories :</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li><strong>Superordinateurs :</strong> Calculs scientifiques, prévisions climatiques.</li>
+            <li><strong>Serveurs :</strong> Fourniture de services et stockage pour réseaux.</li>
+            <li><strong>Ordinateurs de bureau :</strong> Usage personnel ou professionnel.</li>
+            <li><strong>Portables :</strong> Mobilité et polyvalence.</li>
+            <li><strong>Nano-ordinateurs :</strong> Projets spécifiques (ex : Raspberry Pi).</li>
+            <li><strong>Smartphones/Tablettes :</strong> Communication et multimédia.</li>
+        </ul>
+
+        <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Schéma fonctionnel de base</h4>
+        <p class="mb-4 text-gray-700">Un ordinateur suit le cycle <strong>Entrée – Traitement – Sortie – Stockage</strong> :</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li><strong>Entrée :</strong> Données saisies via clavier, souris, capteurs.</li>
+            <li><strong>Traitement :</strong> Exécution des instructions par le processeur (CPU).</li>
+            <li><strong>Sortie :</strong> Résultat affiché (écran, imprimante, son).</li>
+            <li><strong>Stockage :</strong> Conservation des données (disque dur, SSD, cloud).</li>
+        </ul>
+        <p class="mb-4 text-gray-700"><em>Exemple :</em> Saisie d’un texte → Traitement par le logiciel → Affichage sur l’écran → Sauvegarde sur le disque.</p>
+    `,
+
+    // ✅ RESSOURCES ET ACTIVITÉS
+    resourcesAndActivities: [
+        { type: "Worksheet", title: "Fiche : Les familles d'ordinateurs", objective: "Identifier les catégories et leurs usages", link: "fiche_familles_L1.pdf", icon: "document" },
+        { type: "Exercice", title: "Dessiner le schéma fonctionnel d'un ordinateur", objective: "Compréhension du cycle Entrée-Traitement-Sortie", link: "exercice_schema_L1.pdf", icon: "document" },
+        { type: "Tuto Vidéo", title: "Découverte des composants d'un ordinateur", objective: "Visualisation des rôles", link: "video_composants_L1.mp4", icon: "video" },
+        { type: "Application", title: "Quiz interactif (App Web)", objective: "Auto-évaluation ludique", link: "#", icon: "app" }
+    ],
+
+    // ✅ QUIZ
+    quiz: [
+        { id: 1, question: "Quel est le rôle principal d'un ordinateur ?", options: ["Stocker des données", "Traiter automatiquement des informations", "Afficher des images"], answer: "Traiter automatiquement des informations", explanation: "Un ordinateur transforme des données en informations utiles grâce à des programmes." },
+        { id: 2, question: "Donnez un exemple de nano-ordinateur :", options: ["Serveur", "Raspberry Pi", "Superordinateur"], answer: "Raspberry Pi", explanation: "Le Raspberry Pi est un nano-ordinateur utilisé pour des projets spécifiques." },
+        { id: 3, question: "Quels sont les 4 éléments du schéma fonctionnel ?", options: ["Entrée, Sortie, Réseau, Stockage", "Entrée, Traitement, Sortie, Stockage", "Entrée, CPU, Sortie, Mémoire"], answer: "Entrée, Traitement, Sortie, Stockage", explanation: "C'est le cycle fondamental du fonctionnement d'un ordinateur." }
+    ],
+
+    koLink: { 
+        url: "https://example.com/ko_m02_s01_l01.pdf", 
+        label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" 
+    },
+    mindMapUrl: null
+},
+
+  'M1-sequence02-L2': { 
+    title: "Leçon 2 : Au cœur du traitement : Le CPU et l'architecture Von Neumann",
+    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+    overview: "Plongée au cœur du 'cerveau' de l'ordinateur (CPU). Découverte de ses composants (UC, UAL) et du principe de Von Neumann qui explique comment il exécute un programme.",
+    objectives: [
+        "Expliquer le principe de l'architecture Von Neumann (données et instructions en mémoire).",
+        "Distinguer une donnée d'une instruction.",
+        "Identifier les composants du CPU (UC, UAL, registres, horloge, bus) et leur rôle."
+    ],
+    successCriteria: [
+        "Je peux expliquer la différence entre l'Unité de Contrôle (UC) et l'Unité Arithmétique et Logique (UAL).",
+        "Je peux expliquer pourquoi les instructions et les données sont toutes les deux dans la mémoire."
+    ],
+    resourcesAndActivities: [
+      {
+        type: "matching",
+        title: "Activité : Qui fait Quoi dans le CPU ?",
+        instructions: "Reliez chaque composant du CPU à son analogie ou à son rôle principal.",
+        pairs: [
+          { term: "Unité de Commande (UC)", definition: "Le 'chef d'orchestre' qui dirige tout." },
+          { term: "Unité Arithmétique et Logique (UAL)", definition: "La 'super-calculatrice' qui fait les calculs." },
+          { term: "Registres", definition: "La 'mini-mémoire' interne ultra-rapide du CPU." },
+          { term: "Horloge", definition: "Le 'métronome' qui donne le rythme." },
+          { term: "Bus", definition: "Les 'autoroutes' qui transportent l'information." }
+        ],
+        scenario: "", // Ajouté pour uniformiser la structure
+        questions: []   // Ajouté pour uniformiser la structure
+      },
+      {
+        type: "analysis",
+        title: "Activité : Données ou Instructions ?",
+        instructions: "Lisez le scénario suivant et identifiez ce qui est une 'donnée' et ce qui est une 'instruction'.",
+        scenario: "Dans un logiciel de dessin, vous cliquez sur l'icône 'pot de peinture' (INSTRUCTION) pour remplir une zone avec la couleur 'bleu roi' (DONNÉE). Le logiciel doit d'abord VÉRIFIER (INSTRUCTION) si la couleur 'bleu roi' est la même que celle de la zone. Si ce n'est pas le cas, il COMMENCE À REMPLIR (INSTRUCTION) le pixel à la position 'X=50, Y=100' (DONNÉE).",
+        questions: [
+          { question: "Identifiez une donnée mentionnée :", answer: "'bleu roi', OU 'X=50', OU 'Y=100'" },
+          { question: "Identifiez une instruction mentionnée :", answer: "'pot de peinture' (clic), OU 'VÉRIFIER', OU 'COMMENCE À REMPLIR'" }
+        ],
+        pairs: [] // Ajouté pour uniformiser la structure
+      }
+    ], 
+    quiz: [
+      {
+        type: "qcm",
+        question: "Quel composant du CPU est le 'chef d'orchestre' qui lit et décode les instructions ?",
+        options: [
+          { text: "L'Unité Arithmétique et Logique (UAL)", correct: false },
+          { text: "L'Unité de Commande (UC)", correct: true },
+          { text: "Les Registres", correct: false },
+          { text: "L'Horloge", correct: false }
+        ],
+        explanation: "C'est l'UC qui dirige toutes les opérations, lit les instructions et dit à l'UAL quoi faire."
+      },
+      {
+        type: "qcm",
+        question: "Dans le calcul '10 + 20', qu'est-ce que '10' et '20' ?",
+        options: [
+          { text: "Des instructions", correct: false },
+          { text: "Des données", correct: true },
+          { text: "Des registres", correct: false },
+          { text: "Des bus", correct: false }
+        ],
+        explanation: "'10' et '20' sont les informations brutes (données) sur lesquelles l'instruction '+' (additionner) va s'appliquer."
+      },
+      {
+        type: "qcm",
+        question: "Quel est le grand principe de l'architecture de Von Neumann ?",
+        options: [
+          { text: "Stocker les données et les instructions au même endroit (en mémoire)", correct: true },
+          { text: "Avoir le CPU le plus rapide possible", correct: false },
+          { text: "Utiliser une horloge pour synchroniser les actions", correct: false }
+        ],
+        explanation: "L'idée clé est de ne pas séparer physiquement les instructions et les données, ce qui rend l'ordinateur flexible."
+      },
+      {
+        type: "qcm",
+        question: "Comment s'appelle la 'super-calculatrice' du CPU qui exécute les additions ?",
+        options: [
+          { text: "L'UAL (Unité Arithmétique et Logique)", correct: true },
+          { text: "L'UC (Unité de Commande)", correct: false },
+          { text: "Le Registre", correct: false }
+        ],
+        explanation: "L'UAL est la partie qui effectue toutes les opérations arithmétiques (comme '+', '-') et logiques (comme 'Est-ce que 5 > 3 ?')."
+      }
+    ],
+    koLink: { url: "https://example.com/ko_m02_s01_l02.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+    mindMapUrl: null, // Remis à 'null' selon vos indications
+    detailedNotes: `
+<div class="space-y-6 text-gray-800">
+    <h2 class="text-2xl font-bold text-blue-800">Introduction</h2>
+    <p>Aujourd'hui, nous allons regarder ce qu'il se passe à l'intérieur du "cerveau" de l'ordinateur : le <strong>Processeur (CPU)</strong>. Pour comprendre comment il fonctionne, nous devons d'abord comprendre le plan sur lequel il est construit : l'architecture de Von Neumann.</p>
+
+    <h3 class="text-xl font-semibold text-blue-700 mt-6">1. Données vs. Instructions : Les deux langages de la machine</h3>
+    <p>Un ordinateur manipule en permanence deux types d'information. Il est crucial de les distinguer.</p>
+    <ul class="list-disc list-outside pl-6 space-y-2">
+        <li>
+            <strong>Une Donnée (Data) :</strong><br>
+            C'est une information brute, passive. C'est l'objet sur lequel on travaille.
+            <p class="text-sm text-gray-600 mt-1"><em>Exemples : Le nombre <code>10</code>, la lettre <code>'A'</code>, la couleur d'un pixel, votre score dans un jeu, le son d'une note de musique.</em></p>
+        </li>
+        <li>
+            <strong>Une Instruction :</strong><br>
+            C'est un <strong>ordre</strong> que la machine doit exécuter. C'est l'action que l'on fait sur les données.
+            <p class="text-sm text-gray-600 mt-1"><em>Exemples : <code>ADDITIONNER</code>, <code>COMPARER</code>, <code>AFFICHER À L'ÉCRAN</code>, <code>LIRE UNE TOUCHE</code>.</em></p>
+        </li>
+    </ul>
+
+    <div class="bg-blue-50 p-4 rounded-lg mt-4">
+        <h4 class="font-semibold text-blue-800">Application concrète :</h4>
+        <p class="mt-2">Imaginons un simple calcul : <code>5 + 2</code>.</p>
+        <ul class="list-disc list-inside pl-4">
+            <li><code>5</code> et <code>2</code> sont les <strong>données</strong>.</li>
+            <li><code>+</code> (l'ordre d'additionner) est l'<strong>instruction</strong>.</li>
+        </ul>
+        <p class="mt-2">Dans un jeu vidéo :</p>
+        <ul class="list-disc list-inside pl-4">
+            <li><strong>Données :</strong> La position (X, Y) de votre personnage, vos points de vie (<code>100</code>).</li>
+            <li><strong>Instructions :</strong> <code>SI</code> la touche "flèche droite" est pressée, <code>ALORS</code> <code>AJOUTER 1</code> à la donnée X. <code>SI</code> "points de vie" &lt; 1, <code>ALORS</code> <code>AFFICHER</code> l'image "Game Over".</li>
+        </ul>
+    </div>
+
+    <h3 class="text-xl font-semibold text-blue-700 mt-6">2. Le Principe de l'Architecture de Von Neumann</h3>
+    <p>L'idée géniale de John von Neumann (en 1945) a été de dire :</p>
+    <blockquote class="border-l-4 border-blue-500 pl-4 py-2 italic my-4 bg-gray-50">
+        <strong>"Pour être efficace, un ordinateur doit stocker les instructions (la recette) et les données (les ingrédients) au MÊME endroit : la Mémoire Centrale (RAM)."</strong>
+    </blockquote>
+    <p>Avant cela, les instructions étaient souvent stockées physiquement différemment des données. Cela rend l'ordinateur incroyablement <strong>flexible</strong>.</p>
+    <div class="my-4 p-4 border rounded text-center text-gray-500 bg-gray-50">
+        [Schéma illustrant le CPU et la Mémoire Centrale unique contenant Données et Instructions]
+    </div>
+
+    <h3 class="text-xl font-semibold text-blue-700 mt-6">3. Zoom sur le Cerveau : Le Processeur (CPU)</h3>
+    <p>Le <strong>CPU (Central Processing Unit)</strong>, ou <strong>Processeur</strong>, est le composant qui exécute les instructions. Il est lui-même composé de plusieurs éléments clés.</p>
+    <div class="my-4 p-4 border rounded text-center text-gray-500 bg-gray-50">
+        [Schéma des composants internes du CPU : UC, UAL, Registres, Horloge, Bus]
+    </div>
+    <ul class="list-none space-y-4">
+        <li>
+            <strong class="text-blue-800">L'Unité de Commande (UC) :</strong><br>
+            C'est le <strong>"chef d'orchestre"</strong> du CPU. Son rôle est de lire les instructions, les "décoder" (comprendre l'ordre) et d'envoyer des ordres à l'UAL et aux registres.
+        </li>
+        <li>
+            <strong class="text-blue-800">L'Unité Arithmétique et Logique (UAL ou ALU) :</strong><br>
+            C'est la <strong>"super-calculatrice"</strong> du CPU. Son rôle est d'exécuter tous les calculs (<code>+</code>, <code>-</code>) et les comparaisons logiques (<code>&gt;</code>, <code>==</code>) que l'UC lui demande.
+        </li>
+        <li>
+            <strong class="text-blue-800">Les Registres :</strong><br>
+            Ce sont des <strong>"mini-mémoires"</strong> ultra-rapides situées <em>à l'intérieur</em> même du CPU. Ils servent à stocker temporairement l'instruction en cours et les données du calcul (ex: <code>5</code> et <code>2</code>).
+        </li>
+        <li>
+            <strong class="text-blue-800">L'Horloge (Clock) :</strong><br>
+            C'est le <strong>"métronome"</strong>. Elle donne le rythme de travail au CPU en envoyant des "tops" (impulsions). La vitesse est mesurée en Hertz (Hz).
+        </li>
+        <li>
+            <strong class="text-blue-800">Les Bus :</strong><br>
+            Ce sont les <strong>"autoroutes de l'information"</strong>. Ce sont les fils qui relient tous les composants (CPU, RAM, etc.) et transportent les données et les ordres.
+        </li>
+    </ul>
+
+    <div class="bg-blue-50 p-4 rounded-lg mt-4">
+        <h4 class="font-semibold text-blue-800">Application : Comment le CPU calcule <code>5 + 2</code> ?</h4>
+        <p>Voici les étapes simplifiées, au rythme de l'<strong>Horloge</strong> :</p>
+        <ol class="list-decimal list-inside space-y-2 mt-2">
+            <li>(Top 1) L'**UC** (le chef) demande l'instruction à la RAM (via le **Bus**).</li>
+            <li>(Top 2) L'instruction "ADDITIONNER 5 et 2" arrive dans un **Registre** du CPU.</li>
+            <li>(Top 3) L'**UC** décode l'instruction (elle comprend "addition").</li>
+            <li>(Top 4) L'**UC** place les données <code>5</code> et <code>2</code> dans d'autres **Registres**.</li>
+            <li>(Top 5) L'**UC** ordonne à l'**UAL** : "Additionne le contenu de ces deux cases !".</li>
+            <li>(Top 6) L'**UAL** exécute le calcul. Le résultat <code>7</code> est placé dans un **Registre**.</li>
+            <li>(Top 7) L'**UC** envoie le <code>7</code> (via le **Bus**) vers la mémoire RAM pour un usage futur.</li>
+        </ol>
+    </div>
+</div>
+`
+  },
+
+
+
+
+'M1-sequence02-L3': { 
+    title: "Leçon 3 : Les Mémoires (Vive, Morte et de Masse)",
+    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+    overview: "Comprendre les différents types de mémoire et leur rôle. Distinction entre la mémoire de travail (RAM), la mémoire de démarrage (ROM) et le stockage permanent (SSD/HDD).",
+    objectives: [
+        "Distinguer RAM et ROM (rôle, volatilité).",
+        "Différencier la mémoire vive (RAM) de la mémoire de masse (stockage).",
+        "Comprendre la notion de hiérarchie des mémoires (vitesse vs capacité)."
+    ],
+    successCriteria: [
+        "Je peux expliquer ce qui se passe dans la RAM quand j'ouvre un logiciel.",
+        "Je peux expliquer pourquoi un ordinateur a besoin à la fois d'un SSD/HDD et de RAM."
+    ],
+    resourcesAndActivities: [], 
+    quiz: [],
+    koLink: { url: "https://example.com/ko_m02_s01_l03.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+    mindMapUrl: null,
+    detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
+},
+
+'M1-sequence02-L4': { 
+    title: "Leçon 4 : Carte mère et périphériques",
+    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+    overview: "Identifier les composants qui connectent tout (carte mère, alimentation) et ceux qui permettent à l'ordinateur de communiquer avec l'utilisateur (périphériques d'entrée et de sortie).",
+    objectives: [
+        "Identifier le rôle de la carte mère.",
+        "Classifier les périphériques (entrée, sortie, entrée/sortie).",
+        "Identifier les autres composants vitaux (alimentation, carte réseau)."
+    ],
+    successCriteria: [
+        "Je peux citer 3 périphériques d'entrée et 3 de sortie.",
+        "Je peux expliquer que la carte mère sert à connecter tous les composants entre eux."
+    ],
+    resourcesAndActivities: [], 
+    quiz: [],
+    koLink: { url: "https://example.com/ko_m02_s01_l04.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+    mindMapUrl: null,
+    detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
+},
+
+'M1-sequence02-L5': { 
+    title: "Leçon 5 : Synthèse et Spécifications Techniques",
+    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+    overview: "Cette leçon introduit la représentation de l’information en binaire, explique pourquoi les ordinateurs utilisent le système binaire, apprend aux apprenants à convertir des nombres binaires en décimaux et inversement, et se termine par une activité pratique pour identifier et comparer la taille des fichiers numériques (texte, image, audio, vidéo).",
+    objectives: [
+        "Identifier les spécifications clés (CPU, RAM, Stockage) sur une fiche technique.",
+        "Mettre en relation un besoin (ex: 'Gamer') avec des composants spécifiques (ex: 'RAM élevée').",
+        "Justifier le choix d'une configuration pour un utilisateur donné."
+    ],
+    successCriteria: [
+        "Je peux lire une publicité pour un PC et identifier la quantité de RAM et le type de stockage.",
+        "Je peux expliquer pourquoi un 'gamer' a besoin de composants différents d'un 'bureauticien'."
+    ],
+    resourcesAndActivities: [], 
+    quiz: [],
+    koLink: { url: "https://example.com/ko_m02_s01_l05.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+    mindMapUrl: null,
+    detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
+},
+            // M2S1L1
+            'M2-sequence01-L1': { 
+                title: "Leçon 1 : foncionnalités SE",
+                moduleTitle: "M02 : Logiciels",
                 overview: "Exploration des composants internes et de leur rôle dans l'architecture de Von Neumann.",
                 objectives: ["Dessiner et étiqueter le schéma fonctionnel.", "Expliquer le rôle de l'UAL et de l'UC."],
                 successCriteria: ["Je peux identifier 4 composants principaux de l'UC."],
@@ -321,10 +700,10 @@
                 mindMapUrl: null, // Pas de carte mentale pour cette leçon
                 detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
             },
-            // M1S2L3
-            'sequence02-L3': { 
-                title: "Leçon 2 : Schéma fonctionnel d’un ordinateur",
-                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+
+            'M2-sequence01-L2': { 
+                title: "Leçon 2 : Envirenoment SE",
+                moduleTitle: "M02 : Logiciels",
                 overview: "Exploration des composants internes et de leur rôle dans l'architecture de Von Neumann.",
                 objectives: ["Dessiner et étiqueter le schéma fonctionnel.", "Expliquer le rôle de l'UAL et de l'UC."],
                 successCriteria: ["Je peux identifier 4 composants principaux de l'UC."],
@@ -688,7 +1067,7 @@
                     </div>
 
                     <div class="mb-10 p-6 bg-white rounded-xl shadow-md border-l-4 border-red-500">
-                        <p class="text-red-700">URGENT : Le Devoir 1 est à rendre avant ce vendredi. Consultez l'onglet "Devoirs" !</p>
+                        <p class="text-red-700">IMPORTANT : Le projet 1 est à rendre avant le mercredi 12 Novembre. Consultez l'onglet "Devoirs" !</p>
                     </div>
 
                     <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Mes Modules</h2>
@@ -708,13 +1087,19 @@
                         status: "En cours", 
                         sequences: [
                             { title: "Séquence 1 : Définitions et vocabulaire de base", lessons: [
-                                { title: "Leçon 1 : Information, traitement et Informatique", href: "sequence01-L1" },
-                                { title: "Leçon 2 : Système informatique, Représentation de l'information", href: "sequence01-L2" }
+                                { title: "Leçon 1 : Information, traitement et Informatique", href: "M1-sequence01-L1" },
+                                { title: "Leçon 2 : Système informatique, Représentation de l'information", href: "M1-sequence01-L2" }
                             ]},
                             { title: "Séquence 2 : Structure de base d’un ordinateur", lessons: [
-                                { title: "Leçon 1 : Ordinateur, Catégories des ordinateurs", href: "sequence02-L1" },
-                                { title: "Leçon 2 : Schéma fonctionnel d’un ordinateur", href: "sequence02-L2" },
-                                { title: "Leçon 3 : CPU et Mémoire centrale", href: "sequence02-L3" }
+                                { title: "Leçon 1 : Découverte de l'ordinateur : Rôles, familles et schéma fonctionnel", href: "M1-sequence02-L1" },
+                                { title: "Leçon 2 : Au cœur du traitement : Le CPU et l'architecture Von Neumann", href: "M1-sequence02-L2" },
+                                { title: "Leçon 3 : Les Mémoires (Vive, Morte et de Masse)", href: "M1-sequence02-L3" },
+                                { title: "Leçon 4 : Carte mère et périphériques", href: "M1-sequence02-L4" },
+                                { title: "Leçon 5 : Synthèse et Spécifications Techniques", href: "M1-sequence02-L5" },
+                            ]},
+                            { title: "Séquence 3 : Type de logiciels et dommaine d'application", lessons: [
+                                { title: "Leçon 1 : Type de logiciels", href: "M1-sequence03-L1" },
+                                { title: "Leçon 2 : Projet 01( voir Devoirs & Projets)", href: "M1-sequence03-L2" }
                             ]}
                         ]
                     },
@@ -724,18 +1109,18 @@
                         status: "À venir", 
                         sequences: [
                             { title: "Séquence 1 : Système d’exploitation", lessons: [
-                                { title: "Leçon 1 : Fonctionnalités de base d’un système d’exploitation", href: "sequence01-L1" },
-                                { title: "Leçon 2 : Environnement d’un système d’exploitation", href: "sequence01-L2" },
-                                { title: "Leçon 3 : Gestion des fichiers et dossiers", href: "sequence01-L3" }
+                                { title: "Leçon 1 : Fonctionnalités de base d’un système d’exploitation", href: "M2-sequence01-L1" },
+                                { title: "Leçon 2 : Environnement d’un système d’exploitation", href: "M2-sequence01-L2" },
+                                { title: "Leçon 3 : Gestion des fichiers et dossiers", href: "M2-sequence01-L3" }
                             ]},
                             { title: "Séquence 2 : Traitement de texte", lessons: [
-                                { title: "Leçon 1 : Interface et outils de base", href: "sequence02-L1" },
-                                { title: "Leçon 2 : Élaboration d’un document", href: "sequence02-L2" }
+                                { title: "Leçon 1 : Interface et outils de base", href: "M2-sequence02-L1" },
+                                { title: "Leçon 2 : Élaboration d’un document", href: "M2-sequence02-L2" }
                             ]},
                             { title: "Séquence 3 : Tableur", lessons: [
-                                { title: "Leçon 1 : Fonctionnalités d’un tableur", href: "sequence03-L1" },
-                                { title: "Leçon 2 : Création de tableaux", href: "sequence02-S3-L2" },
-                                { title: "Leçon 3 : Réalisation de graphiques", href: "sequence03-L3" }
+                                { title: "Leçon 1 : Fonctionnalités d’un tableur", href: "M2-sequence03-L1" },
+                                { title: "Leçon 2 : Création de tableaux", href: "M2-sequence02-S3-L2" },
+                                { title: "Leçon 3 : Réalisation de graphiques", href: "M2-sequence03-L3" }
                             ]}
                         ]
                     },
@@ -759,7 +1144,7 @@
                     { 
                         id: 4, 
                         title: "M04 : Réseaux et Internet", 
-                        status: "Terminé", 
+                        status: "À venir", 
                         sequences: [
                             { title: "Séquence 1 : Notion de réseau informatique", lessons: [
                                 { title: "Leçon 1 : Définition et utilité d’un réseau", href: "sequence04-S1-L1" },
@@ -834,14 +1219,16 @@
             },
 
             // Remplacement des anciennes pages de séquence par un appel à la fonction générique
-            'sequence01-L1': () => generateLessonPage('sequence01-L1'),
-            'sequence01-L2': () => generateLessonPage('sequence01-L2'),
-            'sequence02-L1': () => generateLessonPage('sequence02-L1'),
-            'sequence02-L2': () => generateLessonPage('sequence02-L2'),
-            'sequence02-L3': () => generateLessonPage('sequence02-L2'),
-            'sequence02-S1-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
-            'sequence02-S1-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
-            'sequence02-S1-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'M1-sequence01-L1': () => generateLessonPage('M1-sequence01-L1'),
+            'M1-sequence01-L2': () => generateLessonPage('M1-sequence01-L2'),
+            'M1-sequence02-L1': () => generateLessonPage('M1-sequence02-L1'),
+            'M1-sequence02-L2': () => generateLessonPage('M1-sequence02-L2'),
+            'M1-sequence02-L3': () => generateLessonPage('M1-sequence02-L3'),
+            'M1-sequence02-L4': () => generateLessonPage('M1-sequence02-L4'),
+            'M1-sequence02-L5': () => generateLessonPage('M1-sequence02-L5'),
+            'M2-sequence01-L1': () => generateLessonPage('M2-sequence01-L1'),
+            'M2-sequence02-L2': () => generateLessonPage('M2-sequence01-L2'),
+            'M2-sequence02-S1-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S2-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S02-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S2-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S02-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S3-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
@@ -861,12 +1248,15 @@
             'sequence04-S2-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M04-S02-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
 
             devoirs: () => `
-                <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Mes Devoirs</h2>
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Mes Devoirs & Projets</h2>
                 <div class="bg-white p-6 rounded-xl shadow-lg mb-6">
-                    <h3 class="text-xl font-bold text-red-600 mb-3">Devoir 1: Cycle du Traitement de l'Information</h3>
-                    <p class="text-gray-700 mb-4">Décrivez les étapes du cycle IPO avec un exemple concret de votre vie quotidienne. (500 mots max)</p>
-                    <p class="text-sm font-semibold text-red-500">Date limite: Vendredi prochain (18:00)</p>
+                    <h3 class="text-xl font-bold text-red-600 mb-3">Projet 1: Recherche sur Histoire de l'Informatique</h3>
+                    <p class="text-gray-700 mb-4"> Réaliser un projet de recherche permettant de comprendre l’évolution de 
+l’informatique, ses inventeurs, ses grandes étapes et son impact sur la société.</p>
+                      <p mb-4>  <a href="./PROJET01.pdf#toolbar=0" class="font-semibold text-gray-800 hover:text-teal-600">Fiche Projet</a></p>
+                    <p class="text-sm font-semibold text-red-500">Date limite: Mercredi 12 Novembre (18:00)</p>
                 </div>
+                
                 <div class="bg-white p-6 rounded-xl shadow-lg mb-6 opacity-70">
                     <h3 class="text-xl font-bold text-gray-500 mb-3">Devoir 2: Structure Binaire</h3>
                     <p class="text-gray-500 mb-4">Conversion de nombres décimaux en binaire (exercices).</p>
@@ -907,24 +1297,24 @@
                     <div class="space-y-4">
                         <div class="p-4 border-l-4 border-red-500 bg-red-50 rounded-lg flex justify-between items-center">
                             <div>
-                                <h4 class="font-bold text-red-800">Date limite : Devoir 1</h4>
-                                <p class="text-sm text-red-600">M01 - Cycle IPO</p>
+                                <h4 class="font-bold text-red-800">Date limite : Projet 1</h4>
+                                <p class="text-sm text-red-600">M01 - Recherche sur l'histoire de l'informatique</p>
                             </div>
-                            <span class="font-extrabold text-red-700">18 Octobre</span>
+                            <span class="font-extrabold text-red-700">12 Novembre</span>
                         </div>
                         <div class="p-4 border-l-4 border-teal-500 bg-teal-50 rounded-lg flex justify-between items-center">
                             <div>
-                                <h4 class="font-bold text-teal-800">Lancement du Module M02</h4>
-                                <p class="text-sm text-teal-600">Logiciels et Systèmes d'exploitation</p>
+                                <h4 class="font-bold text-teal-800">Evaluation Ecrit N°1 </h4>
+                                <p class="text-sm text-teal-600">M01 </p>
                             </div>
-                            <span class="font-extrabold text-teal-700">25 Octobre</span>
+                            <span class="font-extrabold text-teal-700">14 Novembre</span>
                         </div>
                         <div class="p-4 border-l-4 border-gray-500 bg-gray-50 rounded-lg flex justify-between items-center opacity-70">
                             <div>
-                                <h4 class="font-bold text-gray-800">Examen final du Module M01</h4>
-                                <p class="text-sm text-gray-600">Révision complète</p>
+                                <h4 class="font-bold text-gray-800">Lancement du Module M02</h4>
+                                <p class="text-sm text-gray-600">M02 - Logiciels</p>
                             </div>
-                            <span class="font-extrabold text-gray-700">8 Novembre</span>
+                            <span class="font-extrabold text-gray-700">19 Novembre</span>
                         </div>
                     </div>
                 </div>
