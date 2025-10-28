@@ -154,25 +154,49 @@
     <div id="app" class="min-h-screen">
         
         <!-- Navigation -->
-        <nav class="bg-white shadow-md sticky top-0 z-10">
+       <nav class="bg-white shadow-md sticky top-0 z-10">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
-                    <!-- Titre du site Info-Aghbalou, cliquable pour retourner à l'accueil -->
                     <a href="#" onclick="navigateTo('accueil')" class="flex-shrink-0 text-2xl font-bold gradient-theme bg-clip-text text-transparent">
-                        CS-Lycée
+                        Info-Aghbalou
                     </a>
-                    <div class="flex space-x-4 nav-links">
+
+                    <div class="hidden md:flex space-x-4 nav-links">
                         <a href="#" onclick="navigateTo('accueil')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-accueil">Accueil</a>
                         <a href="#" onclick="navigateTo('modules')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-modules">Modules</a>
                         <a href="#" onclick="navigateTo('ressources')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-ressources">Ressources</a>
                         <a href="#" onclick="navigateTo('calendrier')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-calendrier">Calendrier</a>
-                        <a href="#" onclick="navigateTo('devoirs')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-devoirs">Devoirs & Projets</a>
+                        <a href="#" onclick="navigateTo('devoirs')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-devoirs">Devoirs</a>
                         <a href="#" onclick="navigateTo('contact')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-contact">Contact</a>
                     </div>
+                    
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Ouvrir le menu principal</span>
+                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="md:hidden hidden" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#" onclick="mobileNavigateTo('accueil')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-accueil">Accueil</a>
+                    <a href="#" onclick="mobileNavigateTo('modules')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-modules">Modules</a>
+                    <a href="#" onclick="mobileNavigateTo('ressources')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-ressources">Ressources</a>
+                    <a href="#" onclick="mobileNavigateTo('calendrier')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-calendrier">Calendrier</a>
+                    <a href="#" onclick="mobileNavigateTo('devoirs')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-devoirs">Devoirs</a>
+                    <a href="#" onclick="mobileNavigateTo('contact')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-contact">Contact</a>
                 </div>
             </div>
         </nav>
-
+        
         <!-- Contenu de la Page -->
         <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8" id="page-content-container">
             <!-- Le contenu de la page sera injecté ici par JavaScript -->
@@ -464,76 +488,59 @@
         "Je peux expliquer pourquoi les instructions et les données sont toutes les deux dans la mémoire."
     ],
     resourcesAndActivities: [
-      {
-        type: "matching",
-        title: "Activité : Qui fait Quoi dans le CPU ?",
-        instructions: "Reliez chaque composant du CPU à son analogie ou à son rôle principal.",
-        pairs: [
-          { term: "Unité de Commande (UC)", definition: "Le 'chef d'orchestre' qui dirige tout." },
-          { term: "Unité Arithmétique et Logique (UAL)", definition: "La 'super-calculatrice' qui fait les calculs." },
-          { term: "Registres", definition: "La 'mini-mémoire' interne ultra-rapide du CPU." },
-          { term: "Horloge", definition: "Le 'métronome' qui donne le rythme." },
-          { term: "Bus", definition: "Les 'autoroutes' qui transportent l'information." }
-        ],
-        scenario: "", // Ajouté pour uniformiser la structure
-        questions: []   // Ajouté pour uniformiser la structure
-      },
-      {
-        type: "analysis",
-        title: "Activité : Données ou Instructions ?",
-        instructions: "Lisez le scénario suivant et identifiez ce qui est une 'donnée' et ce qui est une 'instruction'.",
-        scenario: "Dans un logiciel de dessin, vous cliquez sur l'icône 'pot de peinture' (INSTRUCTION) pour remplir une zone avec la couleur 'bleu roi' (DONNÉE). Le logiciel doit d'abord VÉRIFIER (INSTRUCTION) si la couleur 'bleu roi' est la même que celle de la zone. Si ce n'est pas le cas, il COMMENCE À REMPLIR (INSTRUCTION) le pixel à la position 'X=50, Y=100' (DONNÉE).",
-        questions: [
-          { question: "Identifiez une donnée mentionnée :", answer: "'bleu roi', OU 'X=50', OU 'Y=100'" },
-          { question: "Identifiez une instruction mentionnée :", answer: "'pot de peinture' (clic), OU 'VÉRIFIER', OU 'COMMENCE À REMPLIR'" }
-        ],
-        pairs: [] // Ajouté pour uniformiser la structure
-      }
-    ], 
+    // Doit avoir "link", "title", "type", "objective", "icon"
+    { 
+        type: "Exercice PDF", 
+        title: "Schéma vierge de Von Neumann à compléter", 
+        objective: "Mémorisation visuelle", 
+        link: "exercice_schema_M1S2L2.pdf", 
+        icon: "pdf" 
+    },
+    { 
+        type: "Vidéo Explicative", 
+        title: "Vidéo : L'architecture de Von Neumann (5 min)", 
+        objective: "Synthèse visuelle", 
+        link: "https://www.youtube.com/watch?v=13F24qW1X-o", 
+        icon: "video" 
+    }
+],
     quiz: [
-      {
-        type: "qcm",
-        question: "Quel composant du CPU est le 'chef d'orchestre' qui lit et décode les instructions ?",
-        options: [
-          { text: "L'Unité Arithmétique et Logique (UAL)", correct: false },
-          { text: "L'Unité de Commande (UC)", correct: true },
-          { text: "Les Registres", correct: false },
-          { text: "L'Horloge", correct: false }
-        ],
-        explanation: "C'est l'UC qui dirige toutes les opérations, lit les instructions et dit à l'UAL quoi faire."
-      },
-      {
-        type: "qcm",
-        question: "Dans le calcul '10 + 20', qu'est-ce que '10' et '20' ?",
-        options: [
-          { text: "Des instructions", correct: false },
-          { text: "Des données", correct: true },
-          { text: "Des registres", correct: false },
-          { text: "Des bus", correct: false }
-        ],
-        explanation: "'10' et '20' sont les informations brutes (données) sur lesquelles l'instruction '+' (additionner) va s'appliquer."
-      },
-      {
-        type: "qcm",
-        question: "Quel est le grand principe de l'architecture de Von Neumann ?",
-        options: [
-          { text: "Stocker les données et les instructions au même endroit (en mémoire)", correct: true },
-          { text: "Avoir le CPU le plus rapide possible", correct: false },
-          { text: "Utiliser une horloge pour synchroniser les actions", correct: false }
-        ],
-        explanation: "L'idée clé est de ne pas séparer physiquement les instructions et les données, ce qui rend l'ordinateur flexible."
-      },
-      {
-        type: "qcm",
-        question: "Comment s'appelle la 'super-calculatrice' du CPU qui exécute les additions ?",
-        options: [
-          { text: "L'UAL (Unité Arithmétique et Logique)", correct: true },
-          { text: "L'UC (Unité de Commande)", correct: false },
-          { text: "Le Registre", correct: false }
-        ],
-        explanation: "L'UAL est la partie qui effectue toutes les opérations arithmétiques (comme '+', '-') et logiques (comme 'Est-ce que 5 > 3 ?')."
-      }
-    ],
+    { 
+        id: 8, 
+        question: "Dans l'analogie de la recette de cuisine, les 'ingrédients' (ex: le nombre 5) correspondent à :", 
+        options: ["Données", "Instructions", "CPU", "Bus"], 
+        answer: "Données", 
+        explanation: "Les données sont les informations brutes (ingrédients) que le CPU va traiter en suivant les instructions (la recette)." 
+    },
+    { 
+        id: 9, 
+        question: "Quelle est l'idée principale de l'architecture de Von Neumann ?", 
+        options: ["Stocker les données et les instructions dans la même mémoire", "Avoir un CPU très rapide", "Utiliser un clavier et une souris", "Connecter l'ordinateur à Internet"], 
+        answer: "Stocker les données et les instructions dans la même mémoire", 
+        explanation: "L'architecture de Von Neumann utilise une mémoire unique pour le programme (instructions) et les informations (données)." 
+    },
+    { 
+        id: 10, 
+        question: "Quelle partie du CPU est la 'calculette' qui effectue les additions et les opérations logiques ?", 
+        options: ["L'Unité de Commande (UC)", "L'Unité Arithmétique et Logique (UAL)", "La RAM", "Les Registres"], 
+        answer: "L'Unité Arithmétique et Logique (UAL)", 
+        explanation: "L'UAL (ou ALU en anglais) est le composant qui exécute tous les calculs arithmétiques et les comparaisons logiques." 
+    },
+    { 
+        id: 11, 
+        question: "Comment s'appelle la première étape du cycle d'exécution, où l'UC va chercher l'instruction dans la RAM ?", 
+        options: ["Execute (Exécuter)", "Decode (Décoder)", "Fetch (Lire)", "Store (Stocker)"], 
+        answer: "Fetch (Lire)", 
+        explanation: "Le cycle est 'Fetch-Decode-Execute'. La première étape (Fetch) consiste à lire l'instruction depuis la mémoire." 
+    },
+    { 
+        id: 12, 
+        question: "Lequel de ces éléments est un périphérique d'ENTRÉE ?", 
+        options: ["Écran", "Imprimante", "Haut-parleurs", "Souris"], 
+        answer: "Souris", 
+        explanation: "La souris envoie des données (clics, mouvements) à l'ordinateur, c'est donc un périphérique d'entrée. Les autres reçoivent des données." 
+    }
+],
     koLink: { url: "https://example.com/ko_m02_s01_l02.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
     mindMapUrl: null, // Remis à 'null' selon vos indications
     detailedNotes: `
@@ -1363,14 +1370,36 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
         // --- Fonctions de Navigation et d'Initialisation ---
 
         // Met à jour la classe active dans la barre de navigation
+                // MODIFICATION : Mise à jour de la fonction updateNav pour gérer les liens mobiles
         function updateNav(activeId) {
             const finalId = activeId.includes('sequence') ? 'modules' : activeId;
             
-            const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => {
-                link.classList.remove('text-teal-700', 'font-extrabold', 'border-b-2', 'border-teal-700');
+            // Définir les classes pour les états actif/inactif
+            const desktopActiveClasses = ['text-teal-700', 'font-extrabold', 'border-b-2', 'border-teal-700'];
+            const desktopInactiveClasses = ['text-gray-700', 'font-medium'];
+            
+            const mobileActiveClasses = ['bg-teal-50', 'text-teal-800', 'font-bold'];
+            const mobileInactiveClasses = ['text-gray-700', 'font-medium'];
+
+            // Mettre à jour les liens Desktop
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove(...desktopActiveClasses);
+                link.classList.add(...desktopInactiveClasses);
+                
                 if (link.id === `nav-${finalId}`) {
-                    link.classList.add('text-teal-700', 'font-extrabold', 'border-b-2', 'border-teal-700');
+                    link.classList.remove(...desktopInactiveClasses);
+                    link.classList.add(...desktopActiveClasses);
+                }
+            });
+
+            // Mettre à jour les liens Mobile
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.classList.remove(...mobileActiveClasses);
+                link.classList.add(...mobileInactiveClasses);
+                
+                if (link.id === `mobile-nav-${finalId}`) {
+                    link.classList.remove(...mobileInactiveClasses);
+                    link.classList.add(...mobileActiveClasses);
                 }
             });
         }
@@ -1442,8 +1471,41 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
             console.warn("MapsTo() est obsolète. Utilisez navigateTo() à la place.");
             navigateTo(pageName);
         }
+        // AJOUT : Fonction pour basculer le menu mobile (hamburger)
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const button = document.getElementById('mobile-menu-button');
+            const iconOpen = button.querySelector('svg.block');
+            const iconClose = button.querySelector('svg.hidden');
+
+            const isHidden = menu.classList.toggle('hidden');
+            
+            // Basculer les icônes
+            iconOpen.classList.toggle('hidden', !isHidden);
+            iconClose.classList.toggle('hidden', isHidden);
+
+            // Mettre à jour l'accessibilité
+            button.setAttribute('aria-expanded', !isHidden);
+        }
         
+        // AJOUT : Fonction de navigation pour les liens mobiles (ferme le menu après clic)
+        function mobileNavigateTo(pageName) {
+            navigateTo(pageName); // Navigation normale
+            
+            // Fermer le menu
+            const menu = document.getElementById('mobile-menu');
+            const button = document.getElementById('mobile-menu-button');
+            const iconOpen = button.querySelector('svg.block');
+            const iconClose = button.querySelector('svg.hidden');
+            
+            menu.classList.add('hidden'); // Forcer la fermeture
+            iconOpen.classList.remove('hidden'); // Afficher l'icône hamburger
+            iconClose.classList.add('hidden'); // Cacher l'icône 'X'
+            button.setAttribute('aria-expanded', 'false');
+        }
+        window.mobileNavigateTo = mobileNavigateTo; // Rendre globale pour onclick
         // --- Initialisation au Chargement de la Page ---
+        // MODIFICATION : Ajout de l'écouteur d'événement pour le bouton mobile
         window.onload = () => {
             navigateTo(currentView);
             
@@ -1452,6 +1514,9 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
                 // Ajout de l'ID utilisateur
                 userIdDisplay.innerHTML += ` | ID: <span class="font-mono">${appId}</span>`;
             }
+
+            // AJOUT : Écouteur d'événement pour le bouton du menu mobile
+            document.getElementById('mobile-menu-button').addEventListener('click', toggleMobileMenu);
         };
         // Rendre la fonction accessible globalement pour le bouton dans le HTML
         window.toggleModule = toggleModule; 
