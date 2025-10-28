@@ -383,15 +383,23 @@
     resourcesAndActivities: [
         { type: "Worksheet", title: "Fiche : Pourquoi le binaire ?", objective: "Compréhension du système binaire", link: "fiche_binaire_L2.pdf", icon: "document" },
         { type: "Exercice", title: "Conversions binaire ↔ décimal", objective: "Application pratique", link: "exercice_conversion_L2.pdf", icon: "document" },
-        { type: "Tuto Vidéo", title: "Comprendre hardware vs software", objective: "Distinction claire", link: "video_hardware_software_L2.mp4", icon: "video" },
-        { type: "Application", title: "Simulateur de conversion binaire", objective: "Pratique interactive", link: "#", icon: "app" }
+        { type: "Tuto Vidéo", title: "Introduction au langage Binaire ", objective: "Pourquoi le binaire ?", link: "https://youtu.be/VRdp_vaNRoY?si=e-NoDSGw7uzVal0_", icon: "video" },
+        { type: "Application", title: "Simulateur de conversion binaire", objective: "Pratique interactive", link: "https://md5decrypt.net/Outils-conversion/", icon: "app" }
     ],
 
     // ✅ QUIZ
     quiz: [
         { id: 1, question: "Pourquoi les ordinateurs utilisent-ils le binaire ?", options: ["Parce que c'est plus rapide", "Parce que les circuits électroniques ont deux états", "Parce que c'est plus simple à lire"], answer: "Parce que les circuits électroniques ont deux états", explanation: "Les ordinateurs fonctionnent avec des signaux électriques : ouvert (0) ou fermé (1)." },
         { id: 2, question: "Combien de bits dans un octet ?", options: ["4", "8", "16"], answer: "8", explanation: "Un octet est composé de 8 bits." },
-        { id: 3, question: "Donnez un exemple de hardware :", options: ["Windows", "Clavier", "Excel"], answer: "Clavier", explanation: "Le clavier est un composant physique, donc hardware." }
+        { id: 3,
+        
+        id: 1, 
+        question: "Massin  souhaite faire une copie de sauvegarde des données de son téléphone portable. L'application de sauvegarde installée sur son téléphone affiche les valeurs suivantes en Go (gigaoctets) :<br><br><span style='font-weight:normal; text-align:left; display:inline-block; padding-left: 20px;'>Photos : 17.25 Go<br>Documents : 3.25 Go<br>Messages : 21.25 Go<br>Autres : 2.75 Go</span><br><br>La capacité totale de Marik est de 50 Go. Combien d'espace libre reste-t-il ? (Répondez en octets, 1ko = 1000 octets).", 
+        options: ["5 000 000 000 octets", "5 000 500 000 octets", "44 500 000 000 octets", "5 500 000 000 octets"], 
+        answer: "5 500 000 000 octets", 
+        explanation: "Espace utilisé = 17.25 + 3.25 + 21.25 + 2.75 = 44.5 Go. Espace libre = 50 Go - 44.5 Go = 5.5 Go. Puisque 1Go = 1 milliard d'octets, 5.5 Go = 5 500 000 000 octets." 
+    
+     }
     ],
 
     koLink: { 
@@ -506,39 +514,39 @@
 ],
     quiz: [
     { 
-        id: 8, 
+        id: 1, 
         question: "Dans l'analogie de la recette de cuisine, les 'ingrédients' (ex: le nombre 5) correspondent à :", 
         options: ["Données", "Instructions", "CPU", "Bus"], 
         answer: "Données", 
         explanation: "Les données sont les informations brutes (ingrédients) que le CPU va traiter en suivant les instructions (la recette)." 
     },
     { 
-        id: 9, 
+        id: 2, 
         question: "Quelle est l'idée principale de l'architecture de Von Neumann ?", 
         options: ["Stocker les données et les instructions dans la même mémoire", "Avoir un CPU très rapide", "Utiliser un clavier et une souris", "Connecter l'ordinateur à Internet"], 
         answer: "Stocker les données et les instructions dans la même mémoire", 
         explanation: "L'architecture de Von Neumann utilise une mémoire unique pour le programme (instructions) et les informations (données)." 
     },
     { 
-        id: 10, 
+        id: 3, 
         question: "Quelle partie du CPU est la 'calculette' qui effectue les additions et les opérations logiques ?", 
         options: ["L'Unité de Commande (UC)", "L'Unité Arithmétique et Logique (UAL)", "La RAM", "Les Registres"], 
         answer: "L'Unité Arithmétique et Logique (UAL)", 
         explanation: "L'UAL (ou ALU en anglais) est le composant qui exécute tous les calculs arithmétiques et les comparaisons logiques." 
     },
     { 
-        id: 11, 
-        question: "Comment s'appelle la première étape du cycle d'exécution, où l'UC va chercher l'instruction dans la RAM ?", 
-        options: ["Execute (Exécuter)", "Decode (Décoder)", "Fetch (Lire)", "Store (Stocker)"], 
-        answer: "Fetch (Lire)", 
-        explanation: "Le cycle est 'Fetch-Decode-Execute'. La première étape (Fetch) consiste à lire l'instruction depuis la mémoire." 
+        id: 4, 
+        question: "Lequel des composants suivants peut exécuter une instruction ?", 
+        options: ["L'Horloge", "L'Unité arithmétique et logique (UAL)", "Le Bus"], 
+        answer: "L'Unité arithmétique et logique (UAL)", 
+        explanation: "L'UAL est la partie du CPU qui exécute les calculs (arithmétiques) et les comparaisons (logiques). L'horloge donne le rythme et le bus transporte les données." 
     },
-    { 
-        id: 12, 
-        question: "Lequel de ces éléments est un périphérique d'ENTRÉE ?", 
-        options: ["Écran", "Imprimante", "Haut-parleurs", "Souris"], 
-        answer: "Souris", 
-        explanation: "La souris envoie des données (clics, mouvements) à l'ordinateur, c'est donc un périphérique d'entrée. Les autres reçoivent des données." 
+   { 
+        id: 5, 
+        question: "Quel composant du processeur décode les instructions ?", 
+        options: ["Les Registres", "L'Unité arithmétique et logique (UAL)", "L'Unité de Commande (UC)"], 
+        answer: "L'Unité de Commande (UC)", 
+        explanation: "C'est l'Unité de Commande (UC) qui lit et décode les instructions. L'UAL les exécute et les registres stockent temporairement les données." 
     }
 ],
     koLink: { url: "https://example.com/ko_m02_s01_l02.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
@@ -855,33 +863,49 @@
                 knowledgeOrganizerHtml = `<p class="text-gray-500">Pas de KO disponible pour cette leçon.</p>`;
             }
 
-            // LOGIQUE NOUVELLE SECTION : Ressources et Activités
+            // --- LOGIQUE NOUVELLE SECTION : Ressources et Activités (MODIFIÉE AVEC FIX OVERFLOW) ---
             const resourcesHtml = data.resourcesAndActivities && data.resourcesAndActivities.length > 0 ? data.resourcesAndActivities.map(res => {
                 const iconSvg = icons[res.icon] || icons.document;
                 const linkTarget = res.link.startsWith('http') || res.link.endsWith('.pdf') ? '_blank' : '#';
-                const linkElement = res.link.startsWith('#') 
-                    ? `<span class="text-gray-600">${res.link.replace('#', '')}</span>`
-                    : `<a href="${res.link}" target="${linkTarget}" class="font-semibold text-teal-600 hover:text-teal-800 transition duration-150 truncate">${res.link}</a>`;
+                const isClickable = res.link && !res.link.startsWith('#'); // Vérifie si le lien n'est pas un placeholder
 
-                return `
-                    <li class="grid grid-cols-1 md:grid-cols-12 gap-2 p-3 border-l-4 border-teal-300 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-150">
-                        <div class="md:col-span-1 flex items-center space-x-2">
-                           ${iconSvg}
-                           <span class="font-bold text-sm text-gray-700">${res.type}</span>
-                        </div>
-                        <div class="md:col-span-6 text-gray-800">
-                           ${res.title}
-                        </div>
-                        <div class="md:col-span-3 text-sm text-gray-600 italic">
-                            ${res.objective}
-                        </div>
-                        <div class="md:col-span-2 text-sm text-right">
-                           ${linkElement}
-                        </div>
-                    </li>
+                // 1. Définir le contenu interne (le grid)
+                // MODIFICATION : Ajout de "overflow-hidden" au div du lien pour forcer le "truncate"
+                const contentHtml = `
+                    <div class="md:col-span-1 flex items-center space-x-2">
+                       ${iconSvg}
+                       <span class="font-bold text-sm text-gray-700">${res.type}</span>
+                    </div>
+                    <div class="md:col-span-6 text-gray-800">
+                       ${res.title}
+                    </div>
+                    <div class="md:col-span-3 text-sm text-gray-600 italic">
+                        ${res.objective}
+                    </div>
+                    <div class="md:col-span-2 text-sm text-right overflow-hidden">
+                       <span class="font-semibold text-teal-600 truncate">${res.link.replace('https://', '').replace('http://', '')}</span>
+                    </div>
                 `;
-            }).join('') : '<p class="text-gray-500">Aucune ressource ou activité spécifique pour cette leçon pour l\'instant.</p>';
 
+                // 2. Envelopper le contenu dans un <a> si cliquable, sinon dans un <li> normal
+                if (isClickable) {
+                    return `
+                        <li class="p-0 border-l-4 border-teal-300 bg-gray-50 rounded-lg hover:bg-gray-200 hover:shadow-md transition duration-150">
+                            <a href="${res.link}" target="${linkTarget}" class="grid grid-cols-1 md:grid-cols-12 gap-2 p-3">
+                                ${contentHtml}
+                            </a>
+                        </li>
+                    `;
+                } else {
+                    // Si le lien est "#" (non cliquable), on garde l'ancien style mais on le grise
+                    return `
+                        <li class="grid grid-cols-1 md:grid-cols-12 gap-2 p-3 border-l-4 border-gray-300 bg-gray-50 rounded-lg opacity-70">
+                            ${contentHtml.replace('font-semibold text-teal-600 truncate', 'text-gray-500')}
+                        </li>
+                    `;
+                }
+
+            }).join('') : '<p class="text-gray-500">Aucune ressource ou activité spécifique pour cette leçon pour l\'instant.</p>';
             // LOGIQUE CARTE MENTALE (pointe maintenant vers l'URL externe)
             const mindMapButtonHtml = data.mindMapUrl 
                 ? `<button onclick="openMindMap('${lessonKey}')" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
