@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Hide number input spinners */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        /* --- Dashboard Styles --- */
+        .app-container {
+            display: none; /* Hide all apps by default */
+        }
+        .app-container.active {
+            display: block; /* Show only the active one */
+        }
+
+        /* --- Timer-Specific Styles --- */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .animate-shake { animation: shake 0.5s ease-in-out; }
+
+        /* Timer Fullscreen styles */
+        #timer-card:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #timer-card:fullscreen #timer-content,
+        #timer-card:fullscreen #timer-display {
+            font-size: 25vw;
+            line-height: 1;
+            position: static;
+            transform: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+        #timer-card:fullscreen #timer-display .time-text {
+            font-size: 1em;
+        }
+        #timer-card:fullscreen #progress-svg {
+            width: 30vw;
+            height: 30vw;
+        }
+        #timer-card:fullscreen #input-area,
+        #timer-card:fullscreen #controls-area,
+        #timer-card:fullscreen #fullscreen-prompt,
+        #timer-card:fullscreen h1,
+        #timer-card:fullscreen #icon-controls {
+            display: none;
+        }
+
+        /* Timer Progress Bar */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.5s ease-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        /* Student Picker Animation */
+        @keyframes pop-in {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-in {
+            animation: pop-in 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen">
+
+    <!-- Main Dashboard Wrapper -->
+    <div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Teacher Dashboard</h1>
+
+        <!-- Tab Navigation -->
+        <nav class="bg-white/60 backdrop-blur-sm p-2 rounded-lg flex space-x-2 mb-6 shadow-md">
+            <!-- Tab 1: Timer -->
+            <button class="tab-btn w-full text-center p-3 rounded-lg font-semibold text-purple-800 bg-white shadow-sm" data-target="timer-app">
+                Countdown Timer
+            </button>
+            <!-- Tab 2: Student Picker -->
+            <button class="tab-btn w-full text-center p-3 rounded-lg font-semibold text-gray-600 hover:bg-white/50" data-target="picker-app">
+                Student Picker
+            </button>
+            <!-- Add more tabs here in the future -->
+        </nav>
+
+        <!-- App Content Area -->
+        <div>
+            <!-- ######################## -->
+            <!-- 1. Countdown Timer App -->
+            <!-- ######################## -->
+            <div id="timer-app" class="app-container active">
+                <div id="timer-card" class="relative bg-white p-8 rounded-2xl shadow-xl w-full mx-auto overflow-hidden">
+        
+                    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Classroom Countdown</h1>
+            
+                    <!-- Main Timer Content -->
+                    <div id="timer-content" class="relative flex items-center justify-center mb-6">
+                        <!-- Circular Progress Bar -->
+                        <svg id="progress-svg" class="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+                            <!-- Background circle -->
+                            <circle class="text-gray-200" stroke="currentColor" stroke-width="8" fill="transparent" r="40" cx="50" cy="50"/>
+                            <!-- Progress circle -->
+                            <circle class="progress-ring__circle text-purple-600" stroke="currentColor" stroke-width="8" fill="transparent" r="40" cx="50" cy="50"/>
+                        </svg>
+            
+                        <!-- Time display -->
+                        <div id="timer-display" class="text-5xl font-bold text-gray-900 cursor-pointer ml-4">
+                            <span class="time-text">00:00</span>
+                        </div>
+                        
+                        <!-- Play/Pause and Fullscreen icons -->
+                        <div id="icon-controls" class="flex flex-col gap-2 ml-4">
+                            <button id="icon-start-pause-btn" class="p-2 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-700">
+                                <svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                                <svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h.01a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h.01a1 1 0 001-1V8a1 1 0 00-1-1H12z" clip-rule="evenodd"></path></svg>
+                            </button>
+                            <button id="icon-fullscreen-btn" class="p-2 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-700">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M5 11a1 1 0 011-1h2.586a1 1 0 01.707.293l1.414 1.414a1 1 0 010 1.414l-1.414 1.414a1 1 0 01-1.414 0L6 12.414V14a1 1 0 01-1 1zM11 5a1 1 0 011-1h2a1 1 0 011 1v2.586a1 1 0 01-.293.707l-1.414 1.414a1 1 0 01-1.414 0l-1.414-1.414a1 1 0 010-1.414L12.586 6H11a1 1 0 01-1-1z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+            
+                    <!-- Input Section -->
+                    <div id="input-area" class="grid grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label for="minutes" class="block text-sm font-medium text-gray-700 mb-1">Minutes</label>
+                            <input type="number" id="minutes" placeholder="00" min="0" class="w-full p-4 text-center text-3xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-600">
+                        </div>
+                        <div>
+                            <label for="seconds" class="block text-sm font-medium text-gray-700 mb-1">Seconds</label>
+                            <input type="number" id="seconds" placeholder="00" min="0" max="59" class="w-full p-4 text-center text-3xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-600">
+                        </div>
+                    </div>
+            
+                    <!-- Fullscreen prompt -->
+                    <div id="fullscreen-prompt" class="text-center text-gray-500 text-sm -mt-6 mb-6">
+                        Click the timer for fullscreen
+                    </div>
+            
+                    <!-- Controls Section -->
+                    <div id="controls-area" class="grid grid-cols-2 gap-4">
+                        <button id="start-btn" class="w-full bg-green-500 text-white font-semibold py-4 rounded-lg text-lg transition-all hover:bg-green-600 shadow-md">
+                            Start
+                        </button>
+                        <button id="reset-btn" class="w-full bg-red-500 text-white font-semibold py-4 rounded-lg text-lg transition-all hover:bg-red-600 shadow-md">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ######################## -->
+            <!-- 2. Student Picker App -->
+            <!-- ######################## -->
+            <div id="picker-app" class="app-container">
+                <div id="picker-card" class="bg-white p-8 rounded-2xl shadow-xl w-full mx-auto">
+                    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Student Picker</h1>
+
+                    <!-- Add Student Section -->
+                    <div class="flex gap-4 mb-6">
+                        <input type="text" id="student-name-input" placeholder="Enter student name..." class="w-full p-4 text-lg font-medium border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-600">
+                        <button id="add-student-btn" class="bg-purple-600 text-white font-semibold py-4 px-6 rounded-lg text-lg transition-all hover:bg-purple-700 shadow-md">
+                            Add
+                        </button>
+                    </div>
+
+                    <!-- Student List Section -->
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Student List (<span id="student-count">0</span>)</h2>
+                        <div id="student-list" class="flex flex-wrap gap-2 p-4 bg-gray-100 rounded-lg min-h-[100px] border-2 border-gray-200">
+                            <!-- Student names will be added here -->
+                        </div>
+                    </div>
+
+                    <!-- Picker Control Section -->
+                    <div class="text-center">
+                        <button id="pick-student-btn" class="w-full bg-green-500 text-white font-semibold py-4 rounded-lg text-lg transition-all hover:bg-green-600 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                            Pick a Random Student
+                        </button>
+                    </div>
+
+                    <!-- Result Display -->
+                    <div id="picker-result-container" class="mt-6 text-center" style="display: none;">
+                        <h3 class="text-2xl font-semibold text-gray-800">The selected student is:</h3>
+                        <div id="picker-result-text" class="text-5xl font-bold text-purple-600 mt-4 p-6 bg-purple-100 rounded-lg pop-in">
+                            <!-- Selected student name -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // ###################################
+            // ### 1. DASHBOARD NAVIGATION LOGIC ###
+            // ###################################
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const appContainers = document.querySelectorAll('.app-container');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Deactivate all tabs and apps
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('bg-white', 'shadow-sm', 'text-purple-800');
+                        btn.classList.add('text-gray-600', 'hover:bg-white/50');
+                    });
+                    appContainers.forEach(container => {
+                        container.classList.remove('active');
+                    });
+
+                    // Activate the clicked tab and app
+                    button.classList.add('bg-white', 'shadow-sm', 'text-purple-800');
+                    button.classList.remove('text-gray-600', 'hover:bg-white/50');
+                    const targetApp = document.getElementById(button.dataset.target);
+                    if (targetApp) {
+                        targetApp.classList.add('active');
+                    }
+                });
+            });
+
+
+            // ###################################
+            // ### 2. COUNTDOWN TIMER LOGIC    ###
+            // ###################################
+            
+            // --- Timer DOM Elements ---
+            const timerCard = document.getElementById('timer-card');
+            const minutesInput = document.getElementById('minutes');
+            const secondsInput = document.getElementById('seconds');
+            const timerDisplay = document.querySelector('#timer-display .time-text');
+            const startBtn = document.getElementById('start-btn');
+            const iconStartPauseBtn = document.getElementById('icon-start-pause-btn');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const iconFullscreenBtn = document.getElementById('icon-fullscreen-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const timerInputArea = document.getElementById('input-area');
+            const fullscreenPrompt = document.getElementById('fullscreen-prompt');
+            const progressCircle = document.querySelector('#progress-svg .progress-ring__circle');
+            const radius = progressCircle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+
+            progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+            progressCircle.style.strokeDashoffset = circumference;
+
+            // --- Timer State Variables ---
+            let countdown;
+            let totalSeconds = 0;
+            let initialTotalSeconds = 0;
+            let isRunning = false;
+            let synth;
+
+            // --- Timer Core Functions ---
+            async function startTimer() {
+                try {
+                    if (typeof Tone !== 'undefined' && Tone.context.state !== 'running') {
+                        await Tone.start();
+                    }
+                } catch (err) {
+                    console.error("Error starting Tone.js audio context:", err);
+                }
+                
+                initAudio();
+                
+                if (isRunning) {
+                    pauseTimer();
+                    return;
+                }
+
+                if (totalSeconds === 0) {
+                    const mins = parseInt(minutesInput.value) || 0;
+                    const secs = parseInt(secondsInput.value) || 0;
+                    initialTotalSeconds = (mins * 60) + secs;
+                    totalSeconds = initialTotalSeconds;
+                }
+
+                if (totalSeconds <= 0) {
+                    timerInputArea.classList.add('animate-shake');
+                    setTimeout(() => { timerInputArea.classList.remove('animate-shake'); }, 500);
+                    return;
+                }
+
+                isRunning = true;
+                toggleTimerControls(true);
+                fullscreenPrompt.style.display = 'none';
+                countdown = setInterval(updateTimer, 1000);
+            }
+
+            function pauseTimer() {
+                if (!isRunning) return;
+                clearInterval(countdown);
+                isRunning = false;
+                toggleTimerControls(false);
+            }
+        
+            function resetTimer() {
+                exitFullScreen();
+                clearInterval(countdown);
+                isRunning = false;
+                totalSeconds = 0;
+                initialTotalSeconds = 0;
+                updateDisplay(0, 0);
+                updateProgressBar(0);
+                toggleTimerControls(false);
+                fullscreenPrompt.style.display = 'block';
+                minutesInput.value = '';
+                secondsInput.value = '';
+                timerInputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+            }
+
+            function updateTimer() {
+                if (totalSeconds <= 0) {
+                    clearInterval(countdown);
+                    isRunning = false;
+                    playAlarm();
+                    exitFullScreen();
+                    toggleTimerControls(false);
+                    fullscreenPrompt.style.display = 'block';
+                    timerInputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+                    return;
+                }
+                totalSeconds--;
+                const mins = Math.floor(totalSeconds / 60);
+                const secs = totalSeconds % 60;
+                updateDisplay(mins, secs);
+                updateProgressBar(totalSeconds);
+            }
+
+            // --- Timer Helper Functions ---
+            function initAudio() {
+                if (typeof Tone !== 'undefined' && !synth) {
+                    try {
+                        synth = new Tone.Synth().toDestination();
+                    } catch (err) {
+                        console.error("Error initializing Tone.js synth:", err);
+                        synth = null;
+                    }
+                }
+            }
+
+            function updateDisplay(mins, secs) {
+                const formattedMins = String(mins).padStart(2, '0');
+                const formattedSecs = String(secs).padStart(2, '0');
+                timerDisplay.textContent = `${formattedMins}:${formattedSecs}`;
+                document.title = `${formattedMins}:${formattedSecs} - Countdown`;
+            }
+
+            function updateProgressBar(currentSeconds) {
+                if (initialTotalSeconds === 0) {
+                    progressCircle.style.strokeDashoffset = circumference;
+                    return;
+                }
+                const progress = currentSeconds / initialTotalSeconds;
+                const offset = circumference * (1 - progress);
+                progressCircle.style.strokeDashoffset = offset;
+            }
+
+            function toggleTimerControls(running) {
+                if (running) {
+                    startBtn.classList.add('hidden');
+                    resetBtn.classList.add('col-span-2');
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                    timerInputArea.querySelectorAll('input').forEach(input => input.disabled = true);
+                } else {
+                    startBtn.classList.remove('hidden');
+                    resetBtn.classList.remove('col-span-2');
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                    if (totalSeconds === 0) {
+                        timerInputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+                    }
+                }
+            }
+
+            function toggleFullScreen() {
+                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                    exitFullScreen(); 
+                } else {
+                    try {
+                        if (timerCard.requestFullscreen) {
+                            timerCard.requestFullscreen();
+                        } else if (timerCard.mozRequestFullScreen) {
+                            timerCard.mozRequestFullScreen();
+                        } else if (timerCard.webkitRequestFullscreen) {
+                            timerCard.webkitRequestFullscreen();
+                        } else if (timerCard.msRequestFullscreen) {
+                            timerCard.msRequestFullscreen();
+                        }
+                    } catch (err) {
+                        console.error("Fullscreen request failed:", err);
+                    }
+                }
+            }
+
+            function exitFullScreen() {
+                try {
+                    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        } else if (document.mozCancelFullScreen) {
+                            document.mozCancelFullScreen();
+                        } else if (document.webkitExitFullscreen) {
+                            document.webkitExitFullscreen();
+                        } else if (document.msExitFullscreen) {
+                            document.msExitFullscreen();
+                        }
+                    }
+                } catch (err) {
+                     console.error("Error exiting fullscreen:", err);
+                }
+            }
+
+            function playAlarm() {
+                if (synth && typeof Tone !== 'undefined') {
+                    try {
+                        const now = Tone.now();
+                        synth.triggerAttackRelease("C5", "0.5s", now);
+                        synth.triggerAttackRelease("C5", "0.5s", now + 0.6);
+                        synth.triggerAttackRelease("C5", "0.5s", now + 1.2);
+                    } catch (err) {
+                        console.error("Error playing alarm sound:", err);
+                    }
+                } else {
+                    console.log("Timer Finished! (Audio failed to load)");
+                }
+            }
+
+            // --- Timer Event Listeners ---
+            startBtn.addEventListener('click', startTimer);
+            iconStartPauseBtn.addEventListener('click', startTimer);
+            iconFullscreenBtn.addEventListener('click', toggleFullScreen);
+            timerDisplay.addEventListener('click', toggleFullScreen);
+            resetBtn.addEventListener('click', resetTimer);
+
+
+            // ###################################
+            // ### 3. STUDENT PICKER LOGIC     ###
+            // ###################################
+
+            // --- Picker DOM Elements ---
+            const studentNameInput = document.getElementById('student-name-input');
+            const addStudentBtn = document.getElementById('add-student-btn');
+            const studentListDiv = document.getElementById('student-list');
+            const studentCountSpan = document.getElementById('student-count');
+            const pickStudentBtn = document.getElementById('pick-student-btn');
+            const pickerResultContainer = document.getElementById('picker-result-container');
+            const pickerResultText = document.getElementById('picker-result-text');
+
+            // --- Picker State ---
+            let studentList = [];
+
+            // --- Picker Functions ---
+            function addStudent() {
+                const name = studentNameInput.value.trim();
+                if (name) {
+                    studentList.push(name);
+                    renderStudentList();
+                    studentNameInput.value = '';
+                    studentNameInput.focus();
+                }
+            }
+
+            function renderStudentList() {
+                studentListDiv.innerHTML = ''; // Clear list
+                studentList.forEach((name, index) => {
+                    const studentTag = document.createElement('span');
+                    studentTag.className = 'bg-purple-200 text-purple-800 text-sm font-semibold px-3 py-1 rounded-full flex items-center gap-2';
+                    studentTag.innerHTML = `
+                        ${name}
+                        <button class="remove-student-btn text-purple-600 hover:text-purple-900" data-index="${index}">&times;</button>
+                    `;
+                    studentListDiv.appendChild(studentTag);
+                });
+
+                // Update count and button state
+                studentCountSpan.textContent = studentList.length;
+                if (studentList.length > 0) {
+                    pickStudentBtn.disabled = false;
+                } else {
+                    pickStudentBtn.disabled = true;
+                    pickerResultContainer.style.display = 'none';
+                }
+            }
+
+            function removeStudent(index) {
+                studentList.splice(index, 1);
+                renderStudentList();
+            }
+
+            function pickRandomStudent() {
+                if (studentList.length === 0) return;
+
+                const randomIndex = Math.floor(Math.random() * studentList.length);
+                const selectedStudent = studentList[randomIndex];
+
+                pickerResultText.textContent = selectedStudent;
+                pickerResultContainer.style.display = 'block';
+                
+                // Re-apply animation class
+                pickerResultText.classList.remove('pop-in');
+                void pickerResultText.offsetWidth; // Trigger reflow
+                pickerResultText.classList.add('pop-in');
+            }
+
+            // --- Picker Event Listeners ---
+            addStudentBtn.addEventListener('click', addStudent);
+            studentNameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addStudent();
+                }
+            });
+
+            pickStudentBtn.addEventListener('click', pickRandomStudent);
+
+            // Event delegation for remove buttons
+            studentListDiv.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-student-btn')) {
+                    const index = parseInt(e.target.dataset.index);
+                    removeStudent(index);
+                }
+            });
+
+            // --- Initial render/setup ---
+            renderStudentList(); // To set initial disabled state of button
+        }
+    </script>
+</body>
+</html>

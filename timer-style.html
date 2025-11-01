@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Countdown Timer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Hide number input spinners in Chrome, Safari, Edge, Opera */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        /* Hide number input spinners in Firefox */
+        input[type=number] { -moz-appearance: textfield; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .animate-shake { animation: shake 0.5s ease-in-out; }
+
+        /* Fullscreen styles */
+        #timer-card:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #timer-card:fullscreen #timer-content,
+        #timer-card:fullscreen #timer-display {
+            font-size: 25vw;
+            line-height: 1; /* Adjust line-height for large text */
+            position: static; /* Remove absolute positioning */
+            transform: none; /* Remove any transforms */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem; /* Space between circle and time */
+        }
+        #timer-card:fullscreen #timer-display .time-text {
+            font-size: 1em; /* Inherit from parent */
+        }
+
+        #timer-card:fullscreen #progress-svg {
+            width: 30vw; /* Make circle larger in fullscreen */
+            height: 30vw;
+        }
+        
+        /* Hide everything *except* the core timer display when fullscreen */
+        #timer-card:fullscreen #input-area,
+        #timer-card:fullscreen #controls-area,
+        #timer-card:fullscreen #fullscreen-prompt,
+        #timer-card:fullscreen h1,
+        #timer-card:fullscreen #icon-controls {
+            display: none;
+        }
+
+        /* Specific styles for the circular progress bar */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.5s ease-out; /* Smooth animation */
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center min-h-screen">
+
+    <div id="timer-card" class="relative bg-white p-8 rounded-2xl shadow-xl w-full max-w-md mx-4 overflow-hidden">
+        
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Classroom Countdown</h1>
+
+        <!-- Main Timer Content -->
+        <div id="timer-content" class="relative flex items-center justify-center mb-6">
+            <!-- Circular Progress Bar -->
+            <svg id="progress-svg" class="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+                <!-- Background circle -->
+                <circle
+                    class="text-gray-200"
+                    stroke="currentColor"
+                    stroke-width="8"
+                    fill="transparent"
+                    r="40"
+                    cx="50"
+                    cy="50"
+                />
+                <!-- Progress circle -->
+                <circle
+                    class="progress-ring__circle text-purple-600"
+                    stroke="currentColor"
+                    stroke-width="8"
+                    fill="transparent"
+                    r="40"
+                    cx="50"
+                    cy="50"
+                />
+            </svg>
+
+            <!-- Time display -->
+            <div id="timer-display" class="text-5xl font-bold text-gray-900 cursor-pointer ml-4">
+                <span class="time-text">00:00</span>
+            </div>
+            
+            <!-- Play/Pause and Fullscreen icons -->
+            <div id="icon-controls" class="flex flex-col gap-2 ml-4">
+                <button id="icon-start-pause-btn" class="p-2 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-700">
+                    <!-- Play icon (default) -->
+                    <svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                    </svg>
+                    <!-- Pause icon (hidden by default) -->
+                    <svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h.01a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h.01a1 1 0 001-1V8a1 1 0 00-1-1H12z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <button id="icon-fullscreen-btn" class="p-2 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-700">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M5 11a1 1 0 011-1h2.586a1 1 0 01.707.293l1.414 1.414a1 1 0 010 1.414l-1.414 1.414a1 1 0 01-1.414 0L6 12.414V14a1 1 0 01-1 1zM11 5a1 1 0 011-1h2a1 1 0 011 1v2.586a1 1 0 01-.293.707l-1.414 1.414a1 1 0 01-1.414 0l-1.414-1.414a1 1 0 010-1.414L12.586 6H11a1 1 0 01-1-1z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <div id="input-area" class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+                <label for="minutes" class="block text-sm font-medium text-gray-700 mb-1">Minutes</label>
+                <input type="number" id="minutes" placeholder="00" min="0" class="w-full p-4 text-center text-3xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-600">
+            </div>
+            <div>
+                <label for="seconds" class="block text-sm font-medium text-gray-700 mb-1">Seconds</label>
+                <input type="number" id="seconds" placeholder="00" min="0" max="59" class="w-full p-4 text-center text-3xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-600">
+            </div>
+        </div>
+
+        <!-- Fullscreen prompt -->
+        <div id="fullscreen-prompt" class="text-center text-gray-500 text-sm -mt-6 mb-6">
+            Click the timer for fullscreen
+        </div>
+
+        <!-- Controls Section -->
+        <div id="controls-area" class="grid grid-cols-2 gap-4">
+            <button id="start-btn" class="w-full bg-green-500 text-white font-semibold py-4 rounded-lg text-lg transition-all hover:bg-green-600 shadow-md">
+                Start
+            </button>
+            <button id="reset-btn" class="w-full bg-red-500 text-white font-semibold py-4 rounded-lg text-lg transition-all hover:bg-red-600 shadow-md">
+                Reset
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        window.onload = function() {
+            // --- DOM Elements ---
+            const timerCard = document.getElementById('timer-card');
+            const minutesInput = document.getElementById('minutes');
+            const secondsInput = document.getElementById('seconds');
+            const timerDisplay = document.querySelector('#timer-display .time-text'); // Targeting the span
+            const startBtn = document.getElementById('start-btn'); // Now visible
+
+            // New icon buttons
+            const iconStartPauseBtn = document.getElementById('icon-start-pause-btn');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const iconFullscreenBtn = document.getElementById('icon-fullscreen-btn');
+
+            const resetBtn = document.getElementById('reset-btn');
+            const inputArea = document.getElementById('input-area');
+            const fullscreenPrompt = document.getElementById('fullscreen-prompt');
+            
+            // Progress Bar Elements
+            const progressCircle = document.querySelector('#progress-svg .progress-ring__circle');
+            const radius = progressCircle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+
+            progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+            progressCircle.style.strokeDashoffset = circumference; // Start full
+
+            // --- State Variables ---
+            let countdown;
+            let totalSeconds = 0;
+            let initialTotalSeconds = 0; // To keep track of the full duration for progress bar
+            let isRunning = false;
+            let synth;
+
+            // --- Core Functions ---
+            async function startTimer() {
+                try {
+                    if (typeof Tone !== 'undefined' && Tone.context.state !== 'running') {
+                        await Tone.start();
+                    }
+                } catch (err) {
+                    console.error("Error starting Tone.js audio context:", err);
+                }
+                
+                initAudio();
+                
+                if (isRunning) { // If already running, this is a pause action from the icon
+                    pauseTimer();
+                    return;
+                }
+
+                if (totalSeconds === 0) { // If starting fresh or after reset
+                    const mins = parseInt(minutesInput.value) || 0;
+                    const secs = parseInt(secondsInput.value) || 0;
+                    initialTotalSeconds = (mins * 60) + secs; // Store for progress
+                    totalSeconds = initialTotalSeconds;
+                }
+
+                if (totalSeconds <= 0) {
+                    inputArea.classList.add('animate-shake');
+                    setTimeout(() => { inputArea.classList.remove('animate-shake'); }, 500);
+                    return;
+                }
+
+                isRunning = true;
+                toggleControls(true);
+                fullscreenPrompt.style.display = 'none';
+
+                countdown = setInterval(updateTimer, 1000);
+            }
+
+            function pauseTimer() {
+                if (!isRunning) return;
+
+                clearInterval(countdown);
+                isRunning = false;
+                toggleControls(false);
+            }
+        
+            function resetTimer() {
+                exitFullScreen();
+                clearInterval(countdown);
+                isRunning = false;
+                totalSeconds = 0;
+                initialTotalSeconds = 0;
+                updateDisplay(0, 0);
+                updateProgressBar(0); // Reset progress bar
+                toggleControls(false);
+                fullscreenPrompt.style.display = 'block';
+                
+                minutesInput.value = '';
+                secondsInput.value = '';
+                inputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+            }
+
+            function updateTimer() {
+                if (totalSeconds <= 0) {
+                    clearInterval(countdown);
+                    isRunning = false;
+                    playAlarm();
+                    exitFullScreen();
+                    toggleControls(false);
+                    fullscreenPrompt.style.display = 'block';
+                    inputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+                    return;
+                }
+
+                totalSeconds--;
+
+                const mins = Math.floor(totalSeconds / 60);
+                const secs = totalSeconds % 60;
+
+                updateDisplay(mins, secs);
+                updateProgressBar(totalSeconds);
+            }
+
+            // --- Helper Functions ---
+            function initAudio() {
+                if (typeof Tone !== 'undefined' && !synth) {
+                    try {
+                        synth = new Tone.Synth().toDestination();
+                    } catch (err)
+ {
+                        console.error("Error initializing Tone.js synth:", err);
+                        synth = null;
+                    }
+                }
+            }
+
+            function updateDisplay(mins, secs) {
+                const formattedMins = String(mins).padStart(2, '0');
+                const formattedSecs = String(secs).padStart(2, '0');
+                timerDisplay.textContent = `${formattedMins}:${formattedSecs}`;
+                document.title = `${formattedMins}:${formattedSecs} - Countdown`;
+            }
+
+            function updateProgressBar(currentSeconds) {
+                if (initialTotalSeconds === 0) { // Avoid division by zero
+                    progressCircle.style.strokeDashoffset = circumference;
+                    return;
+                }
+                const progress = currentSeconds / initialTotalSeconds;
+                const offset = circumference * (1 - progress);
+                progressCircle.style.strokeDashoffset = offset;
+            }
+
+            function toggleControls(running) {
+                if (running) {
+                    startBtn.classList.add('hidden'); // Hide start button
+                    resetBtn.classList.add('col-span-2'); // Make reset full-width
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                    inputArea.querySelectorAll('input').forEach(input => input.disabled = true);
+                } else {
+                    startBtn.classList.remove('hidden'); // Show start button
+                    resetBtn.classList.remove('col-span-2'); // Make reset half-width
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                    if (totalSeconds === 0) {
+                        inputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+                    }
+                }
+            }
+
+            // --- Fullscreen Functions ---
+            function toggleFullScreen() {
+                // Check if already in fullscreen
+                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                    // Exit fullscreen
+                    exitFullScreen(); 
+                } else {
+                    // Enter fullscreen
+                    try {
+                        if (timerCard.requestFullscreen) {
+                            timerCard.requestFullscreen();
+                        } else if (timerCard.mozRequestFullScreen) { // Firefox
+                            timerCard.mozRequestFullScreen();
+                        } else if (timerCard.webkitRequestFullscreen) { // Chrome, Safari
+                            timerCard.webkitRequestFullscreen();
+                        } else if (timerCard.msRequestFullscreen) { // IE/Edge
+                            timerCard.msRequestFullscreen();
+                        }
+                    } catch (err) {
+                        console.error("Fullscreen request failed. This often happens when running in a sandboxed iframe without 'allow=fullscreen' permission.", err);
+                    }
+                }
+            }
+
+            function exitFullScreen() {
+                try {
+                    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        } else if (document.mozCancelFullScreen) {
+                            document.mozCancelFullScreen();
+                        } else if (document.webkitExitFullscreen) {
+                            document.webkitExitFullscreen();
+                        } else if (document.msExitFullscreen) {
+                            document.msExitFullscreen();
+                        }
+                    }
+                } catch (err) {
+                     console.error("Error exiting fullscreen:", err);
+                }
+            }
+
+            function playAlarm() {
+                if (synth && typeof Tone !== 'undefined') {
+                    try {
+                        const now = Tone.now();
+                        synth.triggerAttackRelease("C5", "0.5s", now);
+                        synth.triggerAttackRelease("C5", "0.5s", now + 0.6);
+                        synth.triggerAttackRelease("C5", "0.5s", now + 1.2);
+                    } catch (err) {
+                        console.error("Error playing alarm sound:", err);
+                    }
+                } else {
+                    console.log("Timer Finished! (Audio failed to load)");
+                }
+            }
+
+            // --- Event Listeners ---
+            startBtn.addEventListener('click', startTimer); // Listen to the new Start button
+            iconStartPauseBtn.addEventListener('click', startTimer); // This button handles both start and pause
+            iconFullscreenBtn.addEventListener('click', toggleFullScreen); // Use new toggle function
+            timerDisplay.addEventListener('click', toggleFullScreen); // Use new toggle function
+            resetBtn.addEventListener('click', resetTimer);
+        }
+    </script>
+</body>
+</html>
+

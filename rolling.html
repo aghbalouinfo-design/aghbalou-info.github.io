@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Student Slot Picker</title>
+    <style>
+        /* === CSS STYLES === */
+
+        :root {
+            --primary-color: #008080; /* Teal */
+            --accent-color: #FFD700; /* Bright Yellow */
+            --background-color: #f4f4f9;
+            --text-color: #333;
+            --slot-height: 50px; /* Height of each name in the slot */
+            --slot-visible-items: 3; /* How many items are fully visible in the slot window */
+            --slot-window-height: calc(var(--slot-height) * var(--slot-visible-items));
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll on small devices */
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column; /* Stack vertically by default */
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* --- Controls Section --- */
+        .controls {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            order: 1; /* Keep controls on top */
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #spinButton {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        #spinButton:hover {
+            background-color: #006666;
+        }
+
+        #resetButton {
+            background-color: #ddd;
+            color: var(--text-color);
+        }
+
+        #resetButton:hover {
+            background-color: #ccc;
+        }
+
+        /* --- Slot Machine Section --- */
+        .slot-machine-area {
+            background-color: #fff;
+            padding: 30px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            order: 2; /* Keep slot machine below controls */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            max-width: 500px; /* Limit width */
+        }
+
+        .slots-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .slot-window {
+            background-color: #eee;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            width: 100px; /* Width of each slot */
+            height: var(--slot-window-height);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slot-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            transition: transform 0.2s linear; /* Smooth scrolling when spinning */
+            /* This will be overridden by specific transition in JS */
+        }
+
+        .slot-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: var(--slot-height);
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--text-color);
+            border-bottom: 1px dashed #ccc;
+        }
+        .slot-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Highlight the center item in the window */
+        .slot-window::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: var(--slot-height);
+            transform: translateY(-50%);
+            background-color: rgba(var(--primary-color-rgb), 0.2); /* Semi-transparent highlight */
+            border-top: 1px solid var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+            z-index: 1;
+            pointer-events: none; /* Allow clicks to pass through */
+        }
+
+        /* --- Result Display --- */
+        #finalWinnerDisplay {
+            margin-top: 20px;
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--primary-color);
+            min-height: 1.5em; /* Reserve space */
+            text-align: center;
+        }
+
+        /* --- Media Queries for Responsiveness --- */
+        @media (min-width: 800px) {
+            .container {
+                flex-direction: row; /* Switch to side-by-side on wide screens */
+                justify-content: center;
+                align-items: flex-start;
+            }
+            .controls {
+                order: 1; 
+            }
+            .slot-machine-area {
+                order: 2; 
+            }
+        }
+        @media (max-width: 600px) {
+            .slots-display {
+                gap: 10px;
+            }
+            .slot-window {
+                width: 80px;
+                height: var(--slot-window-height);
+            }
+            .slot-item {
+                font-size: 0.9em;
+                height: 40px; /* Adjust height for smaller screens */
+            }
+            :root {
+                --slot-height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎰 Student Slot Picker</h1>
+    <div class="container">
+        
+        <div class="controls">
+            <h2>1. Enter Names</h2>
+            <textarea id="nameInput" placeholder="Enter names separated by a comma (e.g., anir, lounes, sifaw, etc.)."></textarea>
+            
+            <button id="updateNamesButton">Update Names</button>
+            <p style="font-size: 0.9em; margin-top: 10px;">*Names update automatically on 'Spin' if the text area changes.</p>
+
+            <hr style="margin: 20px 0;">
+
+            <h2>2. Spin to Win!</h2>
+            <button id="spinButton">Spin Slots</button>
+            <button id="resetButton">Reset</button>
+        </div>
+
+        <div class="slot-machine-area">
+            <div class="slots-display">
+                <div class="slot-window"><div class="slot-content" id="slot1"></div></div>
+                <div class="slot-window"><div class="slot-content" id="slot2"></div></div>
+                <div class="slot-window"><div class="slot-content" id="slot3"></div></div>
+            </div>
+            <div id="finalWinnerDisplay"></div>
+        </div>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('nameInput');
+        const updateNamesButton = document.getElementById('updateNamesButton');
+        const spinButton = document.getElementById('spinButton');
+        const resetButton = document.getElementById('resetButton');
+        const finalWinnerDisplay = document.getElementById('finalWinnerDisplay');
+        const slotContents = [
+            document.getElementById('slot1'),
+            document.getElementById('slot2'),
+            document.getElementById('slot3')
+        ];
+
+        let names = ["anir", "lounes", "sifaw", "iri", "sophia", "idder", "silya", "massin", "ali", "fatima", "omar", "layla", "samir", "nour", "hassan", "zara", "adam", "maya", "karim", "amina", "bilal", "sara", "youssef", "chaima", "fares", "imane", "reda", "nora", "mehdi", "hiba", "mourad", "soumia", "walid", "lina", "rachid", "manal", "driss", "amal", "zakaria", "rania", "khalid", "selma"];
+        nameInput.value = names.join(', ');
+
+        const slotHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--slot-height'));
+        const slotVisibleItems = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--slot-visible-items'));
+        let spinning = false;
+
+        // --- Core Functions ---
+
+        /**
+         * Cleans input, updates the global names array, and re-renders the slot content.
+         */
+        function updateNames() {
+            const rawInput = nameInput.value;
+            names = rawInput.split(',')
+                           .map(name => name.trim())
+                           .filter(name => name.length > 0);
+
+            if (names.length === 0) {
+                alert('Please enter at least one name.');
+                return false;
+            }
+            renderSlots();
+            return true;
+        }
+
+        /**
+         * Populates each slot with the names, repeated for a seamless scroll.
+         */
+        function renderSlots() {
+            slotContents.forEach(slot => {
+                slot.innerHTML = ''; // Clear existing items
+                // Repeat names multiple times to ensure continuous scrolling effect
+                const repeatedNames = [...names, ...names, ...names, ...names, ...names]; 
+
+                repeatedNames.forEach(name => {
+                    const item = document.createElement('div');
+                    item.className = 'slot-item';
+                    item.textContent = name;
+                    slot.appendChild(item);
+                });
+                slot.style.transform = `translateY(0px)`; // Reset position
+                slot.style.transition = `none`; // Clear any spinning transition
+            });
+            finalWinnerDisplay.textContent = ''; // Clear previous winner
+        }
+
+        /**
+         * Simulates a slot machine spin.
+         */
+        async function spinSlots() {
+            if (spinning) return;
+
+            if (!updateNames()) { // Update names and check if valid
+                return;
+            }
+
+            spinning = true;
+            spinButton.disabled = true;
+            finalWinnerDisplay.textContent = 'Spinning...';
+
+            const winnerIndex = Math.floor(Math.random() * names.length);
+            const winnerName = names[winnerIndex];
+
+            const spinDurations = [4000, 5000, 6000]; // Different durations for each slot
+            const promises = slotContents.map((slot, index) => 
+                spinSingleSlot(slot, winnerIndex, spinDurations[index])
+            );
+
+            await Promise.all(promises); // Wait for all slots to finish
+
+            finalWinnerDisplay.textContent = `The Winner Is: ${winnerName.toUpperCase()}`;
+            spinning = false;
+            spinButton.disabled = false;
+        }
+
+        /**
+         * Spins a single slot element to land on the target name.
+         * @param {HTMLElement} slotEl - The slot content div.
+         * @param {number} targetIndex - The index of the name to land on.
+         * @param {number} duration - The duration of the spin in ms.
+         */
+        function spinSingleSlot(slotEl, targetIndex, duration) {
+            return new Promise(resolve => {
+                const totalNames = names.length;
+                const repeatedSections = 3; // How many full sets of names are before the final landing
+                
+                // Calculate target Y position for the winner to be in the middle of the window
+                // We add slotHeight * (slotVisibleItems / 2 - 0.5) to center the target name
+                // within the visible slot window.
+                const offsetToCenter = slotHeight * (Math.floor(slotVisibleItems / 2));
+
+                // The target position is the start of the 'repeatedSections' block,
+                // plus the target index within that block, minus the offset to center.
+                let targetY = (repeatedSections * totalNames * slotHeight) + 
+                              (targetIndex * slotHeight) - 
+                              offsetToCenter;
+                
+                // Add some random wobble for a more natural slot machine feel
+                targetY += (Math.random() * slotHeight * 0.8) - (slotHeight * 0.4); 
+
+                // Ensure it ends on an item, by snapping to the closest item's top edge
+                targetY = Math.round(targetY / slotHeight) * slotHeight;
+
+                // Apply the spin transition
+                slotEl.style.transition = `transform ${duration / 1000}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
+                slotEl.style.transform = `translateY(-${targetY}px)`;
+
+                // Resolve the promise when the transition ends
+                slotEl.addEventListener('transitionend', function handler() {
+                    slotEl.removeEventListener('transitionend', handler);
+                    resolve();
+                });
+            });
+        }
+
+        /**
+         * Resets the application state and slots.
+         */
+        function resetApp() {
+            renderSlots(); // Re-render to clear previous spin results
+            finalWinnerDisplay.textContent = '';
+            spinning = false;
+            spinButton.disabled = false;
+            slotContents.forEach(slot => {
+                slot.style.transition = `none`; // Remove transition
+                slot.style.transform = `translateY(0px)`; // Reset position
+            });
+        }
+
+        // --- Event Listeners ---
+        updateNamesButton.addEventListener('click', updateNames);
+        spinButton.addEventListener('click', spinSlots);
+        resetButton.addEventListener('click', resetApp);
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSlots();
+        });
+    </script>
+
+</body>
+</html>

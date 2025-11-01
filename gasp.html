@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Data Slot Picker (Optimized)</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    
+    <style>
+        /* === CSS STYLES === */
+
+        :root {
+            --primary-color: #008080; /* Teal */
+            --accent-color: #FFD700; /* Bright Yellow */
+            --background-color: #f4f4f9;
+            --text-color: #333;
+            --slot-height: 60px;
+            --slot-visible-items: 3; 
+            --slot-window-height: calc(var(--slot-height) * var(--slot-visible-items));
+            --winner-color: #FFA500; /* A celebratory, warm orange */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 2.5em;
+        }
+
+        h1 svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--primary-color);
+        }
+
+        /* --- 
+            LAYOUT: Side-by-side by default
+        --- */
+        .container {
+            display: flex;
+            flex-direction: row; /* Default is side-by-side */
+            justify-content: center;
+            align-items: flex-start; /* Makes columns equal height */
+            flex-wrap: wrap; 
+            gap: 30px;
+            width: 100%;
+            max-width: 1400px; 
+        }
+
+        /* --- Controls Section --- */
+        .controls {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            flex: 1; 
+            min-width: 300px; 
+            max-width: 500px; 
+            order: 1; 
+            /* Flex column to manage internal spacing */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Make textarea grow to fill space in controls */
+        .controls h2 {
+            flex-shrink: 0;
+        }
+        .controls hr {
+            flex-shrink: 0;
+            width: 100%;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px; 
+            /* Allow textarea to grow */
+            flex-grow: 1;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+            font-family: 'Consolas', monospace; 
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        /* --- Button Hierarchy & SVG Icon Styling --- */
+        button {
+            padding: 0;
+            margin: 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px; 
+            height: 48px; 
+            flex-shrink: 0;
+        }
+        button:active {
+            transform: scale(0.95); 
+        }
+        button:disabled {
+            background-color: #a0a0a0 !important;
+            color: #fff !important;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+        button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Primary Action Button (Spin) */
+        #spinButton {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            width: 64px;
+            height: 64px;
+        }
+        #spinButton svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--text-color);
+        }
+        #spinButton:hover:not(:disabled) { background-color: #ffed8a; }
+
+        /* Secondary Action Buttons (Teal) */
+        #resetButton, #updateNamesButton, #loadCsvButton, #clearHistoryButton {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        #resetButton svg, #updateNamesButton svg, #loadCsvButton svg, #clearHistoryButton svg {
+            fill: white;
+        }
+        #resetButton:hover:not(:disabled), 
+        #updateNamesButton:hover:not(:disabled), 
+        #loadCsvButton:hover:not(:disabled),
+        #clearHistoryButton:hover:not(:disabled) { 
+            background-color: #006666; 
+        }
+        
+        /* Specific size for clear history button */
+        #clearHistoryButton {
+            width: 36px;
+            height: 36px;
+        }
+        #clearHistoryButton svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        #csvFileInput { display: none; }
+
+        /* --- Remove Winner Checkbox --- */
+        .spin-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-shrink: 0;
+        }
+        .spin-options label {
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+        }
+        #removeWinnerCheck {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        /* --- History Section --- */
+        .history-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            flex-shrink: 0;
+        }
+        .history-container {
+            background-color: #eee;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            height: 150px; /* Fixed height for scroll */
+            overflow-y: auto;
+            padding: 0;
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+        #winnerHistoryList {
+            list-style-type: decimal;
+            padding-left: 30px;
+            margin: 5px 0;
+        }
+        #winnerHistoryList li {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            border-bottom: 1px solid #ddd;
+        }
+        #winnerHistoryList li:last-child {
+            border-bottom: none;
+        }
+
+
+        /* --- Slot Machine Section (LARGER UI) --- */
+        .slot-machine-area {
+            background-color: #e9e9ed;
+            padding: 30px 20px 20px 20px;
+            border-radius: 10px;
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0,0,0,0.05);
+            order: 2; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex: 2; 
+            min-width: 400px; 
+            max-width: 800px; 
+        }
+
+        .slots-display {
+            display: flex;
+            justify-content: center;
+            gap: 10px; 
+            width: 100%; 
+        }
+
+        .slot-window {
+            background-color: #111;
+            border: 1px solid #444;
+            border-radius: 5px;
+            width: 33%; 
+            height: var(--slot-window-height);
+            overflow: hidden; 
+            position: relative;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+        }
+        
+        .slot-window.id-slot { width: 20%; max-width: 100px; }
+        .slot-window.nom-slot { width: 40%; max-width: 350px; }
+        .slot-window.prenom-slot { width: 40%; max-width: 350px; }
+
+
+        .slot-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .slot-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: var(--slot-height);
+            font-size: 1.25em; /* Larger font */
+            font-weight: 500;
+            color: #fff;
+            box-sizing: border-box;
+            text-overflow: ellipsis; 
+            white-space: nowrap;
+            overflow: hidden;
+            padding: 0 10px; 
+        }
+        
+        .slot-item.empty-state {
+            color: #555;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        .slot-window::before {
+            content: '';
+            position: absolute;
+            top: 50%; 
+            left: 0;
+            width: 100%;
+            height: var(--slot-height); 
+            transform: translateY(-50%); 
+            background: none; 
+            border-top: 2px solid var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            z-index: 1;
+            pointer-events: none; 
+        }
+
+        #finalWinnerDisplay {
+            width: 100%;
+            margin-bottom: 25px;
+            font-size: 2.5em; /* Larger font */
+            font-weight: bold;
+            color: var(--text-color);
+            min-height: 1.8em; 
+            text-align: center;
+            background-color: #ddd;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease-out;
+            padding: 10px 20px;
+            box-sizing: border-box; 
+        }
+
+        #finalWinnerDisplay.winner-highlight {
+            color: var(--text-color);
+            background-color: var(--accent-color);
+            border-color: #e6c200;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 0 20px rgba(255, 215, 0, 0.7);
+            animation: winner-pop 0.5s ease-out;
+        }
+
+        @keyframes winner-pop {
+            0% { transform: scale(0.9); opacity: 0.5; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1.0); }
+        }
+
+        /* --- 
+            Media Query: Stacks on mobile
+        --- */
+        @media (max-width: 800px) {
+            .container { 
+                flex-direction: column; /* STACK */
+                align-items: center; 
+            }
+            
+            .controls, .slot-machine-area {
+                width: 100%;
+                min-width: 90%; 
+                max-width: 100%; 
+                flex: none; 
+            }
+
+            :root { --slot-height: 45px; } 
+            .slots-display { gap: 5px; }
+            .slot-window { width: 30%; max-width: none; }
+            .slot-window.id-slot { width: 20%; max-width: none; }
+            .slot-window.nom-slot { width: 40%; max-width: none; }
+            .slot-window.prenom-slot { width: 40%; max-width: none; }
+            .slot-item { font-size: 0.9em; }
+            #finalWinnerDisplay { font-size: 1.5em; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        Student Picker
+    </h1>
+    
+    <div class="container">
+        
+        <div class="controls">
+            <h2>1. Student Data</h2>
+            <textarea id="nameInput" placeholder="Enter student data, one student per line.&#10;Format: ID,Nom,Prénom&#10;...or upload a CSV file."></textarea>
+            
+            <div class="button-group">
+                <button id="updateNamesButton" title="Update list from textarea">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </button>
+                <button id="resetButton" title="Reset slots (keeps data)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-4.8 1.9-5.35 4.34L8.8 10.7C9.37 9.64 10.82 9 12.5 9c1.93 0 3.5 1.57 3.5 3.5s-1.57 3.5-3.5 3.5c-.95 0-1.82-.38-2.47-1.01L8.3 16.7c1.11 1.01 2.62 1.6 4.2 1.6 3.58 0 6.5-2.92 6.5-6.5S16.08 8 12.5 8zM3 4.27l1.41 1.41C5.57 7.26 7.69 8 10 8V5L5 1 0 5v3h3V4.27z"/></svg>
+                </button>
+                <button id="loadCsvButton" title="Load from .csv file">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg>
+                </button>
+            </div>
+            
+            <input type="file" id="csvFileInput" accept=".csv, text/csv">
+
+            <hr>
+
+            <h2>2. Spin to Select!</h2>
+            <div class="button-group">
+                <button id="spinButton" title="Spin to select a winner!">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="spin-options">
+                    <input type="checkbox" id="removeWinnerCheck">
+                    <label for="removeWinnerCheck">Remove winner after spin</label>
+                </div>
+            </div>
+            
+            <div class="history-section">
+                <h2>History</h2>
+                <button id="clearHistoryButton" title="Clear History">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+            </div>
+            <div class="history-container">
+                <ol id="winnerHistoryList"></ol>
+            </div>
+
+        </div>
+
+        <div class="slot-machine-area">
+            
+            <div id="finalWinnerDisplay">Load student data to begin!</div>
+
+            <div class="slots-display">
+                <div class="slot-window id-slot"><div class="slot-content" id="slotID"></div></div>
+                <div class="slot-window nom-slot"><div class="slot-content" id="slotNom"></div></div>
+                <div class="slot-window prenom-slot"><div class="slot-content" id="slotPrenom"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === JAVASCRIPT (with GSAP) ===
+        
+        const nameInput = document.getElementById('nameInput');
+        const updateNamesButton = document.getElementById('updateNamesButton');
+        const spinButton = document.getElementById('spinButton');
+        const resetButton = document.getElementById('resetButton');
+        const finalWinnerDisplay = document.getElementById('finalWinnerDisplay');
+        const loadCsvButton = document.getElementById('loadCsvButton');
+        const csvFileInput = document.getElementById('csvFileInput');
+        const removeWinnerCheck = document.getElementById('removeWinnerCheck');
+        const winnerHistoryList = document.getElementById('winnerHistoryList');
+        const clearHistoryButton = document.getElementById('clearHistoryButton');
+        
+        const slotContents = {
+            id: document.getElementById('slotID'),
+            nom: document.getElementById('slotNom'),
+            prenom: document.getElementById('slotPrenom')
+        };
+
+        // Start with no sample data
+        let students = [];
+        let winnerHistory = [];
+        
+        let slotHeight = 60; 
+        let slotVisibleItems = 3; 
+        let spinning = false;
+
+        // --- NEW: Control Locking Functions ---
+        function disableControls() {
+            spinning = true;
+            spinButton.disabled = true;
+            resetButton.disabled = true;
+            updateNamesButton.disabled = true;
+            loadCsvButton.disabled = true;
+            clearHistoryButton.disabled = true;
+        }
+        
+        function enableControls() {
+            spinning = false;
+            spinButton.disabled = false;
+            resetButton.disabled = false;
+            updateNamesButton.disabled = false;
+            loadCsvButton.disabled = false;
+            clearHistoryButton.disabled = false;
+        }
+
+        // --- Core Functions ---
+
+        /**
+         * Parses textarea input into student objects.
+         */
+        function updateStudentsData() {
+            if (spinning) return; // Do not update while spinning
+            
+            const rawInput = nameInput.value;
+            const lines = rawInput.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+            
+            let parsedStudents = [];
+            for (const line of lines) {
+                const parts = line.split(',').map(part => part.trim().replace(/"/g, ''));
+                if (parts.length >= 3) {
+                    parsedStudents.push({
+                        id: parts[0],
+                        nom: parts[1],
+                        prenom: parts[2]
+                    });
+                } else if (line.length > 0) { 
+                    console.warn(`Skipping malformed line: "${line}". Expected ID,Nom,Prénom.`);
+                }
+            }
+
+            if (parsedStudents.length === 0) {
+                students = [];
+            } else {
+                students = parsedStudents;
+            }
+            
+            clearHistory();
+            renderSlots();
+            
+            return students.length > 0;
+        }
+
+        /**
+         * Renders the slot items for each category (ID, Nom, Prénom).
+         */
+        function renderSlots() {
+            const rootStyles = getComputedStyle(document.documentElement);
+            slotHeight = parseInt(rootStyles.getPropertyValue('--slot-height'));
+            slotVisibleItems = parseInt(rootStyles.getPropertyValue('--slot-visible-items'));
+
+            if (students.length === 0) {
+                finalWinnerDisplay.textContent = 'Load student data to begin!';
+            } else {
+                finalWinnerDisplay.textContent = 'Click Spin to find a student!';
+            }
+            finalWinnerDisplay.classList.remove('winner-highlight');
+
+            ['id', 'nom', 'prenom'].forEach(key => {
+                const slot = slotContents[key];
+                slot.innerHTML = ''; 
+
+                if (students.length === 0) {
+                    const item = document.createElement('div');
+                    item.className = 'slot-item empty-state';
+                    item.textContent = 'Waiting...';
+                    slot.appendChild(item);
+                } else {
+                    const repeatedStudents = [];
+                    // *** OPTIMIZATION 1: Only repeat 3 times ***
+                    for(let i = 0; i < 3; i++) { 
+                        repeatedStudents.push(...students);
+                    }
+
+                    repeatedStudents.forEach(student => {
+                        const item = document.createElement('div');
+                        item.className = 'slot-item';
+                        item.textContent = student[key]; 
+                        item.setAttribute('data-student-id', student.id); 
+                        slot.appendChild(item);
+                    });
+                }
+                
+                gsap.killTweensOf(slot); 
+                gsap.set(slot, { y: 0 }); 
+            });
+        }
+        
+        /**
+         * Renders the Winner History list.
+         */
+        function renderHistory() {
+            winnerHistoryList.innerHTML = ''; 
+            if (winnerHistory.length === 0) {
+                winnerHistoryList.innerHTML = '<li>No winners yet...</li>';
+                return;
+            }
+            
+            winnerHistory.forEach((winner, index) => {
+                const li = document.createElement('li');
+                li.textContent = `[${winner.id}] ${winner.name}`;
+                // Highlight the most recent winner
+                if (index === 0) {
+                    li.style.fontWeight = 'bold';
+                    li.style.color = 'var(--primary-color)';
+                }
+                winnerHistoryList.appendChild(li);
+            });
+        }
+        
+        /**
+         * Clears the winner history array and re-renders the list.
+         */
+        function clearHistory() {
+            if (spinning) return; // Do not clear while spinning
+            winnerHistory = [];
+            renderHistory();
+        }
+
+        /**
+         * Initiates the spinning of all three slots.
+         */
+        async function spinSlots() {
+            if (spinning) return;
+            
+            // Check if students exist from the *current* state
+            if (students.length === 0) {
+                // Try to parse the text area just in case
+                if (!updateStudentsData()) {
+                    alert('Please load or enter student data before spinning.');
+                    return;
+                }
+                if (students.length === 0) {
+                     alert('Please load or enter student data before spinning.');
+                    return;
+                }
+            }
+
+            disableControls(); 
+            
+            finalWinnerDisplay.textContent = 'Spinning...';
+            finalWinnerDisplay.classList.remove('winner-highlight');
+
+            const winnerStudentIndex = Math.floor(Math.random() * students.length);
+            const winningStudentData = students[winnerStudentIndex];
+
+            const spinPromises = [];
+            ['id', 'nom', 'prenom'].forEach((key, index) => {
+                spinPromises.push(
+                    spinSingleSlot(slotContents[key], winnerStudentIndex, index)
+                );
+            });
+
+            await Promise.all(spinPromises); 
+
+            // --- Post-Spin Logic ---
+            const winnerString = `${winningStudentData.nom} ${winningStudentData.prenom}`;
+            finalWinnerDisplay.textContent = `🎉 ${winnerString} 🎉`;
+            finalWinnerDisplay.classList.add('winner-highlight');
+            
+            winnerHistory.unshift({ id: winningStudentData.id, name: winnerString });
+            renderHistory();
+            
+            if (removeWinnerCheck.checked) {
+                students.splice(winnerStudentIndex, 1);
+                nameInput.value = students.map(s => `${s.id},${s.nom},${s.prenom}`).join('\n');
+                
+                setTimeout(() => {
+                    renderSlots();
+                    enableControls(); 
+                }, 1500); 
+            } else {
+                enableControls(); 
+            }
+        }
+
+        /**
+         * Spins a single slot using GSAP to land on the target student's data.
+         */
+        function spinSingleSlot(slotEl, targetStudentIndex, slotAnimDelayIndex) {
+            return new Promise(resolve => {
+                const totalStudents = students.length;
+                
+                // *** OPTIMIZATION 2: Target the middle repetition block (index 1) ***
+                const repeatedSections = 1; 
+                
+                const offsetToCenter = slotHeight * (Math.floor(slotVisibleItems / 2));
+                const targetItemIndexInSlotList = (repeatedSections * totalStudents) + targetStudentIndex;
+                const targetY = (targetItemIndexInSlotList * slotHeight) - offsetToCenter;
+
+                // *** OPTIMIZATION 3: Reduced base duration ***
+                const baseDuration = 2.5; // Was 4
+                const duration = baseDuration + (slotAnimDelayIndex * 0.5); // Stagger is also faster (was 0.75)
+                
+                gsap.to(slotEl, {
+                    y: -targetY,        
+                    duration: duration, 
+                    ease: "power3.out", 
+                    delay: slotAnimDelayIndex * 0.1, // Stagger delay is faster (was 0.2)
+                    onComplete: resolve 
+                });
+            });
+        }
+
+        /**
+         * Resets the slots' visual state without clearing data or history.
+         */
+        function resetApp() {
+            if (spinning) return; // Do not reset while spinning
+            renderSlots();
+        }
+        
+        /**
+         * Handles the file input change event.
+         */
+        function handleFileSelect(event) {
+            if (spinning) return; 
+            
+            const file = event.target.files[0];
+            if (!file) {
+                return; 
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                const text = e.target.result;
+                nameInput.value = text; 
+                updateStudentsData(); 
+            };
+            
+            reader.onerror = () => {
+                alert('Error reading file');
+            };
+            
+            reader.readAsText(file);
+            
+            event.target.value = null;
+        }
+
+        // --- Event Listeners ---
+        updateNamesButton.addEventListener('click', updateStudentsData);
+        spinButton.addEventListener('click', spinSlots);
+        resetButton.addEventListener('click', resetApp);
+        clearHistoryButton.addEventListener('click', clearHistory);
+        
+        loadCsvButton.addEventListener('click', () => {
+            csvFileInput.click(); 
+        });
+        csvFileInput.addEventListener('change', handleFileSelect);
+        
+        // Initial setup on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSlots(); 
+            renderHistory(); 
+        });
+    </script>
+
+</body>
+</html>

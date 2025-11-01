@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Student Picker Wheel</title>
+    <style>/* === CSS STYLES === */
+
+/* === CORRECTED CSS STYLES === */
+
+:root {
+    --primary-color: #008080; /* Teal */
+    --accent-color: #FFD700; /* Bright Yellow */
+    --background-color: #f4f4f9;
+    --text-color: #333;
+    --wheel-size: 400px; /* Define wheel size for consistency */
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+/* --- Layout Correction: Wheel Below Controls on Desktop --- */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column; /* CHANGE: Stack items vertically by default */
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.controls {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 350px;
+    order: 1; /* Ensure controls are first (on top) */
+}
+
+textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#spinButton {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#spinButton:hover {
+    background-color: #006666;
+}
+
+#resetButton {
+    background-color: #ddd;
+    color: var(--text-color);
+}
+
+#resetButton:hover {
+    background-color: #ccc;
+}
+
+/* --- Wheel Section --- */
+.wheel-area {
+    position: relative;
+    width: var(--wheel-size);
+    height: var(--wheel-size);
+    order: 2; /* Ensure wheel is second (below) */
+}
+
+.wheel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.segment {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    transform-origin: 100% 100%; 
+    overflow: hidden;
+}
+
+.segment::before { /* Remove any lingering pseudo-element styles */
+    content: none !important;
+}
+
+/* --- TEXT ORIENTATION FIX (Horizontal text) --- */
+.segment-inner {
+    position: absolute;
+    width: 100%; 
+    height: 100%;
+    top: 0;
+    left: 0; 
+    
+    display: flex;
+    align-items: center; /* Vertically center the text within the segment height */
+    justify-content: flex-start; 
+    
+    text-align: left;
+    color: white;
+    font-weight: bold;
+    font-size: clamp(10px, 2vw, 16px);
+    
+    /* 1. Counter-rotation is applied in JS via the custom property */
+    transform: rotate(var(--text-rotation)); 
+    
+    /* 2. Push text outward from the wheel center */
+    padding-left: 20px; /* Distance from the center of the wheel */
+    padding-top: 5px; /* Fine-tune vertical position */
+    
+    box-sizing: border-box;
+}
+
+/* The pointer/marker */
+.pointer {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 25px solid var(--accent-color);
+    z-index: 10;
+}
+
+/* --- Result Modal (Readability Check) --- */
+.result-modal {
+    /* ... (keep existing modal styles) ... */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+/* ... (keep existing winnerName and result-content styles for readability) ... */
+
+/* --- Media Queries for Responsiveness: Side-by-Side on large screens --- */
+@media (min-width: 800px) {
+    .container {
+        flex-direction: row; /* CHANGE: Switch to side-by-side on wide screens */
+        justify-content: center;
+        align-items: flex-start;
+    }
+    .controls {
+        order: 1; 
+    }
+    .wheel-area {
+        order: 2; 
+    }
+}
+@media (max-width: 800px) {
+    .wheel-area {
+        width: 300px;
+        height: 300px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <h1>🎡 Random Picker Wheel</h1>
+    <div class="container">
+        
+        <div class="controls">
+            <h2>1. Enter Names</h2>
+            <textarea id="nameInput" placeholder="Enter names separated by a comma (e.g., anir, lounes, sifaw, etc.)."></textarea>
+            
+            <button id="updateWheelButton">Update Wheel</button>
+            <p style="font-size: 0.9em; margin-top: 10px;">*Names update automatically on 'Spin' if the text area changes.</p>
+
+            <hr style="margin: 20px 0;">
+
+            <h2>2. Spin!</h2>
+            <button id="spinButton">Spin The Wheel</button>
+            <button id="resetButton">Reset</button>
+        </div>
+
+        <div class="wheel-area">
+            <div class="pointer"></div>
+            <div class="wheel" id="wheel">
+                </div>
+        </div>
+    </div>
+
+    <div class="result-modal" id="resultModal">
+        <div class="result-content">
+            <h2>The Winner Is:</h2>
+            <p id="winnerName"></p>
+            <button onclick="document.getElementById('resultModal').classList.remove('show');">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('nameInput');
+        const updateWheelButton = document.getElementById('updateWheelButton');
+        const spinButton = document.getElementById('spinButton');
+        const resetButton = document.getElementById('resetButton');
+        const wheel = document.getElementById('wheel');
+        const resultModal = document.getElementById('resultModal');
+        const winnerNameDisplay = document.getElementById('winnerName');
+
+        // Example Name List (Initial State)
+        let names = ["anir", "lounes", "sifaw", "iri", "sophia", "idder", "silya", "massin"];
+        nameInput.value = names.join(', ');
+
+        const segmentColors = [
+            '#008080', '#5F9EA0', '#4682B4', '#1E90FF', '#7FFFD4', '#20B2AA', '#00CED1', '#66CDAA'
+        ];
+        let spinning = false;
+
+        // --- Core Functions ---
+
+        /**
+         * Cleans input, updates the global names array, and re-renders the wheel.
+         */
+        function updateWheel() {
+            const rawInput = nameInput.value;
+            // Clean up: split by comma, trim whitespace, filter out empty strings
+            names = rawInput.split(',')
+                           .map(name => name.trim())
+                           .filter(name => name.length > 0);
+
+            if (names.length === 0) {
+                alert('Please enter at least one name.');
+                return;
+            }
+
+            renderWheel();
+        }
+
+        /**
+         * Renders the wheel segments based on the current names array.
+         */
+        /**
+ * Renders the wheel segments based on the current names array.
+ */
+/**
+ * Renders the wheel segments based on the current names array.
+ */
+/**
+ * Renders the wheel segments based on the current names array.
+ */
+function renderWheel() {
+    wheel.innerHTML = ''; // Clear existing segments
+    const numSegments = names.length;
+    if (numSegments === 0) return;
+
+    const anglePerSegment = 360 / numSegments;
+    let currentRotation = 0;
+
+    names.forEach((name, index) => {
+        const segment = document.createElement('div');
+        segment.className = 'segment';
+        segment.setAttribute('data-name', name);
+
+        // 1. Set the background color and the skewed segment shape
+        segment.style.backgroundColor = segmentColors[index % segmentColors.length];
+        segment.style.transform = `rotate(${currentRotation}deg) skewY(${90 - anglePerSegment}deg)`;
+        
+        // 2. Create the inner text container
+        const textContainer = document.createElement('div');
+        textContainer.className = 'segment-inner';
+        textContainer.textContent = name;
+        
+        // 3. Calculate the angle required to make the text HORIZONTAL 
+        // This involves undoing the segment's rotation and skew.
+        // The skew angle is (90 - anglePerSegment). We must rotate by this amount 
+        // plus half the segment angle to align it properly.
+        const textRotation = 90 - (anglePerSegment / 2);
+
+        // 4. Set the text rotation variable (Negative value counter-rotates)
+        textContainer.style.setProperty('--text-rotation', `-${textRotation}deg`);
+
+        segment.appendChild(textContainer);
+        wheel.appendChild(segment);
+        currentRotation += anglePerSegment;
+    });
+}
+        /**
+         * Calculates the rotation needed to select a random name and starts the spin.
+         */
+        function spinWheel() {
+            if (spinning) return;
+
+            updateWheel(); // Ensure the wheel is up-to-date
+            if (names.length === 0) return;
+
+            spinning = true;
+            spinButton.disabled = true;
+
+            const numSegments = names.length;
+            const anglePerSegment = 360 / numSegments;
+
+            // 1. Pick a random index (the winner)
+            const winnerIndex = Math.floor(Math.random() * numSegments);
+            const winnerName = names[winnerIndex];
+
+            // 2. Calculate the target angle for the winner
+            // Target is the center of the winner segment, positioned under the pointer (top center)
+            const targetAngleCenter = 270 - (winnerIndex * anglePerSegment) - (anglePerSegment / 2);
+
+            // 3. Add 5 full rotations for drama
+            const fullRotations = 5 * 360; 
+
+            // 4. Add a small random offset (1-20 degrees) to ensure the landing is unique
+            const randomOffset = Math.random() * 20 - 10; 
+
+            // Total rotation amount
+            const finalRotation = fullRotations + targetAngleCenter + randomOffset;
+
+            // Apply rotation
+            wheel.style.transition = 'transform 5s cubic-bezier(0.25, 0.1, 0.25, 1)';
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+
+            // 5. Display the result after the spin animation is complete
+            setTimeout(() => {
+                spinning = false;
+                spinButton.disabled = false;
+                displayWinner(winnerName);
+                // Reset rotation for the NEXT spin, but keep the visual spin
+                // by wrapping the final rotation so it doesn't "snap" back visually.
+                const newRotation = finalRotation % 360;
+                wheel.style.transition = 'none';
+                wheel.style.transform = `rotate(${newRotation}deg)`;
+            }, 5000); 
+        }
+        
+        /**
+         * Shows the winner in a modal.
+         * @param {string} name - The name of the winner.
+         */
+        function displayWinner(name) {
+            winnerNameDisplay.textContent = name.toUpperCase();
+            resultModal.classList.add('show');
+        }
+
+        /**
+         * Resets the application state.
+         */
+        function resetApp() {
+            // Clears any current result, but keeps the names in the textarea
+            wheel.style.transition = 'none';
+            wheel.style.transform = 'rotate(0deg)';
+            resultModal.classList.remove('show');
+            spinning = false;
+            spinButton.disabled = false;
+        }
+
+        // --- Event Listeners ---
+        updateWheelButton.addEventListener('click', updateWheel);
+        spinButton.addEventListener('click', spinWheel);
+        resetButton.addEventListener('click', resetApp);
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', renderWheel);
+    </script>
+
+</body>
+</html>

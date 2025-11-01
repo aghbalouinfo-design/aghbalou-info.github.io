@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Student Card Flip Picker (Final)</title>
+    <style>
+        /* === CSS STYLES === */
+
+        :root {
+            --primary-color: #008080; /* Teal */
+            --accent-color: #FFD700; /* Bright Yellow */
+            --background-color: #f4f4f9;
+            --text-color: #333;
+            --card-size: 150px;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column; 
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* --- Controls Section --- */
+        .controls {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            order: 1; 
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #spinButton {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        #spinButton:hover:not(:disabled) {
+            background-color: #006666;
+        }
+        
+        #spinButton:disabled {
+            background-color: #a0a0a0;
+            cursor: not-allowed;
+        }
+
+        #resetButton {
+            background-color: #ddd;
+            color: var(--text-color);
+        }
+
+        #resetButton:hover {
+            background-color: #ccc;
+        }
+
+        /* --- Card Display Section --- */
+        .card-area {
+            order: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 20px 0;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        #nameCount {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        /* The Card Container (3D Context) */
+        .card-container {
+            perspective: 1000px;
+            width: var(--card-size);
+            height: var(--card-size);
+            position: relative;
+        }
+
+        /* The Card Element */
+        .card {
+            width: 100%;
+            height: 100%;
+            transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.4, 1.2); /* Dramatic flip animation */
+            transform-style: preserve-3d;
+        }
+
+        /* Keep the card face down initially */
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; 
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        /* Card Back (Unselected State) */
+        .card-back {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 3em;
+            line-height: 1;
+        }
+
+        /* Card Front (Selected State) */
+        .card-front {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            transform: rotateY(180deg); 
+            font-size: 1.8em;
+            word-wrap: break-word; 
+        }
+
+        /* --- SHUFFLE ANIMATION ELEMENTS --- */
+        #shuffleContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 20px;
+            opacity: 0; 
+            transition: opacity 0.3s;
+            max-width: 500px;
+            position: relative;
+            min-height: 60px; /* Reserve space */
+        }
+
+        .shuffle-card {
+            width: 40px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+            color: white;
+            /* Shaking animation is applied dynamically in JS */
+        }
+
+        .shake-animation {
+            animation: shake 0.2s infinite alternate;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0.5deg); }
+            100% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+        }
+
+        /* Show/Hide controls */
+        #shuffleContainer.shuffling {
+            opacity: 1;
+        }
+
+        .card-container.hidden {
+            opacity: 0;
+            /* Ensures it doesn't take up space during shuffle */
+            visibility: hidden; 
+            height: 0;
+        }
+        
+        /* --- Media Queries --- */
+        @media (min-width: 800px) {
+            .container {
+                flex-direction: row; 
+                justify-content: center;
+                align-items: flex-start;
+            }
+        }
+        @media (max-width: 600px) {
+            :root {
+                --card-size: 120px;
+            }
+            .card-back {
+                font-size: 2.5em;
+            }
+            .card-front {
+                font-size: 1.4em;
+            }
+            .shuffle-card {
+                 width: 30px;
+                 height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🃏 Student Picker: Card Flip</h1>
+    <div class="container">
+        
+        <div class="controls">
+            <h2>1. Enter Names</h2>
+            <textarea id="nameInput" placeholder="Enter names separated by a comma."></textarea>
+            
+            <button id="updateNamesButton">Update Names</button>
+            <p style="font-size: 0.9em; margin-top: 10px;">*The card automatically updates when names are changed.</p>
+
+            <hr style="margin: 20px 0;">
+
+            <h2>2. Reveal the Student!</h2>
+            <button id="spinButton">Flip Card</button>
+            <button id="resetButton">Reset</button>
+        </div>
+
+        <div class="card-area">
+            <div id="nameCount">Total Students: 42</div>
+
+            <div id="shuffleContainer">
+                </div>
+            <div class="card-container" id="cardContainer"> 
+                <div class="card" id="pickerCard">
+                    <div class="card-face card-back">?</div>
+                    <div class="card-face card-front" id="winnerName">Click Flip Card to Reveal</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('nameInput');
+        const updateNamesButton = document.getElementById('updateNamesButton');
+        const spinButton = document.getElementById('spinButton');
+        const resetButton = document.getElementById('resetButton');
+        const pickerCard = document.getElementById('pickerCard');
+        const cardContainer = document.getElementById('cardContainer');
+        const winnerNameDisplay = document.getElementById('winnerName');
+        const nameCountDisplay = document.getElementById('nameCount');
+        const shuffleContainer = document.getElementById('shuffleContainer');
+
+        // Initial list of 42 names
+        let names = ["anir", "lounes", "sifaw", "iri", "sophia", "idder", "silya", "massin", "ali", "fatima", "omar", "layla", "samir", "nour", "hassan", "zara", "adam", "maya", "karim", "amina", "bilal", "sara", "youssef", "chaima", "fares", "imane", "reda", "nora", "mehdi", "hiba", "mourad", "soumia", "walid", "lina", "rachid", "manal", "driss", "amal", "zakaria", "rania", "khalid", "selma"];
+        nameInput.value = names.join(', ');
+
+        let isFlipping = false;
+
+        // --- Core Functions ---
+
+        function updateNames() {
+            const rawInput = nameInput.value;
+            names = rawInput.split(',')
+                           .map(name => name.trim())
+                           .filter(name => name.length > 0);
+
+            if (names.length === 0) {
+                alert('Please enter at least one name.');
+                return false;
+            }
+            nameCountDisplay.textContent = `Total Students: ${names.length}`;
+            return true;
+        }
+
+        function renderShuffleCards() {
+            shuffleContainer.innerHTML = '';
+            names.forEach((name, index) => {
+                const card = document.createElement('div');
+                card.className = 'shuffle-card shake-animation'; // Apply shake class here
+                // We use Math.floor(Math.random() * 99) to randomize the number inside the card on each shuffle
+                card.textContent = Math.floor(Math.random() * 99) + 1; 
+                shuffleContainer.appendChild(card);
+            });
+        }
+
+        /**
+         * Initiates the card flip sequence: SHUFFLE -> REVEAL.
+         */
+        function flipCard() {
+            if (isFlipping) return;
+
+            if (!updateNames()) {
+                return;
+            }
+
+            isFlipping = true;
+            spinButton.disabled = true;
+
+            // Step 1: Prepare and start the visible shuffle
+            resetApp(false); // Reset without showing the card immediately
+            renderShuffleCards();
+            
+            // Hide main card, show shuffle container
+            cardContainer.classList.add('hidden');
+            shuffleContainer.classList.add('shuffling');
+
+            const winnerIndex = Math.floor(Math.random() * names.length);
+            const winnerName = names[winnerIndex].toUpperCase();
+
+            // Step 2: Run the shuffle animation for a set time (e.g., 2.5 seconds)
+            const shuffleDuration = 2500; 
+            setTimeout(() => {
+                // Stop the shuffle animation and hide the cards
+                shuffleContainer.classList.remove('shuffling');
+                
+                // Step 3: Transition to the single card flip
+                setTimeout(() => {
+                    // Show the main card container
+                    cardContainer.classList.remove('hidden');
+
+                    // Set the winner name and trigger the CSS 3D flip
+                    winnerNameDisplay.textContent = winnerName;
+                    pickerCard.classList.add('flipped');
+
+                    // Step 4: End the process after the flip animation (1.5s CSS transition + buffer)
+                    setTimeout(() => {
+                        isFlipping = false;
+                        spinButton.disabled = false;
+                    }, 1600); 
+
+                }, 300); // Small pause between shuffle end and flip start (0.3s)
+
+            }, shuffleDuration); 
+        }
+
+        /**
+         * Resets the application state.
+         * @param {boolean} showCard - Whether to show the large card immediately (default: true).
+         */
+        function resetApp(showCard = true) {
+            // Reset the main card
+            pickerCard.classList.remove('flipped');
+            winnerNameDisplay.textContent = 'Click Flip Card to Reveal';
+
+            // Ensure shuffle cards are hidden
+            shuffleContainer.classList.remove('shuffling');
+            shuffleContainer.innerHTML = ''; // Clear cards
+
+            // Show/Hide the main card container based on parameter
+            if (showCard) {
+                cardContainer.classList.remove('hidden');
+            }
+            
+            isFlipping = false;
+            spinButton.disabled = false;
+        }
+
+        // --- Event Listeners ---
+        updateNamesButton.addEventListener('click', () => {
+            updateNames();
+            resetApp(); 
+        });
+        spinButton.addEventListener('click', flipCard);
+        resetButton.addEventListener('click', resetApp);
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', updateNames);
+    </script>
+
+</body>
+</html>

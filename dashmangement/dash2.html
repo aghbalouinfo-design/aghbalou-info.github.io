@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.min.js"></script>
+    <!-- ADDED: GSAP library is required for the new student picker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Hide number input spinners */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        /* --- Dashboard Styles --- */
+        .app-container {
+            display: none; /* Hide all apps by default */
+        }
+        .app-container.active {
+            display: block; /* Show only the active one */
+        }
+
+        /* --- Timer-Specific Styles --- */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .animate-shake { animation: shake 0.5s ease-in-out; }
+
+        /* Timer Fullscreen styles */
+        #timer-card:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #timer-card:fullscreen #timer-content,
+        #timer-card:fullscreen #timer-display {
+            font-size: 25vw;
+            line-height: 1;
+            position: static;
+            transform: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+        #timer-card:fullscreen #timer-display .time-text {
+            font-size: 1em;
+        }
+        #timer-card:fullscreen #progress-svg {
+            width: 30vw;
+            height: 30vw;
+        }
+        #timer-card:fullscreen #input-area,
+        #timer-card:fullscreen #controls-area,
+        #timer-card:fullscreen #fullscreen-prompt,
+        #timer-card:fullscreen h1,
+        #timer-card:fullscreen #icon-controls {
+            display: none;
+        }
+
+        /* Timer Progress Bar */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.5s ease-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        /* Student Picker Animation */
+        @keyframes pop-in {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-in {
+            animation: pop-in 0.3s ease-out;
+        }
+
+        /* --- STYLES FOR STUDENT PICKER (Modified for Dashboard Cohesion) --- */
+
+        /* Removed picker-specific :root variables */
+        :root {
+            /* Kept functional variables */
+            --picker-slot-height: 60px;
+            --picker-slot-visible-items: 3; 
+            --picker-slot-window-height: calc(var(--picker-slot-height) * var(--picker-slot-visible-items));
+        }
+
+        /* --- 
+            LAYOUT: Side-by-side by default
+        --- */
+        #picker-app .container {
+            display: flex;
+            flex-direction: row; /* Default is side-by-side */
+            justify-content: center;
+            align-items: flex-start; /* Makes columns equal height */
+            flex-wrap: wrap; 
+            gap: 30px;
+            width: 100%;
+            max-width: 1400px; 
+            margin: 0 auto; /* Center the container */
+        }
+
+        /* --- Controls Section --- */
+        /* MODIFIED: Matched timer card style */
+        #picker-app .controls {
+            background-color: #fff;
+            padding: 2rem; /* 32px, matches timer */
+            border-radius: 1rem; /* 16px, matches timer */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind 'shadow-xl' */
+            flex: 1; 
+            min-width: 300px; 
+            max-width: 500px; 
+            order: 1; 
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* MODIFIED: Matched dashboard h2 style */
+        #picker-app .controls h2 {
+            flex-shrink: 0;
+            color: #374151; /* gray-700 */
+            font-size: 1.5rem; /* 2xl */
+            font-weight: 600; /* semibold */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+        #picker-app .controls hr {
+            flex-shrink: 0;
+            width: 100%;
+            border-top: 1px solid #e5e7eb; /* border-gray-200 */
+            margin: 1rem 0;
+        }
+        /* MODIFIED: Matched timer input style */
+        #picker-app textarea {
+            width: 100%;
+            min-height: 150px; 
+            flex-grow: 1;
+            padding: 1rem; /* p-4 */
+            margin-bottom: 15px;
+            border: 2px solid #e5e7eb; /* border-2 border-gray-200 */
+            border-radius: 0.5rem; /* rounded-lg */
+            resize: vertical;
+            font-family: 'Consolas', monospace; 
+        }
+        #picker-app textarea:focus {
+            outline: none;
+            border-color: #6d28d9; /* focus:border-purple-600 */
+        }
+
+        #picker-app .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        /* --- Button Hierarchy & SVG Icon Styling --- */
+        #picker-app button {
+            padding: 0;
+            margin: 0;
+            border: none;
+            border-radius: 0.375rem; /* rounded-md */
+            font-size: 16px;
+            font-weight: 600; /* semibold */
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px; 
+            height: 48px; 
+            flex-shrink: 0;
+        }
+        #picker-app button:active {
+            transform: scale(0.95); 
+        }
+        #picker-app button:disabled {
+            background-color: #a0a0a0 !important;
+            color: #fff !important;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+        #picker-app button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* MODIFIED: Primary Action Button (Spin) - Now GREEN */
+        #picker-app #spinButton {
+            background-color: #22c55e; /* green-500 */
+            color: white;
+            width: 64px;
+            height: 64px;
+        }
+        #picker-app #spinButton svg {
+            width: 32px;
+            height: 32px;
+            fill: white; /* MODIFIED */
+        }
+        #picker-app #spinButton:hover:not(:disabled) { background-color: #16a34a; } /* green-600 */
+
+        /* MODIFIED: Secondary Action Buttons - Now PURPLE */
+        #picker-app #resetButton, 
+        #picker-app #updateNamesButton, 
+        #picker-app #loadCsvButton, 
+        #picker-app #clearHistoryButton {
+            background-color: #7c3aed; /* purple-600 */
+            color: white;
+        }
+        #picker-app #resetButton svg, 
+        #picker-app #updateNamesButton svg, 
+        #picker-app #loadCsvButton svg, 
+        #picker-app #clearHistoryButton svg {
+            fill: white;
+        }
+        #picker-app #resetButton:hover:not(:disabled), 
+        #picker-app #updateNamesButton:hover:not(:disabled), 
+        #picker-app #loadCsvButton:hover:not(:disabled),
+        #picker-app #clearHistoryButton:hover:not(:disabled) { 
+            background-color: #6d28d9; /* purple-700 */
+        }
+        
+        /* Specific size for clear history button */
+        #picker-app #clearHistoryButton {
+            width: 36px;
+            height: 36px;
+        }
+        #picker-app #clearHistoryButton svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        #picker-app #csvFileInput { display: none; }
+
+        /* --- Remove Winner Checkbox --- */
+        #picker-app .spin-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-shrink: 0;
+        }
+        #picker-app .spin-options label {
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+        }
+        /* MODIFIED: Matched checkbox color */
+        #picker-app #removeWinnerCheck {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            color: #7c3aed; /* purple-600 */
+        }
+        
+        /* --- History Section --- */
+        #picker-app .history-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            flex-shrink: 0;
+        }
+        /* MODIFIED: Matched timer input bg */
+        #picker-app .history-container {
+            background-color: #f3f4f6; /* gray-100 */
+            border-radius: 0.375rem; /* rounded-md */
+            border: 2px solid #e5e7eb; /* border-2 border-gray-200 */
+            height: 150px; /* Fixed height for scroll */
+            overflow-y: auto;
+            padding: 0;
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+        #picker-app #winnerHistoryList {
+            list-style-type: decimal;
+            padding-left: 30px;
+            margin: 5px 0;
+        }
+        #picker-app #winnerHistoryList li {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+        }
+        #picker-app #winnerHistoryList li:last-child {
+            border-bottom: none;
+        }
+        /* MODIFIED: History highlight color */
+        #picker-app #winnerHistoryList li:first-child {
+            font-weight: bold;
+            color: #6d28d9; /* purple-700 */
+        }
+
+
+        /* --- Slot Machine Section (LARGER UI) --- */
+        /* MODIFIED: Matched timer card style */
+        #picker-app .slot-machine-area {
+            background-color: #fff;
+            padding: 2rem; /* 32px */
+            border-radius: 1rem; /* 16px */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+            order: 2; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex: 2; 
+            min-width: 400px; 
+            max-width: 800px; 
+        }
+
+        #picker-app .slots-display {
+            display: flex;
+            justify-content: center;
+            gap: 10px; 
+            width: 100%; 
+        }
+
+        /* MODIFIED: Darkened slot window */
+        #picker-app .slot-window {
+            background-color: #1f2937; /* gray-800 */
+            border: 1px solid #4b5563; /* gray-600 */
+            border-radius: 5px;
+            width: 33%; 
+            height: var(--picker-slot-window-height);
+            overflow: hidden; 
+            position: relative;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+        }
+        
+        #picker-app .slot-window.id-slot { width: 20%; max-width: 100px; }
+        #picker-app .slot-window.nom-slot { width: 40%; max-width: 350px; }
+        #picker-app .slot-window.prenom-slot { width: 40%; max-width: 350px; }
+
+
+        #picker-app .slot-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        #picker-app .slot-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: var(--picker-slot-height);
+            font-size: 1.25em; /* Larger font */
+            font-weight: 500;
+            color: #fff;
+            box-sizing: border-box;
+            text-overflow: ellipsis; 
+            white-space: nowrap;
+            overflow: hidden;
+            padding: 0 10px; 
+        }
+        
+        #picker-app .slot-item.empty-state {
+            color: #6b7280; /* gray-500 */
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        /* MODIFIED: Matched highlight border to PURPLE */
+        #picker-app .slot-window::before {
+            content: '';
+            position: absolute;
+            top: 50%; 
+            left: 0;
+            width: 100%;
+            height: var(--picker-slot-height); 
+            transform: translateY(-50%); 
+            background: none; 
+            border-top: 2px solid #7c3aed; /* purple-600 */
+            border-bottom: 2px solid #7c3aed; /* purple-600 */
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.5); /* purple-600 with opacity */
+            z-index: 1;
+            pointer-events: none; 
+        }
+
+        /* MODIFIED: Matched base style to timer inputs */
+        #picker-app #finalWinnerDisplay {
+            width: 100%;
+            margin-bottom: 25px;
+            font-size: 2.5em; /* Larger font */
+            font-weight: bold;
+            color: #374151; /* gray-700 */
+            min-height: 1.8em; 
+            text-align: center;
+            background-color: #f3f4f6; /* gray-100 */
+            border: 2px solid #e5e7eb; /* border-2 border-gray-200 */
+            border-radius: 0.5rem; /* rounded-lg */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease-out;
+            padding: 10px 20px;
+            box-sizing: border-box; 
+        }
+
+        /* MODIFIED: Matched winner highlight to GREEN */
+        #picker-app #finalWinnerDisplay.winner-highlight {
+            color: #14532d; /* green-900 */
+            background-color: #dcfce7; /* green-100 */
+            border-color: #86efac; /* green-300 */
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.5); /* green-500 with opacity */
+            animation: winner-pop 0.5s ease-out;
+        }
+
+        @keyframes winner-pop {
+            0% { transform: scale(0.9); opacity: 0.5; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1.0); }
+        }
+
+        /* --- 
+            Media Query: Stacks on mobile
+        --- */
+        @media (max-width: 800px) {
+            #picker-app .container { 
+                flex-direction: column; /* STACK */
+                align-items: center; 
+            }
+            
+            #picker-app .controls, 
+            #picker-app .slot-machine-area {
+                width: 100%;
+                min-width: 90%; 
+                max-width: 100%; 
+                flex: none; 
+            }
+
+            :root { --picker-slot-height: 45px; } 
+            #picker-app .slots-display { gap: 5px; }
+            #picker-app .slot-window { width: 30%; max-width: none; }
+            #picker-app .slot-window.id-slot { width: 20%; max-width: none; }
+            #picker-app .slot-window.nom-slot { width: 40%; max-width: none; }
+            #picker-app .slot-window.prenom-slot { width: 40%; max-width: none; }
+            #picker-app .slot-item { font-size: 0.9em; }
+            #picker-app #finalWinnerDisplay { font-size: 1.5em; }
+        }
+
+        /* --- End of GASP.HTML Styles --- */
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen">
+
+    <!-- Main Dashboard Wrapper -->
+    <div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Teacher Dashboard</h1>
+
+        <!-- Tab Navigation -->
+        <nav class="bg-white/60 backdrop-blur-sm p-2 rounded-lg flex space-x-2 mb-6 shadow-md">
+            <!-- Tab 1: Timer -->
+            <button class="tab-btn w-full text-center p-3 rounded-lg font-semibold text-purple-800 bg-white shadow-sm" data-target="timer-app">
+                Countdown Timer
+            </button>
+            <!-- Tab 2: Student Picker -->
+            <button class="tab-btn w-full text-center p-3 rounded-lg font-semibold text-gray-600 hover:bg-white/50" data-target="picker-app">
+                Student Picker
+            </button>
+            <!-- Add more tabs here in the future -->
+        </nav>
+
+        <!-- App Content Area -->
+        <div>
+            <!-- ######################## -->
+            <!-- 1. Countdown Timer App -->
+            <!-- ######################## -->
+            <div id="timer-app" class="app-container active">
+                <div id="timer-card" class="relative bg-white p-8 rounded-2xl shadow-xl w-full mx-auto overflow-hidden">
+        
+                    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Classroom Countdown</h1>
+            
+                    <!-- Main Timer Content -->
+                    <div id="timer-content" class="relative flex items-center justify-center mb-6">
+                        <!-- Circular Progress Bar -->
+                        <svg id="progress-svg" class="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+                            <!-- Background circle -->
+                            <circle class="text-gray-200" stroke="currentColor" stroke-width="8" fill="transparent" r="40" cx="50" cy="50"/>
+                            <!-- Progress circle -->
+                            <circle class="progress-ring__circle text-purple-600" stroke="currentColor" stroke-width="8" fill="transparent" r="40" cx="50" cy="50"/>
+                        </svg>
+            
+                        <!-- Time display -->
+                        <div id="timer-display" class="text-5xl font-bold text-gray-900 cursor-pointer ml-4">
+                            <span class="time-text">00:00</span>
+                        </div>
+                        
+                        <!-- Play/Pause and Fullscreen icons -->
+                        <div id="icon-controls" class="flex flex-col gap-2 ml-4">
+                            <button id="icon-start-pause-btn" class="p-2 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-700">
+                                <svg id="play-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                                <svg id="pause-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h.01a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h.01a1 1 0 001-1V8a1 1 0 00-1-1H12z" clip-rule="evenodd"></path></svg>
+                            </button>
+                            <button id="icon-fullscreen-btn" class="p-2 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-700">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M5 11a1 1 0 011-1h2.586a1 1 0 01.707.293l1.414 1.414a1 1 0 010 1.414l-1.414 1.414a1 1 0 01-1.414 0L6 12.414V14a1 1 0 01-1 1zM11 5a1 1 0 011-1h2a1 1 0 011 1v2.586a1 1 0 01-.293.707l-1.414 1.414a1 1 0 01-1.414 0l-1.414-1.414a1 1 0 010-1.414L12.586 6H11a1 1 0 01-1-1z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+            
+                    <!-- Input Section -->
+                    <div id="input-area" class="grid grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label for="minutes" class="block text-sm font-medium text-gray-700 mb-1">Minutes</label>
+                            <input type="number" id="minutes" placeholder="00" min="0" class="w-full p-4 text-center text-3xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-600">
+                        </div>
+                        <div>
+                            <label for="seconds" class="block text-sm font-medium text-gray-700 mb-1">Seconds</label>
+                            <input type="number" id="seconds" placeholder="00" min="0" max="59" class="w-full p-4 text-center text-3xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-600">
+                        </div>
+                    </div>
+            
+                    <!-- Fullscreen prompt -->
+                    <div id="fullscreen-prompt" class="text-center text-gray-500 text-sm -mt-6 mb-6">
+                        Click the timer for fullscreen
+                    </div>
+            
+                    <!-- Controls Section -->
+                    <div id="controls-area" class="grid grid-cols-2 gap-4">
+                        <button id="start-btn" class="w-full bg-green-500 text-white font-semibold py-4 rounded-lg text-lg transition-all hover:bg-green-600 shadow-md">
+                            Start
+                        </button>
+                        <button id="reset-btn" class="w-full bg-red-500 text-white font-semibold py-4 rounded-lg text-lg transition-all hover:bg-red-600 shadow-md">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ######################## -->
+            <!-- 2. Student Picker App -->
+            <!-- ######################## -->
+            <div id="picker-app" class="app-container">
+                <!-- HTML from gasp.html -->
+                <div class="container">
+        
+                    <div class="controls">
+                        <h2>1. Student Data</h2>
+                        <textarea id="nameInput" placeholder="Enter student data, one student per line.&#10;Format: ID,Nom,Prénom&#10;...or upload a CSV file."></textarea>
+                        
+                        <div class="button-group">
+                            <button id="updateNamesButton" title="Update list from textarea">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            </button>
+                            <button id="resetButton" title="Reset slots (keeps data)">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-4.8 1.9-5.35 4.34L8.8 10.7C9.37 9.64 10.82 9 12.5 9c1.93 0 3.5 1.57 3.5 3.5s-1.57 3.5-3.5 3.5c-.95 0-1.82-.38-2.47-1.01L8.3 16.7c1.11 1.01 2.62 1.6 4.2 1.6 3.58 0 6.5-2.92 6.5-6.5S16.08 8 12.5 8zM3 4.27l1.41 1.41C5.57 7.26 7.69 8 10 8V5L5 1 0 5v3h3V4.27z"/></svg>
+                            </button>
+                            <button id="loadCsvButton" title="Load from .csv file">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg>
+                            </button>
+                        </div>
+                        
+                        <input type="file" id="csvFileInput" accept=".csv, text/csv">
+            
+                        <hr>
+            
+                        <h2>2. Spin to Select!</h2>
+                        <div class="button-group">
+                            <button id="spinButton" title="Spin to select a winner!">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                            <div class="spin-options">
+                                <input type="checkbox" id="removeWinnerCheck" class="form-checkbox">
+                                <label for="removeWinnerCheck">Remove winner after spin</label>
+                            </div>
+                        </div>
+                        
+                        <div class="history-section">
+                            <h2>History</h2>
+                            <button id="clearHistoryButton" title="Clear History">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                            </button>
+                        </div>
+                        <div class="history-container">
+                            <ol id="winnerHistoryList"></ol>
+                        </div>
+            
+                    </div>
+            
+                    <div class="slot-machine-area">
+                        
+                        <div id="finalWinnerDisplay">Load student data to begin!</div>
+            
+                        <div class="slots-display">
+                            <div class="slot-window id-slot"><div class="slot-content" id="slotID"></div></div>
+                            <div class="slot-window nom-slot"><div class="slot-content" id="slotNom"></div></div>
+                            <div class="slot-window prenom-slot"><div class="slot-content" id="slotPrenom"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // ###################################
+            // ### 1. DASHBOARD NAVIGATION LOGIC ###
+            // ###################################
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const appContainers = document.querySelectorAll('.app-container');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Deactivate all tabs and apps
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('bg-white', 'shadow-sm', 'text-purple-800');
+                        btn.classList.add('text-gray-600', 'hover:bg-white/50');
+                    });
+                    appContainers.forEach(container => {
+                        container.classList.remove('active');
+                    });
+
+                    // Activate the clicked tab and app
+                    button.classList.add('bg-white', 'shadow-sm', 'text-purple-800');
+                    button.classList.remove('text-gray-600', 'hover:bg-white/50');
+                    const targetApp = document.getElementById(button.dataset.target);
+                    if (targetApp) {
+                        targetApp.classList.add('active');
+                    }
+                });
+            });
+
+
+            // ###################################
+            // ### 2. COUNTDOWN TIMER LOGIC    ###
+            // ###################################
+            
+            // --- Timer DOM Elements ---
+            const timerCard = document.getElementById('timer-card');
+            const minutesInput = document.getElementById('minutes');
+            const secondsInput = document.getElementById('seconds');
+            const timerDisplay = document.querySelector('#timer-display .time-text');
+            const startBtn = document.getElementById('start-btn');
+            const iconStartPauseBtn = document.getElementById('icon-start-pause-btn');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const iconFullscreenBtn = document.getElementById('icon-fullscreen-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const timerInputArea = document.getElementById('input-area');
+            const fullscreenPrompt = document.getElementById('fullscreen-prompt');
+            const progressCircle = document.querySelector('#progress-svg .progress-ring__circle');
+            
+            // Check if progressCircle exists before trying to access properties
+            if (progressCircle) {
+                const radius = progressCircle.r.baseVal.value;
+                const circumference = radius * 2 * Math.PI;
+
+                progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+                progressCircle.style.strokeDashoffset = circumference;
+                
+                // --- Timer State Variables ---
+                let countdown;
+                let totalSeconds = 0;
+                let initialTotalSeconds = 0;
+                let isRunning = false;
+                let synth;
+
+                // --- Timer Core Functions ---
+                async function startTimer() {
+                    try {
+                        if (typeof Tone !== 'undefined' && Tone.context.state !== 'running') {
+                            await Tone.start();
+                        }
+                    } catch (err) {
+                        console.error("Error starting Tone.js audio context:", err);
+                    }
+                    
+                    initAudio();
+                    
+                    if (isRunning) {
+                        pauseTimer();
+                        return;
+                    }
+
+                    if (totalSeconds === 0) {
+                        const mins = parseInt(minutesInput.value) || 0;
+                        const secs = parseInt(secondsInput.value) || 0;
+                        initialTotalSeconds = (mins * 60) + secs;
+                        totalSeconds = initialTotalSeconds;
+                    }
+
+                    if (totalSeconds <= 0) {
+                        timerInputArea.classList.add('animate-shake');
+                        setTimeout(() => { timerInputArea.classList.remove('animate-shake'); }, 500);
+                        return;
+                    }
+
+                    isRunning = true;
+                    toggleTimerControls(true);
+                    fullscreenPrompt.style.display = 'none';
+                    countdown = setInterval(updateTimer, 1000);
+                }
+
+                function pauseTimer() {
+                    if (!isRunning) return;
+                    clearInterval(countdown);
+                    isRunning = false;
+                    toggleTimerControls(false);
+                }
+            
+                function resetTimer() {
+                    exitFullScreen();
+                    clearInterval(countdown);
+                    isRunning = false;
+                    totalSeconds = 0;
+                    initialTotalSeconds = 0;
+                    updateDisplay(0, 0);
+                    updateProgressBar(0);
+                    toggleTimerControls(false);
+                    fullscreenPrompt.style.display = 'block';
+                    minutesInput.value = '';
+                    secondsInput.value = '';
+                    timerInputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+                }
+
+                function updateTimer() {
+                    if (totalSeconds <= 0) {
+                        clearInterval(countdown);
+                        isRunning = false;
+                        playAlarm();
+                        exitFullScreen();
+                        toggleTimerControls(false);
+                        fullscreenPrompt.style.display = 'block';
+                        timerInputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+                        return;
+                    }
+                    totalSeconds--;
+                    const mins = Math.floor(totalSeconds / 60);
+                    const secs = totalSeconds % 60;
+                    updateDisplay(mins, secs);
+                    updateProgressBar(totalSeconds);
+                }
+
+                // --- Timer Helper Functions ---
+                function initAudio() {
+                    if (typeof Tone !== 'undefined' && !synth) {
+                        try {
+                            synth = new Tone.Synth().toDestination();
+                        } catch (err) {
+                            console.error("Error initializing Tone.js synth:", err);
+                            synth = null;
+                        }
+                    }
+                }
+
+                function updateDisplay(mins, secs) {
+                    const formattedMins = String(mins).padStart(2, '0');
+                    const formattedSecs = String(secs).padStart(2, '0');
+                    if(timerDisplay) {
+                        timerDisplay.textContent = `${formattedMins}:${formattedSecs}`;
+                    }
+                    document.title = `${formattedMins}:${formattedSecs} - Countdown`;
+                }
+
+                function updateProgressBar(currentSeconds) {
+                    if (initialTotalSeconds === 0) {
+                        if(progressCircle) {
+                            progressCircle.style.strokeDashoffset = circumference;
+                        }
+                        return;
+                    }
+                    const progress = currentSeconds / initialTotalSeconds;
+                    const offset = circumference * (1 - progress);
+                    if(progressCircle) {
+                        progressCircle.style.strokeDashoffset = offset;
+                    }
+                }
+
+                function toggleTimerControls(running) {
+                    if (running) {
+                        startBtn.classList.add('hidden');
+                        resetBtn.classList.add('col-span-2');
+                        playIcon.classList.add('hidden');
+                        pauseIcon.classList.remove('hidden');
+                        timerInputArea.querySelectorAll('input').forEach(input => input.disabled = true);
+                    } else {
+                        startBtn.classList.remove('hidden');
+                        resetBtn.classList.remove('col-span-2');
+                        playIcon.classList.remove('hidden');
+                        pauseIcon.classList.add('hidden');
+                        if (totalSeconds === 0) {
+                            timerInputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+                        }
+                    }
+                }
+
+                function toggleFullScreen() {
+                    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                        exitFullScreen(); 
+                    } else {
+                        try {
+                            if (timerCard.requestFullscreen) {
+                                timerCard.requestFullscreen();
+                            } else if (timerCard.mozRequestFullScreen) {
+                                timerCard.mozRequestFullScreen();
+                            } else if (timerCard.webkitRequestFullscreen) {
+                                timerCard.webkitRequestFullscreen();
+                            } else if (timerCard.msRequestFullscreen) {
+                                timerCard.msRequestFullscreen();
+                            }
+                        } catch (err) {
+                            console.error("Fullscreen request failed:", err);
+                        }
+                    }
+                }
+
+                function exitFullScreen() {
+                    try {
+                        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                            if (document.exitFullscreen) {
+                                document.exitFullscreen();
+                            } else if (document.mozCancelFullScreen) {
+                                document.mozCancelFullScreen();
+                            } else if (document.webkitExitFullscreen) {
+                                document.webkitExitFullscreen();
+                            } else if (document.msExitFullscreen) {
+                                document.msExitFullscreen();
+                            }
+                        }
+                    } catch (err) {
+                         console.error("Error exiting fullscreen:", err);
+                    }
+                }
+
+                function playAlarm() {
+                    if (synth && typeof Tone !== 'undefined') {
+                        try {
+                            const now = Tone.now();
+                            synth.triggerAttackRelease("C5", "0.5s", now);
+                            synth.triggerAttackRelease("C5", "0.5s", now + 0.6);
+                            synth.triggerAttackRelease("C5", "0.5s", now + 1.2);
+                        } catch (err) {
+                            console.error("Error playing alarm sound:", err);
+                        }
+                    } else {
+                        console.log("Timer Finished! (Audio failed to load)");
+                    }
+                }
+
+                // --- Timer Event Listeners ---
+                if (startBtn) startBtn.addEventListener('click', startTimer);
+                if (iconStartPauseBtn) iconStartPauseBtn.addEventListener('click', startTimer);
+                if (iconFullscreenBtn) iconFullscreenBtn.addEventListener('click', toggleFullScreen);
+                if (timerDisplay) timerDisplay.addEventListener('click', toggleFullScreen);
+                if (resetBtn) resetBtn.addEventListener('click', resetTimer);
+
+            } // End of check for progressCircle
+
+
+            // ###################################
+            // ### 3. ADVANCED STUDENT PICKER LOGIC (from gasp.html) ###
+            // ###################################
+
+            // --- Picker DOM Elements ---
+            const nameInput = document.getElementById('nameInput');
+            const updateNamesButton = document.getElementById('updateNamesButton');
+            const spinButton = document.getElementById('spinButton');
+            const resetButton = document.getElementById('resetButton');
+            const finalWinnerDisplay = document.getElementById('finalWinnerDisplay');
+            const loadCsvButton = document.getElementById('loadCsvButton');
+            const csvFileInput = document.getElementById('csvFileInput');
+            const removeWinnerCheck = document.getElementById('removeWinnerCheck');
+            const winnerHistoryList = document.getElementById('winnerHistoryList');
+            const clearHistoryButton = document.getElementById('clearHistoryButton');
+            
+            const slotContents = {
+                id: document.getElementById('slotID'),
+                nom: document.getElementById('slotNom'),
+                prenom: document.getElementById('slotPrenom')
+            };
+
+            // --- Picker State ---
+            let students = [];
+            let winnerHistory = [];
+            
+            let slotHeight = 60; 
+            let slotVisibleItems = 3; 
+            let spinning = false;
+
+            // --- NEW: Control Locking Functions ---
+            function disableControls() {
+                spinning = true;
+                if (spinButton) spinButton.disabled = true;
+                if (resetButton) resetButton.disabled = true;
+                if (updateNamesButton) updateNamesButton.disabled = true;
+                if (loadCsvButton) loadCsvButton.disabled = true;
+                if (clearHistoryButton) clearHistoryButton.disabled = true;
+            }
+            
+            function enableControls() {
+                spinning = false;
+                if (spinButton) spinButton.disabled = false;
+                if (resetButton) resetButton.disabled = false;
+                if (updateNamesButton) updateNamesButton.disabled = false;
+                if (loadCsvButton) loadCsvButton.disabled = false;
+                if (clearHistoryButton) clearHistoryButton.disabled = false;
+            }
+
+            // --- Core Functions ---
+
+            /**
+             * Parses textarea input into student objects.
+             */
+            function updateStudentsData() {
+                if (spinning) return; // Do not update while spinning
+                
+                const rawInput = nameInput.value;
+                const lines = rawInput.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                
+                let parsedStudents = [];
+                for (const line of lines) {
+                    const parts = line.split(',').map(part => part.trim().replace(/"/g, ''));
+                    if (parts.length >= 3) {
+                        parsedStudents.push({
+                            id: parts[0],
+                            nom: parts[1],
+                            prenom: parts[2]
+                        });
+                    } else if (line.length > 0) { 
+                        console.warn(`Skipping malformed line: "${line}". Expected ID,Nom,Prénom.`);
+                    }
+                }
+
+                if (parsedStudents.length === 0) {
+                    students = [];
+                } else {
+                    students = parsedStudents;
+                }
+                
+                clearHistory();
+                renderSlots();
+                
+                return students.length > 0;
+            }
+
+            /**
+             * Renders the slot items for each category (ID, Nom, Prénom).
+             */
+            function renderSlots() {
+                const rootStyles = getComputedStyle(document.documentElement);
+                // Use picker-specific CSS variables
+                slotHeight = parseInt(rootStyles.getPropertyValue('--picker-slot-height'));
+                slotVisibleItems = parseInt(rootStyles.getPropertyValue('--picker-slot-visible-items'));
+
+                if (finalWinnerDisplay) {
+                    if (students.length === 0) {
+                        finalWinnerDisplay.textContent = 'Load student data to begin!';
+                    } else {
+                        finalWinnerDisplay.textContent = 'Click Spin to find a student!';
+                    }
+                    finalWinnerDisplay.classList.remove('winner-highlight');
+                }
+
+                ['id', 'nom', 'prenom'].forEach(key => {
+                    const slot = slotContents[key];
+                    if (!slot) return; // Guard clause
+                    slot.innerHTML = ''; 
+
+                    if (students.length === 0) {
+                        const item = document.createElement('div');
+                        item.className = 'slot-item empty-state';
+                        item.textContent = 'Waiting...';
+                        slot.appendChild(item);
+                    } else {
+                        const repeatedStudents = [];
+                        // *** OPTIMIZATION 1: Only repeat 3 times ***
+                        for(let i = 0; i < 3; i++) { 
+                            repeatedStudents.push(...students);
+                        }
+
+                        repeatedStudents.forEach(student => {
+                            const item = document.createElement('div');
+                            item.className = 'slot-item';
+                            item.textContent = student[key]; 
+                            item.setAttribute('data-student-id', student.id); 
+                            slot.appendChild(item);
+                        });
+                    }
+                    
+                    gsap.killTweensOf(slot); 
+                    gsap.set(slot, { y: 0 }); 
+                });
+            }
+            
+            /**
+             * Renders the Winner History list.
+             */
+            function renderHistory() {
+                if (!winnerHistoryList) return;
+                winnerHistoryList.innerHTML = ''; 
+                if (winnerHistory.length === 0) {
+                    winnerHistoryList.innerHTML = '<li>No winners yet...</li>';
+                    return;
+                }
+                
+                winnerHistory.forEach((winner, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = `[${winner.id}] ${winner.name}`;
+                    // Highlight the most recent winner
+                    if (index === 0) {
+                        li.style.fontWeight = 'bold';
+                        li.style.color = '#6d28d9'; // purple-700
+                    }
+                    winnerHistoryList.appendChild(li);
+                });
+            }
+            
+            /**
+             * Clears the winner history array and re-renders the list.
+             */
+            function clearHistory() {
+                if (spinning) return; // Do not clear while spinning
+                winnerHistory = [];
+                renderHistory();
+            }
+
+            /**
+             * Initiates the spinning of all three slots.
+             */
+            async function spinSlots() {
+                if (spinning) return;
+                
+                // Check if students exist from the *current* state
+                if (students.length === 0) {
+                    // Try to parse the text area just in case
+                    if (!updateStudentsData()) {
+                        alert('Please load or enter student data before spinning.');
+                        return;
+                    }
+                    if (students.length === 0) {
+                         alert('Please load or enter student data before spinning.');
+                        return;
+                    }
+                }
+
+                disableControls(); 
+                
+                if (finalWinnerDisplay) {
+                    finalWinnerDisplay.textContent = 'Spinning...';
+                    finalWinnerDisplay.classList.remove('winner-highlight');
+                }
+
+                const winnerStudentIndex = Math.floor(Math.random() * students.length);
+                const winningStudentData = students[winnerStudentIndex];
+
+                const spinPromises = [];
+                ['id', 'nom', 'prenom'].forEach((key, index) => {
+                    if (slotContents[key]) {
+                        spinPromises.push(
+                            spinSingleSlot(slotContents[key], winnerStudentIndex, index)
+                        );
+                    }
+                });
+
+                await Promise.all(spinPromises); 
+
+                // --- Post-Spin Logic ---
+                const winnerString = `${winningStudentData.nom} ${winningStudentData.prenom}`;
+                if (finalWinnerDisplay) {
+                    finalWinnerDisplay.textContent = `🎉 ${winnerString} 🎉`;
+                    finalWinnerDisplay.classList.add('winner-highlight');
+                }
+                
+                winnerHistory.unshift({ id: winningStudentData.id, name: winnerString });
+                renderHistory();
+                
+                if (removeWinnerCheck && removeWinnerCheck.checked) {
+                    students.splice(winnerStudentIndex, 1);
+                    if (nameInput) {
+                        nameInput.value = students.map(s => `${s.id},${s.nom},${s.prenom}`).join('\n');
+                    }
+                    
+                    setTimeout(() => {
+                        renderSlots();
+                        enableControls(); 
+                    }, 1500); 
+                } else {
+                    enableControls(); 
+                }
+            }
+
+            /**
+             * Spins a single slot using GSAP to land on the target student's data.
+             */
+            function spinSingleSlot(slotEl, targetStudentIndex, slotAnimDelayIndex) {
+                return new Promise(resolve => {
+                    const totalStudents = students.length;
+                    
+                    // *** OPTIMIZATION 2: Target the middle repetition block (index 1) ***
+                    const repeatedSections = 1; 
+                    
+                    const offsetToCenter = slotHeight * (Math.floor(slotVisibleItems / 2));
+                    const targetItemIndexInSlotList = (repeatedSections * totalStudents) + targetStudentIndex;
+                    const targetY = (targetItemIndexInSlotList * slotHeight) - offsetToCenter;
+
+                    // *** OPTIMZATION 3: Reduced base duration ***
+                    const baseDuration = 2.5; // Was 4
+                    const duration = baseDuration + (slotAnimDelayIndex * 0.5); // Stagger is also faster (was 0.75)
+                    
+                    gsap.to(slotEl, {
+                        y: -targetY,        
+                        duration: duration, 
+                        ease: "power3.out", 
+                        delay: slotAnimDelayIndex * 0.1, // Stagger delay is faster (was 0.2)
+                        onComplete: resolve 
+                    });
+                });
+            }
+
+            /**
+             * Resets the slots' visual state without clearing data or history.
+             */
+            function resetApp() {
+                if (spinning) return; // Do not reset while spinning
+                renderSlots();
+            }
+            
+            /**
+             * Handles the file input change event.
+             */
+            function handleFileSelect(event) {
+                if (spinning) return; 
+                
+                const file = event.target.files[0];
+                if (!file) {
+                    return; 
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    const text = e.target.result;
+                    if (nameInput) {
+                        nameInput.value = text; 
+                    }
+                    updateStudentsData(); 
+                };
+                
+                reader.onerror = () => {
+                    alert('Error reading file');
+                };
+                
+                reader.readAsText(file);
+                
+                event.target.value = null;
+            }
+
+            // --- Picker Event Listeners ---
+            if (updateNamesButton) updateNamesButton.addEventListener('click', updateStudentsData);
+            if (spinButton) spinButton.addEventListener('click', spinSlots);
+            if (resetButton) resetButton.addEventListener('click', resetApp);
+            if (clearHistoryButton) clearHistoryButton.addEventListener('click', clearHistory);
+            
+            if (loadCsvButton) {
+                loadCsvButton.addEventListener('click', () => {
+                    if (csvFileInput) csvFileInput.click(); 
+                });
+            }
+            if (csvFileInput) csvFileInput.addEventListener('change', handleFileSelect);
+            
+            // Initial setup for picker (was DOMContentLoaded)
+            renderSlots(); 
+            renderHistory(); 
+
+        } // --- End of window.onload ---
+    </script>
+</body>
+</html>
+

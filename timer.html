@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Countdown Timer</title>
+    <!-- 1. Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Load Tone.js for audio -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.min.js"></script>
+    <style>
+        /* 3. Use a clean, modern font */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* 4. Style for number inputs (hiding arrows) */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* 5. Add shake animation for validation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .animate-shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* 6. Add styles for Fullscreen mode */
+        /* These rules apply when the timer-container is in fullscreen */
+        #timer-container:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0; /* Remove rounded corners */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: white; /* Force white background */
+        }
+
+        /* Hide everything *except* the timer display when fullscreen */
+        #timer-container:fullscreen h1,
+        #timer-container:fullscreen #input-area,
+        #timer-container:fullscreen #controls-area,
+        #timer-container:fullscreen #fullscreen-prompt {
+            display: none;
+        }
+
+        /* Make the timer text massive in fullscreen */
+        #timer-container:fullscreen #timer-display {
+            font-size: 25vw; /* Scale font with viewport width */
+            margin: 0; /* Remove old margins */
+        }
+    </style>
+</head>
+<!-- 1. Update body class to add a gradient background -->
+<body class="bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center min-h-screen">
+
+    <!-- 1. Add id="timer-container" to this div -->
+    <div id="timer-container" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md mx-4">
+        
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Classroom Countdown</h1>
+
+        <!-- Input Section -->
+        <div id="input-area" class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+                <label for="minutes" class="block text-sm font-medium text-gray-700 mb-1">Minutes</label>
+                <input type="number" id="minutes" placeholder="00" min="0" class="w-full p-4 text-center text-3xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500">
+            </div>
+            <div>
+                <label for="seconds" class="block text-sm font-medium text-gray-700 mb-1">Seconds</label>
+                <input type="number" id="seconds" placeholder="00" min="0" max="59" class="w-full p-4 text-center text-3xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500">
+            </div>
+        </div>
+
+        <!-- Timer Display -->
+        <!-- 2. Add cursor-pointer class -->
+        <div id="timer-display" class="text-8xl font-bold text-center text-gray-900 my-8 cursor-pointer">
+            00:00
+        </div>
+
+        <!-- 3. Add fullscreen prompt -->
+        <div id="fullscreen-prompt" class="text-center text-gray-500 text-sm -mt-6 mb-6">
+            Click the time to go fullscreen
+        </div>
+
+        <!-- Controls Section -->
+        <!-- 4. Add id="controls-area" to this div -->
+        <div id="controls-area" class="flex flex-col gap-4">
+            <button id="start-btn" class="w-full bg-green-500 text-white font-semibold py-4 rounded-lg text-lg transition-all hover:bg-green-600 shadow-md">
+                Start
+            </button>
+            <button id="pause-btn" class="w-full bg-yellow-500 text-white font-semibold py-4 rounded-lg text-lg transition-all hover:bg-yellow-600 shadow-md" style="display: none;">
+                Pause
+            </button>
+            <button id="reset-btn" class="w-full bg-red-500 text-white font-semibold py-4 rounded-lg text-lg transition-all hover:bg-red-600 shadow-md">
+                Reset
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Wrap all logic in window.onload to ensure Tone.js is loaded
+        window.onload = function() {
+            // --- DOM Elements ---
+            const timerContainer = document.getElementById('timer-container'); // Get main container
+            const minutesInput = document.getElementById('minutes');
+            const secondsInput = document.getElementById('seconds');
+            const timerDisplay = document.getElementById('timer-display');
+            const startBtn = document.getElementById('start-btn');
+            const pauseBtn = document.getElementById('pause-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const inputArea = document.getElementById('input-area');
+            const fullscreenPrompt = document.getElementById('fullscreen-prompt'); // Get prompt
+
+            // --- State Variables ---
+            let countdown; // To store the setInterval ID
+            let totalSeconds = 0;
+            let isRunning = false;
+            let synth; // For Tone.js audio
+
+            // --- Core Functions ---
+
+            async function startTimer() {
+                try {
+                    // Resume Audio Context on user click (critical for browsers)
+                    // Check if Tone is defined before trying to use it
+                    if (typeof Tone !== 'undefined' && Tone.context.state !== 'running') {
+                        await Tone.start();
+                    }
+                } catch (err) {
+                    console.error("Error starting Tone.js audio context:", err);
+                    // This can happen if Tone.js failed to load or is blocked.
+                    // We'll continue without audio.
+                }
+                
+                initAudio(); // Ensure audio is ready (or tried to be)
+                
+                if (isRunning) return; // Don't do anything if already running
+
+                // If timer is at 0, get new values from inputs
+                if (totalSeconds === 0) {
+                    const mins = parseInt(minutesInput.value) || 0;
+                    const secs = parseInt(secondsInput.value) || 0;
+                    totalSeconds = (mins * 60) + secs;
+                }
+
+                if (totalSeconds <= 0) {
+                    // Add a visual cue if user tries to start with no time
+                    inputArea.classList.add('animate-shake');
+                    setTimeout(() => {
+                        inputArea.classList.remove('animate-shake');
+                    }, 500);
+                    return; // Don't start if time is zero
+                }
+
+                isRunning = true;
+                toggleControls(true); // Show running state
+                fullscreenPrompt.style.display = 'none'; // Hide prompt
+                
+                // Start the countdown interval
+                countdown = setInterval(updateTimer, 1000);
+            }
+
+            function pauseTimer() {
+                if (!isRunning) return; // Don't do anything if not running
+
+                clearInterval(countdown); // Stop the interval
+                isRunning = false;
+                toggleControls(false); // Show paused state
+            }
+
+        
+            function resetTimer() {
+                exitFullScreen(); // Exit fullscreen if active
+                clearInterval(countdown); // Stop any active interval
+                isRunning = false;
+                totalSeconds = 0;
+                updateDisplay(0, 0); // Reset display to 00:00
+                toggleControls(false); // Show initial state
+                fullscreenPrompt.style.display = 'block'; // Show prompt
+                
+                // Clear and enable inputs
+                minutesInput.value = '';
+                secondsInput.value = '';
+                inputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+            }
+
+            function updateTimer() {
+                if (totalSeconds <= 0) {
+                    // Timer finished
+                    clearInterval(countdown);
+                    isRunning = false;
+                    playAlarm();
+                    exitFullScreen(); // Exit fullscreen on finish
+                    toggleControls(false); // Show initial state
+                    fullscreenPrompt.style.display = 'block'; // Show prompt
+                    // Re-enable inputs
+                    inputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+                    return;
+                }
+
+                totalSeconds--; // Decrement time
+
+                const mins = Math.floor(totalSeconds / 60);
+                const secs = totalSeconds % 60;
+
+                updateDisplay(mins, secs);
+            }
+
+            // --- Helper Functions ---
+
+            // We must initialize Tone.js on a user action (like a click)
+            function initAudio() {
+                // Check if Tone is defined and synth isn't already created
+                if (typeof Tone !== 'undefined' && !synth) {
+                    try {
+                        synth = new Tone.Synth().toDestination();
+                    } catch (err) {
+                        console.error("Error initializing Tone.js synth:", err);
+                        synth = null; // Ensure synth is null if init fails
+                    }
+                }
+            }
+
+            function updateDisplay(mins, secs) {
+                const formattedMins = String(mins).padStart(2, '0');
+                const formattedSecs = String(secs).padStart(2, '0');
+                timerDisplay.textContent = `${formattedMins}:${formattedSecs}`;
+                document.title = `${formattedMins}:${formattedSecs} - Countdown`;
+            }
+
+            function toggleControls(running) {
+                if (running) {
+                    startBtn.style.display = 'none';
+                    pauseBtn.style.display = 'block';
+                    // Disable inputs when running
+                    inputArea.querySelectorAll('input').forEach(input => input.disabled = true);
+                } else {
+                    startBtn.style.display = 'block';
+                    pauseBtn.style.display = 'none';
+                    // Enable inputs when not running (unless reset is clicked)
+                    if (totalSeconds === 0) {
+                        inputArea.querySelectorAll('input').forEach(input => input.disabled = false);
+                    }
+                }
+            }
+
+            // --- Fullscreen Functions ---
+
+            function enterFullScreen() {
+                // Request fullscreen on the main container
+                if (timerContainer.requestFullscreen) {
+                    timerContainer.requestFullscreen();
+                } else if (timerContainer.mozRequestFullScreen) { /* Firefox */
+                    timerContainer.mozRequestFullScreen();
+                } else if (timerContainer.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                    timerContainer.webkitRequestFullscreen();
+                } else if (timerContainer.msRequestFullscreen) { /* IE/Edge */
+                    timerContainer.msRequestFullscreen();
+                }
+            }
+
+            function exitFullScreen() {
+                // Check if we are in fullscreen mode before trying to exit
+                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) { /* Firefox */
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) { /* IE/Edge */
+                        document.msExitFullscreen();
+                    }
+                }
+            }
+
+            function playAlarm() {
+                // Play a C5 note for half a second, 3 times
+                // Check if synth was successfully initialized
+                if (synth && typeof Tone !== 'undefined') {
+                    try {
+                        const now = Tone.now();
+                        synth.triggerAttackRelease("C5", "0.5s", now);
+                        synth.triggerAttackRelease("C5", "0.5s", now + 0.6);
+                        synth.triggerAttackRelease("C5", "0.5s", now + 1.2);
+                    } catch (err) {
+                        console.error("Error playing alarm sound:", err);
+                    }
+                } else {
+                    // Fallback for any audio issue
+                    console.log("Timer Finished! (Audio failed to load)");
+                }
+            }
+
+            // --- Event Listeners ---
+            timerDisplay.addEventListener('click', enterFullScreen); // Add click for fullscreen
+            startBtn.addEventListener('click', startTimer);
+            pauseBtn.addEventListener('click', pauseTimer);
+            resetBtn.addEventListener('click', resetTimer);
+        }
+    </script>
+</body>
+</html>
+
+
