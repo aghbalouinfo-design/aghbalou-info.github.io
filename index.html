@@ -145,7 +145,10 @@
             border-radius: 1rem;
             position: relative;
         }
-        
+        .image-flottante {
+    float: right; /* Positionne l'image à gauche et permet au texte de l'entourer */
+    margin-right: 15px; /* Ajoute de l'espace à droite de l'image (optionnel) */
+        }
     </style>
 </head>
 <body>
@@ -253,7 +256,7 @@
 //------>>>>>>>ADD HERE<<<<<<<<<<----------///
         // --- Données Structurées des Leçons (avec Ressources et MindMap) ---
         const lessonData = {
-            'M1-sequence01-L': {
+            'M1-sequence01-L1': {
     title: "Leçon 1 : Information, traitement et Informatique",
     moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
     
@@ -328,7 +331,7 @@
 },
             
             // Autres leçons simplifiées
-            'M1-sequence01-L': {
+            'M1-sequence01-L2': {
     title: "Leçon 2 : Système informatique, Représentation de l'information",
     moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
 
@@ -351,38 +354,112 @@
 
     // ✅ NOTES DE COURS DÉTAILLÉES
     detailedNotes: `
-        <h4 class="text-xl font-bold text-teal-800 mb-3">1. Représentation de l'information en informatique</h4>
-        <p class="mb-4 text-gray-700">Un ordinateur ne comprend que deux états : activé (1) ou désactivé (0). C'est pourquoi il utilise le système binaire pour représenter toute information.</p>
-        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-            <li><strong>Binaire :</strong> Base 2 (0 et 1), chaque chiffre est un bit.</li>
-            <li><strong>Pourquoi binaire ?</strong> Simplicité électronique (circuits ouverts/fermés).</li>
-        </ul>
+<h4 class="text-xl font-bold text-teal-800 mb-3">1. Définition générale d’un système informatique</h4>
+<p class="mb-4 text-gray-700">
+Un <strong>système informatique</strong> est un ensemble organisé de composants matériels (<em>hardware</em>) et logiciels (<em>software</em>) qui permet de :
+</p>
+<img src="./Images/SI.png" width="240" height="260" class="image-flottante">   
 
-        <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Conversion binaire ↔ décimal</h4>
-        <p class="mb-4 text-gray-700">Pour comprendre la représentation, il faut savoir convertir :</p>
-        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-            <li><strong>Décimal → Binaire :</strong> Division par 2 et récupération des restes.</li>
-            <li><strong>Binaire → Décimal :</strong> Somme des puissances de 2 pour chaque bit à 1.</li>
-        </ul>
-        <p class="mb-4 text-gray-700"><em>Exemple :</em> 13 en binaire = 1101 ; 1101 en décimal = 13.</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Acquérir l’information</strong> → clavier, capteur</li>
+    <li><strong>Traiter l’information</strong> → processeur</li>
+    <li><strong>Stocker l’information</strong> → disque dur</li>
+    <li><strong>Transmettre l’information</strong> → réseau</li>
+    <li><strong>Restituer l’information</strong> → écran, imprimante</li>
+</ul>
 
-        <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Taille des fichiers numériques</h4>
-        <p class="mb-4 text-gray-700">La taille dépend du type de contenu :</p>
-        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-            <li><strong>Texte :</strong> Quelques Ko (ex : 1 page ≈ 2 Ko).</li>
-            <li><strong>Image :</strong> De centaines de Ko à plusieurs Mo.</li>
-            <li><strong>Audio :</strong> Plusieurs Mo (ex : 3 min MP3 ≈ 3 Mo).</li>
-        </ul>
-        <p class="mb-4 text-gray-700">Un fichier est mesuré en octets (1 octet = 8 bits). Les unités : Ko, Mo, Go.</p>
 
-        <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">4. Hardware vs Software</h4>
-        <p class="mb-4 text-gray-700">Un système informatique est composé de :</p>
-        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-            <li><strong>Hardware :</strong> Composants physiques (CPU, RAM, disque dur, clavier).</li>
-            <li><strong>Software :</strong> Programmes et systèmes (OS, applications).</li>
-        </ul>
-        <p class="mb-4 text-gray-700"><em>Exemple :</em> Windows = software ; Disque dur = hardware.</p>
-    `,
+ 
+
+   
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Représentation de l'information en informatique</h4>
+<p class="mb-4 text-gray-700">
+La <strong>représentation de l'information</strong> est la méthode utilisée pour coder tout type de contenu (texte, image, son, vidéo…) dans un format que l’ordinateur peut comprendre, stocker et traiter facilement.
+</p>
+<p class="mb-4 text-gray-700">
+Les ordinateurs fonctionnent grâce à des composants électroniques qui détectent uniquement deux états :
+</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Présence de courant</strong> → représentée par <strong>1</strong></li>
+    <li><strong>Absence de courant</strong> → représentée par <strong>0</strong></li>
+</ul>
+<p class="mb-4 text-gray-700">
+Ce système est appelé <strong>binaire</strong> (base 2), car il n’utilise que deux chiffres : 0 et 1.  
+Ainsi, toute information est transformée en une suite de <strong>bits</strong> pour être manipulée par la machine.
+</p>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Conversion entre décimal et binaire</h4>
+<p class="mb-4 text-gray-700"><strong>✅ Conversion décimal → binaire</strong></p>
+<p class="mb-4 text-gray-700">
+On soustrait les puissances de 2 (poids) les plus grandes possibles jusqu’à atteindre 0.
+</p>
+<p class="mb-4 text-gray-700"><em>Exemple : convertir 13 en binaire</em></p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li>2³ = 8 → 13 - 8 = 5 → on met 1</li>
+    <li>2² = 4 → 5 - 4 = 1 → on met 1</li>
+    <li>2¹ = 2 → trop grand → on met 0</li>
+    <li>2⁰ = 1 → 1 - 1 = 0 → on met 1</li>
+</ul>
+<p class="mb-4 text-gray-700"><strong>Résultat :</strong> 13 = <strong>1101</strong></p>
+
+<p class="mb-4 text-gray-700"><strong>✅ Conversion inverse (binaire → décimal)</strong></p>
+<p class="mb-4 text-gray-700"><em>Exemple : convertir 1101 en décimal</em></p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li>1×2³ = 8</li>
+    <li>1×2² = 4</li>
+    <li>0×2¹ = 0</li>
+    <li>1×2⁰ = 1</li>
+</ul>
+<p class="mb-4 text-gray-700"><strong>Total :</strong> 8 + 4 + 0 + 1 = <strong>13</strong></p>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">4. Les unités de mesure de l'information (base 10)</h4>
+<table class="table-auto w-full text-left text-gray-700 border border-gray-300">
+    <thead class="bg-teal-100">
+        <tr>
+            <th class="px-4 py-2">Unité</th>
+            <th class="px-4 py-2">Équivalence</th>
+            <th class="px-4 py-2">Exemple d’usage</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="px-4 py-2">Bit</td>
+            <td class="px-4 py-2">0 ou 1</td>
+            <td class="px-4 py-2">Un signal binaire</td>
+        </tr>
+        <tr>
+            <td class="px-4 py-2">Octet (B)</td>
+            <td class="px-4 py-2">8 bits</td>
+            <td class="px-4 py-2">Une lettre de l'alphabet</td>
+        </tr>
+        <tr>
+            <td class="px-4 py-2">Ko</td>
+            <td class="px-4 py-2">1 Ko = 1 000 octets</td>
+            <td class="px-4 py-2">Une page de texte</td>
+        </tr>
+        <tr>
+            <td class="px-4 py-2">Mo</td>
+            <td class="px-4 py-2">1 Mo = 1 000 Ko</td>
+            <td class="px-4 py-2">Une chanson MP3</td>
+        </tr>
+        <tr>
+            <td class="px-4 py-2">Go</td>
+            <td class="px-4 py-2">1 Go = 1 000 Mo</td>
+            <td class="px-4 py-2">Un film HD</td>
+        </tr>
+        <tr>
+            <td class="px-4 py-2">To</td>
+            <td class="px-4 py-2">1 To = 1 000 Go</td>
+            <td class="px-4 py-2">Un disque dur externe</td>
+        </tr>
+        <tr>
+            <td class="px-4 py-2">Po</td>
+            <td class="px-4 py-2">1 Po = 1 000 To</td>
+            <td class="px-4 py-2">Stockage de grands serveurs (cloud)</td>
+        </tr>
+    </tbody>
+</table>
+`,
 
     // ✅ RESSOURCES ET ACTIVITÉS
     resourcesAndActivities: [
@@ -397,9 +474,7 @@
         { id: 1, question: "Pourquoi les ordinateurs utilisent-ils le binaire ?", options: ["Parce que c'est plus rapide", "Parce que les circuits électroniques ont deux états", "Parce que c'est plus simple à lire"], answer: "Parce que les circuits électroniques ont deux états", explanation: "Les ordinateurs fonctionnent avec des signaux électriques : ouvert (0) ou fermé (1)." },
         { id: 2, question: "Combien de bits dans un octet ?", options: ["4", "8", "16"], answer: "8", explanation: "Un octet est composé de 8 bits." },
         { id: 3,
-        
-        id: 1, 
-        question: "Massin  souhaite faire une copie de sauvegarde des données de son téléphone portable. L'application de sauvegarde installée sur son téléphone affiche les valeurs suivantes en Go (gigaoctets) :<br><br><span style='font-weight:normal; text-align:left; display:inline-block; padding-left: 20px;'>Photos : 17.25 Go<br>Documents : 3.25 Go<br>Messages : 21.25 Go<br>Autres : 2.75 Go</span><br><br>La capacité totale de Marik est de 50 Go. Combien d'espace libre reste-t-il ? (Répondez en octets, 1ko = 1000 octets).", 
+        question: "Massin  souhaite faire une copie de sauvegarde des données de son téléphone portable. L'application de sauvegarde installée sur son téléphone affiche les valeurs suivantes en Go  :<br><br><span style='font-weight:normal; text-align:left; display:inline-block; padding-left: 20px;'>Photos : 17.25 Go<br>Documents : 3.25 Go<br>Messages : 21.25 Go<br>Autres : 2.75 Go</span><br><br>La capacité totale de telephone est de 50 Go. Combien d'espace libre reste-t-il ? (Répondez en octets, 1ko = 1000 octets).", 
         options: ["5 000 000 000 octets", "5 000 500 000 octets", "44 500 000 000 octets", "5 500 000 000 octets"], 
         answer: "5 500 000 000 octets", 
         explanation: "Espace utilisé = 17.25 + 3.25 + 21.25 + 2.75 = 44.5 Go. Espace libre = 50 Go - 44.5 Go = 5.5 Go. Puisque 1Go = 1 milliard d'octets, 5.5 Go = 5 500 000 000 octets." 
@@ -408,10 +483,10 @@
     ],
 
     koLink: { 
-        url: "https://example.com/ko_m01_l02.pdf", 
+        url: "https://drive.google.com/file/d/1qyIt0I7j9tieqHQn47Q9fz1wdUnwC-ZG/view?usp=drive_link", 
         label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" 
     },
-    mindMapUrl: null
+    mindMapUrl: EXTERNAL_MINDMAP_URL
 },
             // M1S2L1
     'M1-sequence02-L1': {
