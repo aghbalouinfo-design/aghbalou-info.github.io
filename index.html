@@ -149,6 +149,12 @@
     float: right; /* Positionne l'image à gauche et permet au texte de l'entourer */
     margin-right: 15px; /* Ajoute de l'espace à droite de l'image (optionnel) */
         }
+        .image-center{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 50%;
+        }
     </style>
 </head>
 <body>
@@ -499,7 +505,7 @@ On soustrait les puissances de 2 (poids) les plus grandes possibles jusqu’à a
     objectives: [
         "Définir ce qu'est un ordinateur.",
         "Identifier les différentes catégories d'ordinateurs (serveur, desktop, nano-ordinateur...).",
-        "Expliquer le schéma fonctionnel de base (Entrée, Traitement, Sortie, Stockage)."
+        "Expliquer le schéma fonctionnel de base."
     ],
 
     successCriteria: [
@@ -524,21 +530,17 @@ On soustrait les puissances de 2 (poids) les plus grandes possibles jusqu’à a
             <li><strong>Superordinateurs :</strong> Calculs scientifiques, prévisions climatiques.</li>
             <li><strong>Serveurs :</strong> Fourniture de services et stockage pour réseaux.</li>
             <li><strong>Ordinateurs de bureau :</strong> Usage personnel ou professionnel.</li>
-            <li><strong>Portables :</strong> Mobilité et polyvalence.</li>
+            <li><strong>Ordinateurs Portables :</strong> Mobilité et polyvalence.</li>
             <li><strong>Nano-ordinateurs :</strong> Projets spécifiques (ex : Raspberry Pi).</li>
             <li><strong>Smartphones/Tablettes :</strong> Communication et multimédia.</li>
         </ul>
 
         <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Schéma fonctionnel de base</h4>
-        <p class="mb-4 text-gray-700">Un ordinateur suit le cycle <strong>Entrée – Traitement – Sortie – Stockage</strong> :</p>
-        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-            <li><strong>Entrée :</strong> Données saisies via clavier, souris, capteurs.</li>
-            <li><strong>Traitement :</strong> Exécution des instructions par le processeur (CPU).</li>
-            <li><strong>Sortie :</strong> Résultat affiché (écran, imprimante, son).</li>
-            <li><strong>Stockage :</strong> Conservation des données (disque dur, SSD, cloud).</li>
-        </ul>
-        <p class="mb-4 text-gray-700"><em>Exemple :</em> Saisie d’un texte → Traitement par le logiciel → Affichage sur l’écran → Sauvegarde sur le disque.</p>
-    `,
+        <p class="mb-4 text-gray-700">e principe de fonctionnement d’un ordinateur peut être représenté sous forme d’un schéma simple connue
+sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes unités d’un ordinateur et comment interagissent</p>
+<img src="./Images/schema_von_neumann.png" width=""350" height="360" >    
+    
+`,
 
     // ✅ RESSOURCES ET ACTIVITÉS
     resourcesAndActivities: [
@@ -552,7 +554,7 @@ On soustrait les puissances de 2 (poids) les plus grandes possibles jusqu’à a
     quiz: [
         { id: 1, question: "Quel est le rôle principal d'un ordinateur ?", options: ["Stocker des données", "Traiter automatiquement des informations", "Afficher des images"], answer: "Traiter automatiquement des informations", explanation: "Un ordinateur transforme des données en informations utiles grâce à des programmes." },
         { id: 2, question: "Donnez un exemple de nano-ordinateur :", options: ["Serveur", "Raspberry Pi", "Superordinateur"], answer: "Raspberry Pi", explanation: "Le Raspberry Pi est un nano-ordinateur utilisé pour des projets spécifiques." },
-        { id: 3, question: "Quels sont les 4 éléments du schéma fonctionnel ?", options: ["Entrée, Sortie, Réseau, Stockage", "Entrée, Traitement, Sortie, Stockage", "Entrée, CPU, Sortie, Mémoire"], answer: "Entrée, Traitement, Sortie, Stockage", explanation: "C'est le cycle fondamental du fonctionnement d'un ordinateur." }
+        { id: 3, question: "Quels sont les 4 éléments du schéma fonctionnel ?", options: ["Entrée, Sortie, Réseau, Stockage", "Entrée, Traitement, Sortie, Memoire", "Entrée, CPU, stockage, Mémoire"], answer: "Entrée, Traitement, Sortie, Memoire", explanation: "C'est le cycle fondamental du fonctionnement d'un ordinateur." }
     ],
 
     koLink: { 
@@ -669,16 +671,19 @@ On soustrait les puissances de 2 (poids) les plus grandes possibles jusqu’à a
     <p>L'idée géniale de John von Neumann (en 1945) a été de dire :</p>
     <blockquote class="border-l-4 border-blue-500 pl-4 py-2 italic my-4 bg-gray-50">
         <strong>"Pour être efficace, un ordinateur doit stocker les instructions (la recette) et les données (les ingrédients) au MÊME endroit : la Mémoire Centrale (RAM)."</strong>
-    </blockquote>
+    <img src="./Images/MEMOIRE.png" width="250" height="100" class="image-center">  </blockquote>
+     
     <p>Avant cela, les instructions étaient souvent stockées physiquement différemment des données. Cela rend l'ordinateur incroyablement <strong>flexible</strong>.</p>
-    <div class="my-4 p-4 border rounded text-center text-gray-500 bg-gray-50">
-        [Schéma illustrant le CPU et la Mémoire Centrale unique contenant Données et Instructions]
+<p>Notre schéma fonctionnel, avec un peu plus de détails, ressemble à ceci : 
+</p>
+    <div class="my-4 p-4 border rounded text-center text-gray-500" >
+    <img src="./Images/von_neumann.png" width="640" height="660"  class="image-center"> 
     </div>
 
     <h3 class="text-xl font-semibold text-blue-700 mt-6">3. Zoom sur le Cerveau : Le Processeur (CPU)</h3>
     <p>Le <strong>CPU (Central Processing Unit)</strong>, ou <strong>Processeur</strong>, est le composant qui exécute les instructions. Il est lui-même composé de plusieurs éléments clés.</p>
-    <div class="my-4 p-4 border rounded text-center text-gray-500 bg-gray-50">
-        [Schéma des composants internes du CPU : UC, UAL, Registres, Horloge, Bus]
+    <div class="my-4 p-4 border rounded text-center text-gray-500 " class="image-center">
+    <img src="./Images/cpu.png" width="640" height="400"  class="image-center"> 
     </div>
     <ul class="list-none space-y-4">
         <li>
@@ -695,7 +700,7 @@ On soustrait les puissances de 2 (poids) les plus grandes possibles jusqu’à a
         </li>
         <li>
             <strong class="text-blue-800">L'Horloge (Clock) :</strong><br>
-            C'est le <strong>"métronome"</strong>. Elle donne le rythme de travail au CPU en envoyant des "tops" (impulsions). La vitesse est mesurée en Hertz (Hz).
+             Elle regle le rythme de travail au CPU en envoyant des "tops" (impulsions). La vitesse est mesurée en Hertz (Hz).
         </li>
         <li>
             <strong class="text-blue-800">Les Bus :</strong><br>
@@ -707,13 +712,13 @@ On soustrait les puissances de 2 (poids) les plus grandes possibles jusqu’à a
         <h4 class="font-semibold text-blue-800">Application : Comment le CPU calcule <code>5 + 2</code> ?</h4>
         <p>Voici les étapes simplifiées, au rythme de l'<strong>Horloge</strong> :</p>
         <ol class="list-decimal list-inside space-y-2 mt-2">
-            <li>(Top 1) L'**UC** (le chef) demande l'instruction à la RAM (via le **Bus**).</li>
-            <li>(Top 2) L'instruction "ADDITIONNER 5 et 2" arrive dans un **Registre** du CPU.</li>
-            <li>(Top 3) L'**UC** décode l'instruction (elle comprend "addition").</li>
-            <li>(Top 4) L'**UC** place les données <code>5</code> et <code>2</code> dans d'autres **Registres**.</li>
-            <li>(Top 5) L'**UC** ordonne à l'**UAL** : "Additionne le contenu de ces deux cases !".</li>
-            <li>(Top 6) L'**UAL** exécute le calcul. Le résultat <code>7</code> est placé dans un **Registre**.</li>
-            <li>(Top 7) L'**UC** envoie le <code>7</code> (via le **Bus**) vers la mémoire RAM pour un usage futur.</li>
+            <li>(Top 1) L'<b>UC</b> (le chef) demande l'instruction à la RAM (via le <b>Bus</b>).</li>
+            <li>(Top 2) L'instruction "ADDITIONNER 5 et 2" arrive dans un <b>Registre</b> du CPU.</li>
+            <li>(Top 3) L'<b>UC</b> décode l'instruction (elle comprend "addition").</li>
+            <li>(Top 4) L'<b>UC</b> place les données <code>5</code> et <code>2</code> dans d'autres <b>Registres</b>.</li>
+            <li>(Top 5) L'<b>UC</b> ordonne à l'<b>UAL</b> : "Additionne le contenu de ces deux cases !".</li>
+            <li>(Top 6) L'<b>UAL</b> exécute le calcul. Le résultat <code>7</code> est placé dans un <b>Registre</b>.</li>
+            <li>(Top 7) L'<b>UC</b> envoie le <code>7</code> (via le <b>Bus</b>) vers la mémoire RAM pour un usage futur.</li>
         </ol>
     </div>
 </div>
