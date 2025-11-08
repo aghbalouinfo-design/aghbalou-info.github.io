@@ -741,12 +741,93 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
         "Je peux expliquer ce qui se passe dans la RAM quand j'ouvre un logiciel.",
         "Je peux expliquer pourquoi un ordinateur a besoin à la fois d'un SSD/HDD et de RAM."
     ],
-    resourcesAndActivities: [], 
-    quiz: [],
+    resourcesAndActivities: [
+  // Doit avoir "link", "title", "type", "objective", "icon"
+  { 
+      type: "Exercice PDF", 
+      title: "Tableau comparatif (RAM, ROM, Masse)", 
+      objective: "Synthèse et mémorisation des 3 types", 
+      link: "exercice_tableau_M1S2L3.pdf", 
+      icon: "pdf" 
+  },
+  { 
+      type: "Vidéo Explicative", 
+      title: "Vidéo : RAM, ROM, Stockage expliqués (5 min)", 
+      objective: "Distinguer les 3 types de mémoires", 
+      link: "https://www.youtube.com/watch?v=g_n5v4m3SgA", 
+      icon: "video" 
+  },
+  { 
+      type: "Exercice Interactif", 
+      title: "Jeu : Quelle mémoire pour quel usage ?", 
+      objective: "Appliquer les connaissances à des cas concrets", 
+      link: "exercice_memoires_M1S2L3.html", 
+      icon: "web" 
+  }
+],
+quiz: [
+  { 
+      id: 1, 
+      question: "Quelle est la caractéristique principale de la mémoire RAM ?", 
+      options: ["Elle est non-volatile", "Elle est volatile (s'efface sans courant)", "Elle stocke le BIOS", "Elle est très lente"], 
+      answer: "Elle est volatile (s'efface sans courant)", 
+      explanation: "La RAM est la mémoire de travail ; elle a besoin d'électricité pour conserver les données. C'est pourquoi on dit qu'elle est volatile." 
+  },
+  { 
+      id: 2, 
+      question: "À quoi sert la mémoire ROM (Mémoire Morte) ?", 
+      options: ["À stocker vos photos et vidéos", "À exécuter les logiciels ouverts", "À démarrer l'ordinateur (contient le BIOS/UEFI)", "À accélérer les jeux vidéo"], 
+      answer: "À démarrer l'ordinateur (contient le BIOS/UEFI)", 
+      explanation: "La ROM contient les instructions fondamentales (le BIOS ou l'UEFI) que l'ordinateur exécute au tout premier démarrage." 
+  },
+  { 
+      id: 3, 
+      question: "Où sont stockés vos fichiers (documents, jeux, photos) de manière permanente ?", 
+      options: ["Dans la RAM", "Dans la ROM", "Dans le processeur (CPU)", "Dans la Mémoire de Masse (Disque Dur/SSD)"], 
+      answer: "Dans la Mémoire de Masse (Disque Dur/SSD)", 
+      explanation: "La mémoire de masse (HDD ou SSD) est non-volatile, elle est conçue pour stocker durablement de grandes quantités de données." 
+  },
+  { 
+      id: 4, 
+      question: "Quand vous ouvrez un logiciel (ex: Word), ses données sont copiées DE... VERS...", 
+      options: ["La RAM vers le SSD", "La ROM vers la RAM", "La Mémoire de Masse vers la RAM", "La RAM vers la ROM"], 
+      answer: "La Mémoire de Masse vers la RAM", 
+      explanation: "Le logiciel est stocké en permanence sur la Mémoire de Masse (SSD/HDD) et est chargé (copié) dans la RAM (mémoire de travail) pour être exécuté rapidement." 
+  },
+  { 
+      id: 5, 
+      question: "Quelle est la mémoire la plus rapide, mais qui s'efface quand on éteint l'ordinateur ?", 
+      options: ["Le SSD (Masse)", "La ROM", "La RAM", "Le Disque Dur (Masse)"], 
+      answer: "La RAM", 
+      explanation: "La RAM est la mémoire la plus rapide pour le travail actif, mais elle est volatile (perd ses données sans courant)." 
+  },
+  { 
+      id: 6, 
+      question: "Lequel de ces éléments est un exemple de Mémoire de Masse ?", 
+      options: ["Le BIOS", "La barrette de 16Go", "Une clé USB", "L'Unité de Commande"], 
+      answer: "Une clé USB", 
+      explanation: "Une clé USB, comme un SSD ou un HDD, est un support de stockage non-volatile conçu pour conserver des données à long terme." 
+  }
+],
     koLink: { url: "https://example.com/ko_m02_s01_l03.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
     mindMapUrl: null,
-    detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
-},
+    detailedNotes: `
+
+<h4 class="text-xl font-bold text-teal-800 mb-3">Introduction</h4> <p class="mb-4 text-gray-700"> Pour fonctionner, un ordinateur a besoin de mémoriser des informations. Il n'existe pas une seule "mémoire" capable de tout faire, car les besoins sont différents. C'est pourquoi on utilise trois types principaux. </p>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">1. La Mémoire Vive (RAM)</h4> <p class="mb-4 text-gray-700"> <strong>Nom complet :</strong> <strong>RAM</strong> signifie <strong>R</strong>andom <strong>A</strong>ccess <strong>M</strong>emory (Mémoire à Accès Aléatoire). </p> <p class="mb-4 text-gray-700"> <strong>Rôle principal :</strong> C'est la <strong>mémoire de travail</strong> de l'ordinateur. On l'appelle "vive" car elle est active et rapide. Elle stocke <strong>temporairement</strong> tout ce que l'ordinateur est en train d'utiliser <strong>maintenant</strong> : </p> <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4"> <li>Le système d'exploitation (Windows, macOS...) pendant qu'il fonctionne.</li> <li>Les logiciels et applications que vous avez ouverts (navigateur web, jeu, Word...).</li> <li>Les données sur lesquelles vous travaillez (ce texte, le niveau du jeu...).</li> </ul> <p class="mb-4 text-gray-700"> <strong>Caractéristiques Clés :</strong> </p> <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4"> <li><strong>Volatile :</strong> C'est sa caractéristique la plus importante. Dès que l'on coupe le courant, la RAM <strong>se vide complètement</strong>. Elle oublie tout.</li> <li><strong>Extrêmement Rapide :</strong> Conçue pour que le processeur (CPU) n'ait pas à attendre.</li> <li><strong>Lecture et Écriture :</strong> L'ordinateur peut y lire et y écrire des informations en permanence.</li> <li><strong>Capacité :</strong> Moyenne (ex: 8 Go, 16 Go).</li> </ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. La Mémoire Morte (ROM)</h4> <p class="mb-4 text-gray-700"> <strong>Nom complet :</strong> <strong>ROM</strong> signifie <strong>R</strong>ead-<strong>O</strong>nly <strong>M</strong>emory (Mémoire en Lecture Seule). </p> <p class="mb-4 text-gray-700"> <strong>Rôle principal :</strong> C'est la <strong>mémoire de démarrage</strong> de l'ordinateur. On l'appelle "morte" car elle est figée et ne peut pas être modifiée facilement. </p> <p class="mb-4 text-gray-700"> <strong>Ce qu'elle contient :</strong> Elle stocke un programme vital, installé en usine, qui ne doit jamais être effacé : le <strong>BIOS</strong> ou l'<strong>UEFI</strong>. </p> <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4"> <li>C'est le premier programme qui se lance à l'allumage.</li> <li>Il vérifie que tout le matériel fonctionne (clavier, RAM, disque...).</li> <li>Il dit à l'ordinateur où trouver le système d'exploitation pour le démarrer.</li> </ul> <p class="mb-4 text-gray-700"> <strong>Caractéristiques Clés :</strong> </p> <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4"> <li><strong>Non-volatile :</strong> Elle <strong>conserve ses données</strong> même lorsque l'ordinateur est éteint.</li> <li><strong>Lecture Seule :</strong> L'ordinateur ne peut que <em>lire</em> les instructions. Vous ne pouvez pas y enregistrer vos fichiers.</li> <li><strong>Permanente :</strong> Les données sont "gravées" en usine.</li> <li><strong>Capacité :</strong> Très faible (quelques Mo).</li> </ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. La Mémoire de Masse/Memoire Secondaire (Le Stockage)</h4> <p class="mb-4 text-gray-700"> <strong>Autres noms :</strong> Stockage de données ou stockage secondaire. </p> <p class="mb-4 text-gray-700"> <strong>Rôle principal :</strong> C'est la <strong>mémoire à long terme</strong> de l'ordinateur. C'est là que tout est gardé de manière <strong>permanente</strong> (jusqu'à ce que vous décidiez de l'effacer). </p> <p class="mb-4 text-gray-700"> <strong>Ce qu'elle contient :</strong> </p> <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4"> <li>Les fichiers d'installation du système d'exploitation.</li> <li>Tous les logiciels, applications et jeux installés.</li> <li>Tous vos fichiers personnels (documents, photos, vidéos, musiques...).</li> </ul> <p class="mb-4 text-gray-700"> <strong>Caractéristiques Clés :</strong> </p> <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4"> <li><strong>Non-volatile :</strong> Elle <strong>garde toutes les données</strong> sans électricité.</li> <li><strong>Grande Capacité :</strong> Son point fort. Mesurée en Giga-octets (Go) ou Téra-octets (To).</li> <li><strong>Plus Lente :</strong> Elle est <strong>beaucoup plus lente que la RAM</strong>.</li> </ul> <p class="mb-4 text-gray-700"> <strong>Types principaux :</strong> </p> <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4"> <li><strong>HDD (Hard Disk Drive) :</strong> Le "disque dur" classique (mécanique, plateaux qui tournent).</li> <li><strong>SSD (Solid-State Drive) :</strong> Aucune pièce mobile (mémoire flash). Beaucoup plus rapide et résistant.</li> <li><strong>Autres :</strong> Clés USB, cartes SD, CD/DVD, Cloud...</li> </ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">4. Tableau Récapitulatif</h4> <table class="table-auto w-full text-left text-gray-700 border border-gray-300"> <thead class="bg-teal-100"> <tr> <th class="px-4 py-2">Critère</th> <th class="px-4 py-2">🧠 RAM (Vive)</th> <th class="px-4 py-2">📜 ROM (Morte)</th> <th class="px-4 py-2">🗄️ Masse (Stockage)</th> </tr> </thead> <tbody> <tr> <td class="px-4 py-2"><strong>Volatilité</strong></td> <td class="px-4 py-2"><strong>Volatile</strong> (s'efface sans courant)</td> <td class="px-4 py-2"><strong>Non-volatile</strong> (conserve tout)</td> <td class="px-4 py-2"><strong>Non-volatile</strong> (conserve tout)</td> </tr> <tr> <td class="px-4 py-2"><strong>Rôle Principal</strong></td> <td class="px-4 py-2">Mémoire de <strong>travail</strong> (tâches en cours)</td> <td class="px-4 py-2">Mémoire de <strong>démarrage</strong> (BIOS/UEFI)</td> <td class="px-4 py-2">Mémoire de <strong>stockage</strong> (fichiers/programmes)</td> </tr> <tr> <td class="px-4 py-2"><strong>Vitesse</strong></td> <td class="px-4 py-2">Extrêmement Rapide</td> <td class="px-4 py-2">Rapide</td> <td class="px-4 py-2">Lente (HDD) à Très Rapide (SSD)</td> </tr> <tr> <td class="px-4 py-2"><strong>Capacité</strong></td> <td class="px-4 py-2">Moyenne (ex: 8 à 32 Go)</td> <td class="px-4 py-2">Très Faible (quelques Mo)</td> <td class="px-4 py-2">Très Grande (ex: 500 Go à 4 To)</td> </tr> <tr> <td class="px-4 py-2"><strong>Interaction</strong></td> <td class="px-4 py-2">Lecture <strong>ET</strong> Écriture</td> <td class="px-4 py-2">Lecture <strong>Seule</strong></td> <td class="px-4 py-2">Lecture <strong>ET</strong> Écriture</td> </tr> <tr> <td class="px-4 py-2"><strong>Exemples</strong></td> <td class="px-4 py-2">Logiciels ouverts, onglets web</td> <td class="px-4 py-2">Programme de démarrage</td> <td class="px-4 py-2">Fichiers Word, Photos, Jeux installés</td> </tr>
+     <tr> <td class="px-4 py-2"><strong>Illustration</strong></td>
+    <td class="px-4 py-2"><img src="./Images/ram-barrette.png" width="100" alt="Barrette de RAM" style="display: block; margin: auto;"></td>
+    <td class="px-4 py-2"><img src="./Images/rom-chip.png" width="80" alt="Puce ROM/BIOS" style="display: block; margin: auto;"></td>
+    <td class="px-4 py-2"><img src="./Images/storage-hdd-ssd.png" width="120" alt="Disque dur SSD et HDD" style="display: block; margin: auto;"></td>
+</tr> </tbody> </table> `},
+
 
 'M1-sequence02-L4': { 
     title: "Leçon 4 : Carte mère et périphériques",
@@ -765,7 +846,99 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
     quiz: [],
     koLink: { url: "https://example.com/ko_m02_s01_l04.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
     mindMapUrl: null,
-    detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
+detailedNotes: `
+<h4 class="text-xl font-bold text-teal-800 mb-3">🖥️ Leçon 4 : Carte mère et périphériques</h4>
+<p class="mb-4 text-gray-700">
+    Cette leçon explore les composants essentiels qui permettent à un ordinateur de fonctionner comme un tout cohérent. Nous allons identifier la pièce maîtresse qui connecte tout le reste (la carte mère) et les éléments qui assurent la communication entre l'ordinateur et l'utilisateur (les périphériques).
+</p>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">1. La Carte Mère (Motherboard)</h4>
+<p class="mb-4 text-gray-700">
+    La <strong>carte mère</strong> est la carte de circuits imprimés principale d'un ordinateur. C'est le "squelette" ou le "système nerveux" central sur lequel tous les autres composants matériels sont connectés et communiquent entre eux.
+</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Rôle principal :</strong> Elle assure la connexion et la communication de tous les composants de l'ordinateur (processeur, mémoire RAM, cartes d'extension, disques de stockage, périphériques).</li>
+    <li><strong>Composants clés sur la carte mère :</strong>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-8">
+            <li><strong>Socket CPU :</strong> L'emplacement où le processeur (CPU) est inséré.</li>
+            <li><strong>Slots RAM :</strong> Les emplacements pour les barrettes de mémoire vive (RAM).</li>
+            <li><strong>Slots d'extension :</strong> Pour connecter des cartes additionnelles comme la carte graphique, la carte réseau, etc.</li>
+            <li><strong>Connecteurs de stockage :</strong> Pour brancher les disques durs (HDD) ou SSD.</li>
+            <li><strong>Connecteurs d'entrée/sortie (Ports I/O) :</strong> Pour connecter les périphériques externes (USB, HDMI, Ethernet, audio...).</li>
+        </ul>
+    </li>
+</ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Les Périphériques</h4>
+<p class="mb-4 text-gray-700">
+    Les <strong>périphériques</strong> sont des équipements connectés à l'ordinateur qui permettent d'échanger des informations avec l'utilisateur ou d'autres systèmes. On les classe en trois catégories : d'entrée, de sortie, ou d'entrée/sortie.
+</p>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2.1. Périphériques d'Entrée</h4>
+<p class="mb-4 text-gray-700">
+    Un <strong>périphérique d'entrée</strong> permet à l'utilisateur de fournir des informations ou des commandes à l'ordinateur. L'information va de l'extérieur vers l'intérieur de l'ordinateur.
+</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Clavier :</strong> Pour saisir du texte et des commandes.</li>
+    <li><strong>Souris :</strong> Pour pointer, cliquer et interagir avec l'interface graphique.</li>
+    <li><strong>Microphone :</strong> Pour enregistrer du son ou la voix.</li>
+    <li><strong>Scanner :</strong> Pour numériser des documents ou images papier.</li>
+    <li><strong>Webcam :</strong> Pour capturer des images et vidéos.</li>
+    <li><strong>Manette de jeu :</strong> Pour envoyer des commandes dans les jeux.</li>
+</ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2.2. Périphériques de Sortie</h4>
+<p class="mb-4 text-gray-700">
+    Un <strong>périphérique de sortie</strong> permet à l'ordinateur de communiquer des informations à l'utilisateur. L'information va de l'intérieur de l'ordinateur vers l'extérieur.
+</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Écran (Moniteur) :</strong> Pour afficher du texte, des images et des vidéos.</li>
+    <li><strong>Imprimante :</strong> Pour imprimer des documents ou images sur papier.</li>
+    <li><strong>Haut-parleurs / Casque :</strong> Pour diffuser du son.</li>
+    <li><strong>Projecteur :</strong> Pour afficher l'image de l'ordinateur sur une grande surface.</li>
+</ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2.3. Périphériques d'Entrée/Sortie</h4>
+<p class="mb-4 text-gray-700">
+    Un <strong>périphérique d'entrée/sortie</strong> (E/S ou I/O) peut à la fois recevoir des informations de l'utilisateur et en restituer.
+</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Écran tactile :</strong> Reçoit les commandes tactiles (entrée) et affiche l'information (sortie).</li>
+    <li><strong>Imprimante multifonction (scanner/imprimante) :</strong> Numérise (entrée) et imprime (sortie).</li>
+    <li><strong>Modem / Routeur :</strong> Reçoit des données d'Internet (entrée) et en envoie (sortie).</li>
+    <li><strong>Clé USB / Disque dur externe :</strong> Permet d'écrire des données sur le support (sortie) et d'en lire (entrée).</li>
+    <li><strong>Casque-micro :</strong> Le micro est une entrée, les écouteurs sont une sortie.</li>
+</ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Autres Composants Vitaux</h4>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3.1. Carte Graphique (GPU)</h4>
+<p class="mb-4 text-gray-700">
+    La <strong>carte graphique</strong> (ou GPU, Graphics Processing Unit) est responsable du calcul et de l'affichage des images sur l'écran.
+</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Rôle :</strong> Elle transforme les données informatiques en signaux vidéo compréhensibles par un moniteur. Essentielle pour les jeux, la vidéo, la conception graphique.</li>
+    <li>Peut être intégrée au processeur (iGPU) ou être une carte séparée (dGPU, plus puissante).</li>
+</ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3.2. Alimentation (PSU)</h4>
+<p class="mb-4 text-gray-700">
+    L'<strong>alimentation</strong> (Power Supply Unit - PSU) fournit l'énergie électrique nécessaire à tous les composants de l'ordinateur.
+</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Rôle :</strong> Elle convertit le courant alternatif (AC) du réseau électrique en courant continu (DC) adapté aux différents composants (carte mère, CPU, carte graphique, disques...).</li>
+    <li>Sa puissance (mesurée en Watts) doit être suffisante pour tous les composants.</li>
+</ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3.3. Carte Réseau</h4>
+<p class="mb-4 text-gray-700">
+    La <strong>carte réseau</strong> (ou NIC, Network Interface Card) permet à l'ordinateur de se connecter à un réseau (Internet, réseau local).
+</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Types :</strong> Peut être filaire (Ethernet) pour un câble réseau, ou sans fil (Wi-Fi).</li>
+    <li>Souvent intégrée à la carte mère, mais peut aussi être une carte d'extension.</li>
+</ul>
+`
 },
 
 'M1-sequence02-L5': { 
