@@ -842,8 +842,110 @@ quiz: [
         "Je peux citer 3 périphériques d'entrée et 3 de sortie.",
         "Je peux expliquer que la carte mère sert à connecter tous les composants entre eux."
     ],
-    resourcesAndActivities: [], 
-    quiz: [],
+    resourcesAndActivities: [
+  {
+      type: "Exercice PDF",
+      title: "Identifier les ports et slots de la carte mère",
+      objective: "Reconnaître visuellement les connecteurs sur une carte mère",
+      link: "exercice_carte_mere_M1S2L4.pdf",
+      icon: "pdf"
+  },
+  {
+      type: "Vidéo Explicative",
+      title: "Vidéo : Tout comprendre sur la carte mère (7 min)",
+      objective: "Comprendre le rôle central et les interconnexions de la carte mère",
+      link: "https://www.youtube.com/watch?v=exemple_carte_mere",
+      icon: "video"
+  },
+  {
+      type: "Quiz Interactif",
+      title: "Quiz : Périphériques et leurs fonctions",
+      objective: "Classer les périphériques selon leur fonction (entrée, sortie, E/S)",
+      link: "quiz_peripheriques_M1S2L4.html",
+      icon: "web"
+  },
+  {
+      type: "Guide Pratique",
+      title: "Guide : Choisir ses périphériques (Clavier, Souris, Écran)",
+      objective: "Apprendre les critères de choix pour les périphériques courants",
+      link: "guide_choix_peripheriques_M1S2L4.pdf",
+      icon: "pdf"
+  }
+],
+quiz: [
+  {
+      id: 1,
+      question: "Quel est le rôle principal de la carte mère dans un ordinateur ?",
+      options: [
+          "Stocker toutes les données de manière permanente",
+          "Fournir l'énergie électrique à tous les composants",
+          "Connecter et permettre la communication entre tous les composants",
+          "Afficher les images et vidéos sur l'écran"
+      ],
+      answer: "Connecter et permettre la communication entre tous les composants",
+      explanation: "La carte mère est la plaque maîtresse qui relie et fait communiquer le CPU, la RAM, les cartes d'extension, etc."
+  },
+  {
+      id: 2,
+      question: "Lequel de ces éléments est un périphérique d'ENTRÉE ?",
+      options: [
+          "Une imprimante",
+          "Un microphone",
+          "Un écran",
+          "Des haut-parleurs"
+      ],
+      answer: "Un microphone",
+      explanation: "Un microphone permet d'envoyer du son (information) à l'ordinateur, c'est donc un périphérique d'entrée."
+  },
+  {
+      id: 3,
+      question: "Un écran tactile est un exemple de périphérique :",
+      options: [
+          "D'entrée seulement",
+          "De sortie seulement",
+          "D'entrée/sortie",
+          "De stockage"
+      ],
+      answer: "D'entrée/sortie",
+      explanation: "L'écran tactile reçoit des commandes par le toucher (entrée) et affiche des informations (sortie) simultanément."
+  },
+  {
+      id: 4,
+      question: "Quel composant est responsable de convertir les données en signaux vidéo pour l'affichage à l'écran ?",
+      options: [
+          "La carte mère",
+          "La carte réseau",
+          "La carte graphique (GPU)",
+          "L'alimentation (PSU)"
+      ],
+      answer: "La carte graphique (GPU)",
+      explanation: "La carte graphique (GPU) est spécialement conçue pour gérer et afficher tout ce qui apparaît à l'écran."
+  },
+  {
+      id: 5,
+      question: "L'alimentation (PSU) a pour fonction principale de :",
+      options: [
+          "Démarrer le système d'exploitation",
+          "Stocker les programmes et fichiers",
+          "Fournir le courant électrique stable aux composants",
+          "Connecter l'ordinateur à Internet"
+      ],
+      answer: "Fournir le courant électrique stable aux composants",
+      explanation: "L'alimentation (PSU) est essentielle pour convertir le courant du secteur en une énergie utilisable par tous les composants internes de l'ordinateur."
+  },
+  {
+      id: 6,
+      question: "Quelle partie de la carte mère permet de connecter une carte graphique ou une carte réseau supplémentaire ?",
+      options: [
+          "Le Socket CPU",
+          "Les Slots RAM",
+          "Les Slots d'extension (PCIe)",
+          "Les Connecteurs de stockage SATA"
+      ],
+      answer: "Les Slots d'extension (PCIe)",
+      explanation: "Les slots d'extension, souvent appelés PCIe, sont les emplacements où l'on insère des cartes additionnelles comme les cartes graphiques ou d'autres cartes d'extension."
+  }
+],
     koLink: { url: "https://example.com/ko_m02_s01_l04.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
     mindMapUrl: null,
 detailedNotes: `
