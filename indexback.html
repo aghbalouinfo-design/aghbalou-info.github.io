@@ -18,7 +18,7 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f v 6; /* Fond très léger, harmonieux */
+            background-color: #f3f4f6; /* Fond très léger, harmonieux */
         }
 
         /* --- Couleurs de Thème et de Module (Vives) --- */
@@ -1062,9 +1062,7 @@ detailedNotes: `
     mindMapUrl: null,
     detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
 },
-          
-          
-  // M2S1L1
+            // M2S1L1
             'M2-sequence01-L1': { 
                 title: "Leçon 1 : foncionnalités SE",
                 moduleTitle: "M02 : Logiciels",
@@ -1078,119 +1076,17 @@ detailedNotes: `
                 detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
             },
 
-           'M2-sequence01-L2': { 
-                title: "Leçon 2 : Environnement d’un système d’exploitation",
+            'M2-sequence01-L2': { 
+                title: "Leçon 2 : Envirenoment SE",
                 moduleTitle: "M02 : Logiciels",
-                overview: "Cette leçon décrit les différents environnements des systèmes d'exploitation (interfaces graphiques, ligne de commande) et présente les principaux SE utilisés aujourd'hui sur divers appareils.",
-                objectives: [
-                    "Identifier les différents types d'interfaces utilisateur d'un SE.",
-                    "Citer les principaux systèmes d'exploitation (Windows, macOS, Linux, Android, iOS) et leurs usages.",
-                    "Comprendre la notion d'écosystème logiciel autour d'un SE."
-                ],
-                successCriteria: [
-                    "Je peux distinguer une interface graphique d'une ligne de commande.",
-                    "Je peux nommer les SE de 3 appareils différents (PC, smartphone, serveur).",
-                    "Je peux expliquer pourquoi un SE est adapté à un type d'appareil."
-                ],
-                resourcesAndActivities: [
-                    { type: "Worksheet", title: "Fiche : Interfaces et SE", objective: "Comparaison des environnements", link: "fiche_interfaces_L2.pdf", icon: "document" },
-                    { type: "Tuto Vidéo", title: "Visite guidée de Windows et Linux (8 min)", objective: "Découverte des interfaces", link: "https://www.youtube.com/watch?v=exemple_environments", icon: "video" }
-                ],
-                quiz: [
-                    { id: 1, question: "Quelle est l'interface utilisateur la plus courante pour un PC familial ?", options: ["Ligne de commande", "Interface graphique", "Interface vocale"], answer: "Interface graphique", explanation: "Les interfaces graphiques (GUI) sont intuitives et visuelles, parfaites pour le grand public." },
-                    { id: 2, question: "Quel système d'exploitation est majoritairement utilisé sur les smartphones Android ?", options: ["iOS", "Windows Mobile", "Android"], answer: "Android", explanation: "Android est un SE open-source développé principalement par Google pour les appareils mobiles." }
-                ],
-                koLink: { url: "https://example.com/ko_m02_s01_l02.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+                overview: "Exploration des composants internes et de leur rôle dans l'architecture de Von Neumann.",
+                objectives: ["Dessiner et étiqueter le schéma fonctionnel.", "Expliquer le rôle de l'UAL et de l'UC."],
+                successCriteria: ["Je peux identifier 4 composants principaux de l'UC."],
+                resourcesAndActivities: [], 
+                quiz: [],
+                koLink: { url: "https://example.com/ko_m01_l03.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
                 mindMapUrl: null, // Pas de carte mentale pour cette leçon
-                detailedNotes: `
-                    <h4 class="text-xl font-bold text-teal-800 mb-3">1. Les Types d'Interfaces Utilisateur</h4>
-                    <p class="mb-4 text-gray-700">Le système d'exploitation fournit différentes manières pour l'utilisateur d'interagir avec l'ordinateur :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li><strong>Interface Graphique (GUI - Graphical User Interface) :</strong> La plus répandue. Utilise des fenêtres, icônes, menus, pointeur de souris. Facile et intuitive. (Ex: Windows, macOS).</li>
-                        <li><strong>Ligne de Commande (CLI - Command Line Interface) :</strong> L'utilisateur tape des commandes textuelles. Plus puissante et rapide pour certaines tâches, mais moins intuitive. (Ex: Terminal Linux, PowerShell Windows).</li>
-                    </ul>
-
-                    <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Les Principaux Systèmes d'Exploitation</h4>
-                    <p class="mb-4 text-gray-700">Il existe de nombreux SE, chacun adapté à des besoins spécifiques :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li><strong>Pour PC (Ordinateurs Personnels) :</strong>
-                            <ul>
-                                <li><strong>Windows (Microsoft) :</strong> Le plus utilisé au monde. Large compatibilité logicielle.</li>
-                                <li><strong>macOS (Apple) :</strong> Connu pour son design et sa simplicité d'utilisation. Écosystème intégré avec les produits Apple.</li>
-                                <li><strong>Linux (Open Source) :</strong> Nombreuses versions (distributions comme Ubuntu, Fedora). Très personnalisable, stable, et utilisé par les développeurs et les serveurs.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Pour Smartphones et Tablettes :</strong>
-                            <ul>
-                                <li><strong>Android (Google) :</strong> Le plus utilisé sur mobile. Ouvert et personnalisable, présent sur de nombreuses marques.</li>
-                                <li><strong>iOS (Apple) :</strong> Exclusif aux iPhones et iPads. Réputé pour sa fluidité et sa sécurité.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Autres :</strong> Chrome OS (pour les Chromebooks), WatchOS (Apple Watch), Tizen (Smart TV), etc.</li>
-                    </ul>
-
-                    <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Écosystème Logiciel</h4>
-                    <p class="mb-4 text-gray-700">Chaque SE a son propre "écosystème" : un ensemble de logiciels, d'applications et de services qui sont conçus pour fonctionner au mieux avec lui.</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li>Un logiciel Windows ne fonctionne généralement pas directement sur macOS ou Linux sans adaptation.</li>
-                        <li>Les applications Android sont différentes des applications iOS.</li>
-                    </ul>
-                `
-            },
-            'M2-sequence01-L3': { 
-                title: "Leçon 3 : Gestion des fichiers et dossiers",
-                moduleTitle: "M02 : Logiciels",
-                overview: "Cette leçon aborde les principes d'organisation des fichiers et des dossiers, l'importance d'une bonne gestion pour la productivité et la sécurité, et les opérations de base sur les fichiers.",
-                objectives: [
-                    "Comprendre la structure arborescente des fichiers et dossiers.",
-                    "Maîtriser les opérations de base (créer, renommer, déplacer, copier, supprimer).",
-                    "Expliquer l'importance de l'organisation des fichiers."
-                ],
-                successCriteria: [
-                    "Je peux créer une arborescence de dossiers logique pour un projet.",
-                    "Je peux effectuer toutes les opérations de base sur les fichiers et dossiers.",
-                    "Je peux expliquer pourquoi un nom de fichier clair est important."
-                ],
-                resourcesAndActivities: [
-                    { type: "Worksheet", title: "Exercices : Manipulation de fichiers", objective: "Pratique des opérations de base", link: "exercice_fichiers_L3.pdf", icon: "document" },
-                    { type: "Tuto Vidéo", title: "Organiser ses fichiers comme un pro (10 min)", objective: "Bonnes pratiques de gestion", link: "https://www.youtube.com/watch?v=exemple_files", icon: "video" }
-                ],
-                quiz: [
-                    { id: 1, question: "Quelle est la meilleure façon d'organiser vos fichiers ?", options: ["Tout mettre en vrac", "Utiliser une structure de dossiers logique", "Laisser l'ordinateur le faire"], answer: "Utiliser une structure de dossiers logique", explanation: "Une structure logique facilite la recherche et la gestion des fichiers." },
-                    { id: 2, question: "Quel risque prenez-vous en supprimant un fichier important sans sauvegarde ?", options: ["Aucun", "Perdre définitivement le fichier", "Ralentir l'ordinateur"], answer: "Perdre définitivement le fichier", explanation: "La suppression sans sauvegarde rend la récupération difficile, voire impossible." }
-                ],
-                koLink: { url: "https://example.com/ko_m02_s01_l03.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-                mindMapUrl: null, // Pas de carte mentale pour cette leçon
-                detailedNotes: `
-                    <h4 class="text-xl font-bold text-teal-800 mb-3">1. La Structure Arborescente</h4>
-                    <p class="mb-4 text-gray-700">Les fichiers et dossiers sur un ordinateur sont organisés en une <strong>structure arborescente</strong>. Imaginez un arbre inversé :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li>La "racine" est le disque dur principal (ex: C: sur Windows, / sur Linux/macOS).</li>
-                        <li>Les "branches" sont les dossiers.</li>
-                        <li>Les "feuilles" sont les fichiers.</li>
-                    </ul>
-                    <p class="mb-4 text-gray-700">Chaque fichier est identifié par son <strong>chemin d'accès</strong> complet (ex: <code>C:\\Utilisateurs\\MonNom\\Documents\\rapport.docx</code>).</p>
-
-                    <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Opérations de Base sur les Fichiers et Dossiers</h4>
-                    <p class="mb-4 text-gray-700">Le système d'exploitation permet d'effectuer les actions suivantes :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li><strong>Créer :</strong> Un nouveau dossier ou un nouveau fichier.</li>
-                        <li><strong>Renommer :</strong> Changer le nom d'un fichier ou d'un dossier. (Attention à l'extension du fichier !).</li>
-                        <li><strong>Déplacer :</strong> Changer un fichier/dossier de place.</li>
-                        <li><strong>Copier :</strong> Créer une copie d'un fichier/dossier.</li>
-                        <li><strong>Supprimer :</strong> Effacer un fichier/dossier (souvent vers la corbeille, permettant la récupération).</li>
-                    </ul>
-
-                    <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Importance d'une Bonne Gestion</h4>
-                    <p class="mb-4 text-gray-700">Bien organiser ses fichiers est crucial pour :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li><strong>Productivité :</strong> Retrouver rapidement ce que l'on cherche.</li>
-                        <li><strong>Sécurité :</strong> Éviter la suppression accidentelle ou la perte de données.</li>
-                        <li><strong>Collaboration :</strong> Faciliter le partage de fichiers avec d'autres.</li>
-                        <li><strong>Sauvegarde :</strong> Simplifier la procédure de sauvegarde.</li>
-                    </ul>
-                    <p class="mb-4 text-gray-700"><strong>Bonne pratique :</strong> Utilisez des noms de fichiers clairs et descriptifs, et rangez les documents dans des dossiers thématiques.</p>
-                `
+                detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
             }
 
         };
@@ -1519,8 +1415,8 @@ detailedNotes: `
             accueil: () => {
                 // NOUVEAUX STATUTS COHÉRENTS
                 const modulesForAccueil = [
-                    { id: 1, title: "M01 : Généralités sur les Systèmes Informatiques", status: "Terminé" },
-                    { id: 2, title: "M02 : Les Logiciels", status: "En cours" },
+                    { id: 1, title: "M01 : Généralités sur les Systèmes Informatiques", status: "En cours" },
+                    { id: 2, title: "M02 : Les Logiciels", status: "À venir" },
                     { id: 3, title: "M03 : Algorithmique et Programmation", status: "À venir" },
                     { id: 4, title: "M04 : Réseaux et Internet", status: "À venir" },
                 ];
@@ -1579,7 +1475,7 @@ detailedNotes: `
                     { 
                         id: 1, 
                         title: "M01 : Généralités sur les Systèmes Informatiques", 
-                        status: "Terminé", 
+                        status: "En cours", 
                         sequences: [
                             { title: "Séquence 1 : Définitions et vocabulaire de base", lessons: [
                                 { title: "Leçon 1 : Information, traitement et Informatique", href: "M1-sequence01-L1" },
@@ -1601,7 +1497,7 @@ detailedNotes: `
                     { 
                         id: 2, 
                         title: "M02 : Les Logiciels", 
-                        status: "En cours", 
+                        status: "À venir", 
                         sequences: [
                             { title: "Séquence 1 : Système d’exploitation", lessons: [
                                 { title: "Leçon 1 : Fonctionnalités de base d’un système d’exploitation", href: "M2-sequence01-L1" },
@@ -1690,12 +1586,11 @@ detailedNotes: `
                     }
 
                     // Définir M01 (id=1) comme étant le module par défaut à déplier (car il est "En cours")
-                    //const isM1Active = module.id === 1;
-                     const isModuleActive = module.status === "En cours";
+                    const isM1Active = module.id === 1;
 
 
                     return `
-                        <div class="info-card module-card bg-white rounded-xl shadow-lg mb-6 ${!isModuleActive ? 'collapsed' : ''} ${opacityClass}" id="module-${module.id}">
+                        <div class="info-card module-card bg-white rounded-xl shadow-lg mb-6 ${!isM1Active ? 'collapsed' : ''} ${opacityClass}" id="module-${module.id}">
                             <div 
                                 class="card-header ${headerClass} p-4 rounded-t-xl flex justify-between items-center cursor-pointer"
                                 onclick="toggleModule(${module.id})"
@@ -1703,7 +1598,7 @@ detailedNotes: `
                                 <h3 class="text-xl font-extrabold text-white">${module.title}</h3>
                                 <div class="flex items-center space-x-2">
                                     <span class="status-tag ${statusTagClass} text-xs font-semibold px-3 py-1 rounded-full text-white">${statusIconText}</span>
-                                    <span class="toggle-icon text-lg text-white">${isModuleActive ? '▼' : '▶'}</span>
+                                    <span class="toggle-icon text-lg text-white">${isM1Active ? '▼' : '▶'}</span>
                                 </div>
                             </div>
                             <div class="card-body p-4 pt-0">
@@ -1724,7 +1619,7 @@ detailedNotes: `
             'M1-sequence02-L5': () => generateLessonPage('M1-sequence02-L5'),
             'M2-sequence01-L1': () => generateLessonPage('M2-sequence01-L1'),
             'M2-sequence02-L2': () => generateLessonPage('M2-sequence01-L2'),
-            'M2-sequence02-L3': () => generateLessonPage('M2-sequence01-L2'),
+            'M2-sequence02-S1-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S01-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S2-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S02-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S2-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S02-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S3-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
@@ -1924,19 +1819,19 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
             updateNav(pageName);
             
             if (pageName === 'modules') {
-                   setTimeout(() => {
+                setTimeout(() => {
+                    // Logique pour ouvrir M01 par défaut (le module "En cours")
+                    const modulesToOpen = ['M01 : Généralités sur les Systèmes Informatiques']; 
+                    
                     const moduleCards = document.querySelectorAll('.info-card');
-                    let activeModuleFound = false;
-
                     moduleCards.forEach(card => {
-                        const statusTag = card.querySelector('.status-tag');
+                        const header = card.querySelector('.card-header h3');
                         const icon = card.querySelector('.toggle-icon');
-
-                        if (statusTag && icon) {
-                            if (statusTag.textContent.includes('En cours') && !activeModuleFound) {
+                        
+                        if (header && icon) {
+                            if (modulesToOpen.some(title => header.textContent.includes(title))) {
                                 card.classList.remove('collapsed');
                                 icon.innerHTML = '▼';
-                                activeModuleFound = true;
                             } else {
                                 card.classList.add('collapsed');
                                 icon.innerHTML = '▶';
