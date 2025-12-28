@@ -1065,135 +1065,356 @@ detailedNotes: `
           
           
   // M2S1L1
-            'M2-sequence01-L1': { 
-                title: "Leçon 1 : foncionnalités SE",
-                moduleTitle: "M02 : Logiciels",
-                overview: "Exploration des composants internes et de leur rôle dans l'architecture de Von Neumann.",
-                objectives: ["Dessiner et étiqueter le schéma fonctionnel.", "Expliquer le rôle de l'UAL et de l'UC."],
-                successCriteria: ["Je peux identifier 4 composants principaux de l'UC."],
-                resourcesAndActivities: [], 
-                quiz: [],
-                koLink: { url: "https://example.com/ko_m01_l03.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-                mindMapUrl: null, // Pas de carte mentale pour cette leçon
-                detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
-            },
-
-           'M2-sequence01-L2': { 
-                title: "Leçon 2 : Environnement d’un système d’exploitation",
-                moduleTitle: "M02 : Logiciels",
-                overview: "Cette leçon décrit les différents environnements des systèmes d'exploitation (interfaces graphiques, ligne de commande) et présente les principaux SE utilisés aujourd'hui sur divers appareils.",
-                objectives: [
-                    "Identifier les différents types d'interfaces utilisateur d'un SE.",
-                    "Citer les principaux systèmes d'exploitation (Windows, macOS, Linux, Android, iOS) et leurs usages.",
-                    "Comprendre la notion d'écosystème logiciel autour d'un SE."
+            
+    // --- LEÇON 1 : FONCTIONNALITÉS DU SYSTÈME D'EXPLOITATION ---
+    'M2-sequence01-L1': { 
+        title: "Leçon 1 : Les fonctionnalités d'un Système d'Exploitation",
+        moduleTitle: "M02 : Logiciels",
+        overview: "Découverte du rôle de 'chef d'orchestre' du Système d'Exploitation (SE) et comment il fait le lien entre l'utilisateur, les logiciels et le matériel.",
+        objectives: [
+            "Définir ce qu'est un Système d'Exploitation.",
+            "Identifier les fonctions principales : gestion du processeur, de la mémoire et des périphériques.",
+            "Comprendre la notion de pilote (driver).",
+            "Expliquer le processus de démarrage (Boot)."
+        ],
+        successCriteria: [
+            "Je peux citer 3 rôles majeurs du SE.",
+            "Je peux expliquer pourquoi un ordinateur ne peut pas démarrer sans SE."
+        ],
+        resourcesAndActivities: [
+            { 
+                type: "matching", 
+                title: "Activité : Les fonctions du SE", 
+                instructions: "Reliez chaque fonction du SE à son rôle concret.",
+                pairs: [
+                    { term: "Gestion du Processeur", definition: "Décider quel logiciel a le droit d'utiliser le CPU à un instant T." },
+                    { term: "Gestion de la Mémoire", definition: "Réserver des 'cases' en RAM pour chaque application ouverte." },
+                    { term: "Gestion des Périphériques", definition: "Communiquer avec l'imprimante, la souris ou le clavier." },
+                    { term: "Interface Utilisateur", definition: "Afficher le bureau et les icônes pour permettre l'interaction." }
                 ],
-                successCriteria: [
-                    "Je peux distinguer une interface graphique d'une ligne de commande.",
-                    "Je peux nommer les SE de 3 appareils différents (PC, smartphone, serveur).",
-                    "Je peux expliquer pourquoi un SE est adapté à un type d'appareil."
-                ],
-                resourcesAndActivities: [
-                    { type: "Worksheet", title: "Fiche : Interfaces et SE", objective: "Comparaison des environnements", link: "fiche_interfaces_L2.pdf", icon: "document" },
-                    { type: "Tuto Vidéo", title: "Visite guidée de Windows et Linux (8 min)", objective: "Découverte des interfaces", link: "https://www.youtube.com/watch?v=exemple_environments", icon: "video" }
-                ],
-                quiz: [
-                    { id: 1, question: "Quelle est l'interface utilisateur la plus courante pour un PC familial ?", options: ["Ligne de commande", "Interface graphique", "Interface vocale"], answer: "Interface graphique", explanation: "Les interfaces graphiques (GUI) sont intuitives et visuelles, parfaites pour le grand public." },
-                    { id: 2, question: "Quel système d'exploitation est majoritairement utilisé sur les smartphones Android ?", options: ["iOS", "Windows Mobile", "Android"], answer: "Android", explanation: "Android est un SE open-source développé principalement par Google pour les appareils mobiles." }
-                ],
-                koLink: { url: "https://example.com/ko_m02_s01_l02.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-                mindMapUrl: null, // Pas de carte mentale pour cette leçon
-                detailedNotes: `
-                    <h4 class="text-xl font-bold text-teal-800 mb-3">1. Les Types d'Interfaces Utilisateur</h4>
-                    <p class="mb-4 text-gray-700">Le système d'exploitation fournit différentes manières pour l'utilisateur d'interagir avec l'ordinateur :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li><strong>Interface Graphique (GUI - Graphical User Interface) :</strong> La plus répandue. Utilise des fenêtres, icônes, menus, pointeur de souris. Facile et intuitive. (Ex: Windows, macOS).</li>
-                        <li><strong>Ligne de Commande (CLI - Command Line Interface) :</strong> L'utilisateur tape des commandes textuelles. Plus puissante et rapide pour certaines tâches, mais moins intuitive. (Ex: Terminal Linux, PowerShell Windows).</li>
-                    </ul>
-
-                    <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Les Principaux Systèmes d'Exploitation</h4>
-                    <p class="mb-4 text-gray-700">Il existe de nombreux SE, chacun adapté à des besoins spécifiques :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li><strong>Pour PC (Ordinateurs Personnels) :</strong>
-                            <ul>
-                                <li><strong>Windows (Microsoft) :</strong> Le plus utilisé au monde. Large compatibilité logicielle.</li>
-                                <li><strong>macOS (Apple) :</strong> Connu pour son design et sa simplicité d'utilisation. Écosystème intégré avec les produits Apple.</li>
-                                <li><strong>Linux (Open Source) :</strong> Nombreuses versions (distributions comme Ubuntu, Fedora). Très personnalisable, stable, et utilisé par les développeurs et les serveurs.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Pour Smartphones et Tablettes :</strong>
-                            <ul>
-                                <li><strong>Android (Google) :</strong> Le plus utilisé sur mobile. Ouvert et personnalisable, présent sur de nombreuses marques.</li>
-                                <li><strong>iOS (Apple) :</strong> Exclusif aux iPhones et iPads. Réputé pour sa fluidité et sa sécurité.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Autres :</strong> Chrome OS (pour les Chromebooks), WatchOS (Apple Watch), Tizen (Smart TV), etc.</li>
-                    </ul>
-
-                    <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Écosystème Logiciel</h4>
-                    <p class="mb-4 text-gray-700">Chaque SE a son propre "écosystème" : un ensemble de logiciels, d'applications et de services qui sont conçus pour fonctionner au mieux avec lui.</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li>Un logiciel Windows ne fonctionne généralement pas directement sur macOS ou Linux sans adaptation.</li>
-                        <li>Les applications Android sont différentes des applications iOS.</li>
-                    </ul>
-                `
-            },
-            'M2-sequence01-L3': { 
-                title: "Leçon 3 : Gestion des fichiers et dossiers",
-                moduleTitle: "M02 : Logiciels",
-                overview: "Cette leçon aborde les principes d'organisation des fichiers et des dossiers, l'importance d'une bonne gestion pour la productivité et la sécurité, et les opérations de base sur les fichiers.",
-                objectives: [
-                    "Comprendre la structure arborescente des fichiers et dossiers.",
-                    "Maîtriser les opérations de base (créer, renommer, déplacer, copier, supprimer).",
-                    "Expliquer l'importance de l'organisation des fichiers."
-                ],
-                successCriteria: [
-                    "Je peux créer une arborescence de dossiers logique pour un projet.",
-                    "Je peux effectuer toutes les opérations de base sur les fichiers et dossiers.",
-                    "Je peux expliquer pourquoi un nom de fichier clair est important."
-                ],
-                resourcesAndActivities: [
-                    { type: "Worksheet", title: "Exercices : Manipulation de fichiers", objective: "Pratique des opérations de base", link: "exercice_fichiers_L3.pdf", icon: "document" },
-                    { type: "Tuto Vidéo", title: "Organiser ses fichiers comme un pro (10 min)", objective: "Bonnes pratiques de gestion", link: "https://www.youtube.com/watch?v=exemple_files", icon: "video" }
-                ],
-                quiz: [
-                    { id: 1, question: "Quelle est la meilleure façon d'organiser vos fichiers ?", options: ["Tout mettre en vrac", "Utiliser une structure de dossiers logique", "Laisser l'ordinateur le faire"], answer: "Utiliser une structure de dossiers logique", explanation: "Une structure logique facilite la recherche et la gestion des fichiers." },
-                    { id: 2, question: "Quel risque prenez-vous en supprimant un fichier important sans sauvegarde ?", options: ["Aucun", "Perdre définitivement le fichier", "Ralentir l'ordinateur"], answer: "Perdre définitivement le fichier", explanation: "La suppression sans sauvegarde rend la récupération difficile, voire impossible." }
-                ],
-                koLink: { url: "https://example.com/ko_m02_s01_l03.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-                mindMapUrl: null, // Pas de carte mentale pour cette leçon
-                detailedNotes: `
-                    <h4 class="text-xl font-bold text-teal-800 mb-3">1. La Structure Arborescente</h4>
-                    <p class="mb-4 text-gray-700">Les fichiers et dossiers sur un ordinateur sont organisés en une <strong>structure arborescente</strong>. Imaginez un arbre inversé :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li>La "racine" est le disque dur principal (ex: C: sur Windows, / sur Linux/macOS).</li>
-                        <li>Les "branches" sont les dossiers.</li>
-                        <li>Les "feuilles" sont les fichiers.</li>
-                    </ul>
-                    <p class="mb-4 text-gray-700">Chaque fichier est identifié par son <strong>chemin d'accès</strong> complet (ex: <code>C:\\Utilisateurs\\MonNom\\Documents\\rapport.docx</code>).</p>
-
-                    <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Opérations de Base sur les Fichiers et Dossiers</h4>
-                    <p class="mb-4 text-gray-700">Le système d'exploitation permet d'effectuer les actions suivantes :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li><strong>Créer :</strong> Un nouveau dossier ou un nouveau fichier.</li>
-                        <li><strong>Renommer :</strong> Changer le nom d'un fichier ou d'un dossier. (Attention à l'extension du fichier !).</li>
-                        <li><strong>Déplacer :</strong> Changer un fichier/dossier de place.</li>
-                        <li><strong>Copier :</strong> Créer une copie d'un fichier/dossier.</li>
-                        <li><strong>Supprimer :</strong> Effacer un fichier/dossier (souvent vers la corbeille, permettant la récupération).</li>
-                    </ul>
-
-                    <h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Importance d'une Bonne Gestion</h4>
-                    <p class="mb-4 text-gray-700">Bien organiser ses fichiers est crucial pour :</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                        <li><strong>Productivité :</strong> Retrouver rapidement ce que l'on cherche.</li>
-                        <li><strong>Sécurité :</strong> Éviter la suppression accidentelle ou la perte de données.</li>
-                        <li><strong>Collaboration :</strong> Faciliter le partage de fichiers avec d'autres.</li>
-                        <li><strong>Sauvegarde :</strong> Simplifier la procédure de sauvegarde.</li>
-                    </ul>
-                    <p class="mb-4 text-gray-700"><strong>Bonne pratique :</strong> Utilisez des noms de fichiers clairs et descriptifs, et rangez les documents dans des dossiers thématiques.</p>
-                `
+                scenario: "",
+                questions: []
             }
+        ], 
+        quiz: [
+            {
+                type: "qcm",
+                question: "Quel est le rôle principal du Système d'Exploitation ?",
+                options: [
+                    { text: "Servir d'intermédiaire entre le matériel et l'utilisateur", correct: true },
+                    { text: "Permettre uniquement de naviguer sur Internet", correct: false },
+                    { text: "Remplacer le processeur physiquement", correct: false }
+                ],
+                explanation: "Sans SE, l'utilisateur devrait parler directement en langage binaire au matériel, ce qui est impossible."
+            },
+            {
+                type: "qcm",
+                question: "Comment appelle-t-on le petit logiciel qui permet au SE de reconnaître un nouveau matériel ?",
+                options: [
+                    { text: "Un registre", correct: false },
+                    { text: "Un pilote (ou driver)", correct: true },
+                    { text: "Un bus", correct: false }
+                ],
+                explanation: "Le pilote contient les instructions spécifiques pour faire fonctionner un matériel."
+            },
+            {
+                type: "qcm",
+                question: "Que se passe-t-il lors du 'Boot' (démarrage) ?",
+                options: [
+                    { text: "Le SE est copié du disque dur vers la mémoire vive (RAM)", correct: true },
+                    { text: "L'ordinateur efface tous les fichiers temporaires", correct: false },
+                    { text: "Le processeur fabrique de l'électricité", correct: false }
+                ],
+                explanation: "Le démarrage est le processus de chargement du SE pour rendre la machine utilisable."
+            },
+            {
+                type: "qcm",
+                question: "Lequel de ces éléments n'est PAS une fonction du SE ?",
+                options: [
+                    { text: "La gestion de la mémoire vive", correct: false },
+                    { text: "La compression physique des circuits du CPU", correct: true },
+                    { text: "La gestion des droits d'accès des utilisateurs", correct: false }
+                ],
+                explanation: "Le SE gère le logiciel et l'utilisation du matériel, il ne modifie pas physiquement les composants."
+            },
+            {
+                type: "qcm",
+                question: "Pourquoi un ordinateur ne peut-il pas fonctionner sans SE ?",
+                options: [
+                    { text: "Parce que les composants ne sauraient pas comment communiquer entre eux", correct: true },
+                    { text: "Parce que l'écran resterait éteint à jamais", correct: false },
+                    { text: "Parce que le processeur chaufferait trop", correct: false }
+                ],
+                explanation: "Le SE fournit les protocoles de communication de base entre tous les éléments matériels."
+            }
+        ],
+        koLink: { url: "https://example.com/ko_m02_s01_l01.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+        mindMapUrl: null,
+        detailedNotes: `
+            <div class="space-y-6 text-gray-800">
+                <h2 class="text-2xl font-bold text-teal-800">1. Définition du Système d'Exploitation (SE)</h2>
+                <p>Le <strong>Système d'Exploitation</strong> (OS - Operating System) est le logiciel de base qui permet de transformer une machine complexe en un outil utilisable. Il démarre lors du <strong>Boot</strong>, processus où le noyau du SE est transféré du stockage vers la RAM.</p>
+                
+                <h2 class="text-2xl font-bold text-teal-800 mt-6">2. Les 4 Missions de Contrôle</h2>
+                <ul class="list-none space-y-4">
+                    <li>
+                        <strong class="text-teal-700 underline italic">A. Le Chef d'Orchestre (Processeur) :</strong><br>
+                        Il gère le multitâche. Il distribue le temps de calcul du CPU entre les applications ouvertes (Navigateur, Musique, Jeu).
+                    </li>
+                    <li>
+                        <strong class="text-teal-700 underline italic">B. Le Gardien des Portes (Mémoire) :</strong><br>
+                        Il s'assure que chaque logiciel a assez de place en RAM et empêche un logiciel de 'voler' ou d'écraser les données d'un autre.
+                    </li>
+                    <li>
+                        <strong class="text-teal-700 underline italic">C. Le Traducteur (Pilotes) :</strong><br>
+                        Chaque matériel (carte graphique, imprimante) a son propre langage. Le <strong>Pilote (Driver)</strong> traduit les ordres du SE pour le matériel spécifique.
+                    </li>
+                    <li>
+                        <strong class="text-teal-700 underline italic">D. L'Interface (Utilisateur) :</strong><br>
+                        Il présente les données sous une forme compréhensible (icônes, textes) plutôt que sous forme de suites de 0 et de 1.
+                    </li>
+                </ul>
+            </div>
+        `
+    },
 
-        };
+    // --- LEÇON 2 : ENVIRONNEMENT D'UN SE ---
+    'M2-sequence01-L2': { 
+        title: "Leçon 2 : Environnement d’un système d’exploitation",
+        moduleTitle: "M02 : Logiciels",
+        overview: "Découverte des interfaces (GUI vs CLI) et des éléments visuels du bureau, ainsi que le panorama des SE actuels.",
+        objectives: [
+            "Identifier les différents types d'interfaces utilisateur (GUI vs CLI).",
+            "Maîtriser les composants du bureau : barre des tâches, icônes, fenêtres.",
+            "Citer les principaux SE et leurs usages spécifiques.",
+            "Comprendre la notion d'écosystème logiciel."
+        ],
+        successCriteria: [
+            "Je peux distinguer une interface graphique d'une ligne de commande.",
+            "Je peux nommer et manipuler les éléments d'une fenêtre (réduire, fermer, agrandir).",
+            "Je peux identifier le SE d'un appareil à partir de son interface."
+        ],
+        resourcesAndActivities: [
+            { 
+                type: "analysis", 
+                title: "Analyse : Quel SE choisir ?", 
+                instructions: "Lisez les besoins et déduisez le SE idéal.",
+                scenario: "Alice est graphiste et utilise des logiciels Apple exclusifs. Bob est un hacker qui veut tout personnaliser gratuitement. Charlie cherche un téléphone simple et sécurisé chez Apple.",
+                questions: [
+                    { question: "Quel SE pour Alice ?", answer: "macOS" },
+                    { question: "Quel SE pour Bob ?", answer: "Linux" },
+                    { question: "Quel SE pour Charlie ?", answer: "iOS" }
+                ],
+                pairs: []
+            }
+        ],
+        quiz: [
+            {
+                type: "qcm",
+                question: "Comment s'appelle l'écran principal qui s'affiche après le démarrage ?",
+                options: [
+                    { text: "La fenêtre principale", correct: false },
+                    { text: "Le Bureau (Desktop)", correct: true },
+                    { text: "La zone de stockage", correct: false }
+                ],
+                explanation: "Le Bureau est l'espace de travail principal où l'on place nos icônes et dossiers."
+            },
+            {
+                type: "qcm",
+                question: "Quel élément permet de passer rapidement d'un logiciel ouvert à un autre ?",
+                options: [
+                    { text: "Le menu démarrer", correct: false },
+                    { text: "La barre des tâches", correct: true },
+                    { text: "Le papier peint", correct: false }
+                ],
+                explanation: "La barre des tâches affiche les applications actives et permet de basculer entre elles."
+            },
+            {
+                type: "qcm",
+                question: "Que signifie CLI (Command Line Interface) ?",
+                options: [
+                    { text: "Une interface où l'on tape des ordres au clavier", correct: true },
+                    { text: "Une interface avec des icônes colorées", correct: false },
+                    { text: "Une interface pilotée uniquement par la voix", correct: false }
+                ],
+                explanation: "Le CLI est une interface textuelle, contrairement au GUI qui est visuel."
+            },
+            {
+                type: "qcm",
+                question: "Quel système est le plus utilisé sur les serveurs web et les supercalculateurs ?",
+                options: [
+                    { text: "Windows", correct: false },
+                    { text: "Linux", correct: true },
+                    { text: "iOS", correct: false }
+                ],
+                explanation: "Linux est privilégié pour sa stabilité et sa sécurité dans le monde professionnel."
+            },
+            {
+                type: "qcm",
+                question: "Lequel de ces boutons n'est pas standard sur une fenêtre Windows ?",
+                options: [
+                    { text: "Réduire", correct: false },
+                    { text: "Agrandir / Restaurer", correct: false },
+                    { text: "Autodestruction", correct: true }
+                ],
+                explanation: "Les trois boutons classiques sont Réduire, Agrandir/Niveau inférieur et Fermer."
+            }
+        ],
+        koLink: { url: "https://example.com/ko_m02_s01_l02.pdf", label: "Télécharger l'KO (PDF)" },
+        mindMapUrl: null,
+        detailedNotes: `
+            <div class="space-y-6 text-gray-800">
+                <h2 class="text-2xl font-bold text-teal-800">1. L'Interface Graphique (GUI)</h2>
+                <p>Aujourd'hui, nous utilisons majoritairement des <strong>GUI</strong> (Graphical User Interface). Ses composants clés sont :</p>
+                <ul class="list-disc list-outside pl-6 space-y-2">
+                    <li><strong>Le Bureau :</strong> L'arrière-plan où l'on dépose des raccourcis.</li>
+                    <li><strong>La Barre des tâches :</strong> Située en bas, elle contient le bouton Démarrer, les icônes de notification (heure, Wi-Fi) et les logiciels ouverts.</li>
+                    <li><strong>La Fenêtre :</strong> Cadre rectangulaire affichant un logiciel. Elle possède des boutons pour la <em>réduire</em> dans la barre des tâches, l'<em>agrandir</em> en plein écran ou la <em>fermer</em>.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-teal-800 mt-6">2. Panorama et Écosystèmes</h2>
+                <p>Un <strong>Écosystème</strong> est un ensemble cohérent de matériels et logiciels. </p>
+                <table class="min-w-full bg-white border">
+                    <thead>
+                        <tr class="bg-teal-600 text-white">
+                            <th class="py-2 px-4 border">Appareil</th>
+                            <th class="py-2 px-4 border">Systèmes dominants</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="py-2 px-4 border font-semibold">PC / Laptop</td>
+                            <td class="py-2 px-4 border">Windows (90%), macOS, Linux</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border font-semibold">Smartphone</td>
+                            <td class="py-2 px-4 border">Android (Ouvert), iOS (Apple)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border font-semibold">Serveurs</td>
+                            <td class="py-2 px-4 border">Linux (Majoritaire), Windows Server</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `
+    },
+
+    // --- LEÇON 3 : GESTION DES FICHIERS ---
+    'M2-sequence01-L3': { 
+        title: "Leçon 3 : Gestion des fichiers et dossiers",
+        moduleTitle: "M02 : Logiciels",
+        overview: "Apprendre à organiser, manipuler et protéger ses données à travers l'arborescence et la compression.",
+        objectives: [
+            "Comprendre et dessiner une structure arborescente.",
+            "Maîtriser les opérations : créer, renommer, déplacer, copier, supprimer.",
+            "Comprendre l'utilité de la compression (fichiers ZIP/RAR).",
+            "Identifier les extensions de fichiers et leurs logiciels associés."
+        ],
+        successCriteria: [
+            "Je peux créer une arborescence logique pour un projet scolaire.",
+            "Je peux compresser un dossier pour l'envoyer par email.",
+            "Je connais la différence entre 'Copier' et 'Couper'."
+        ],
+        resourcesAndActivities: [
+            { 
+                type: "matching", 
+                title: "Activité : Extensions de fichiers", 
+                instructions: "Associez l'extension au type de contenu.",
+                pairs: [
+                    { term: ".docx", definition: "Document texte (Word)" },
+                    { term: ".jpg", definition: "Image compressée" },
+                    { term: ".mp4", definition: "Vidéo numérique" },
+                    { term: ".pdf", definition: "Document figé multiplateforme" },
+                    { term: ".zip", definition: "Archive compressée" }
+                ],
+                scenario: "",
+                questions: []
+            }
+        ],
+        quiz: [
+            {
+                type: "qcm",
+                question: "Quelle est la différence entre 'Copier' et 'Couper' ?",
+                options: [
+                    { text: "'Couper' supprime l'original après le collage", correct: true },
+                    { text: "'Copier' est plus rapide que 'Couper'", correct: false },
+                    { text: "Il n'y a aucune différence", correct: false }
+                ],
+                explanation: "Copier crée un double, Couper déplace l'élément d'un endroit à un autre."
+            },
+            {
+                type: "qcm",
+                question: "À quoi sert de compresser un fichier (ex: format .zip) ?",
+                options: [
+                    { text: "À augmenter la qualité d'une image", correct: false },
+                    { text: "À réduire la taille occupée sur le disque et faciliter l'envoi", correct: true },
+                    { text: "À empêcher les virus de lire le fichier", correct: false }
+                ],
+                explanation: "La compression réduit le poids des fichiers en éliminant les redondances."
+            },
+            {
+                type: "qcm",
+                question: "Dans l'arborescence, qu'est-ce qu'un dossier 'Parent' ?",
+                options: [
+                    { text: "Le dossier qui contient un autre dossier", correct: true },
+                    { text: "Le premier dossier créé sur l'ordinateur", correct: false },
+                    { text: "Un dossier protégé par un mot de passe", correct: false }
+                ],
+                explanation: "Le dossier parent est le niveau supérieur dans la hiérarchie de l'arborescence."
+            },
+            {
+                type: "qcm",
+                question: "Lequel de ces noms de fichiers est le plus explicite ?",
+                options: [
+                    { text: "image1.jpg", correct: false },
+                    { text: "SansTitre_final_v2.pdf", correct: false },
+                    { text: "2023_Expose_Histoire_Napoleon.docx", correct: true }
+                ],
+                explanation: "Un bon nom contient la date, le sujet et le type de document."
+            },
+            {
+                type: "qcm",
+                question: "Où vont les fichiers supprimés avant d'être définitivement effacés ?",
+                options: [
+                    { text: "Dans le cache du processeur", correct: false },
+                    { text: "Dans la Corbeille (Trash)", correct: true },
+                    { text: "Sur le Cloud", correct: false }
+                ],
+                explanation: "La corbeille est une zone de transit qui permet de récupérer un fichier effacé par erreur."
+            }
+        ],
+        koLink: { url: "https://example.com/ko_m02_s01_l03.pdf", label: "Télécharger l'KO (PDF)" },
+        mindMapUrl: null,
+        detailedNotes: `
+            <div class="space-y-6 text-gray-800">
+                <h2 class="text-2xl font-bold text-teal-800">1. L'Arborescence : Un Arbre Généalogique</h2>
+                <p>Le SE organise les données sous forme d'arbre :</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li><strong>La Racine :</strong> Le disque physique (C: ou D:).</li>
+                    <li><strong>Dossier / Répertoire :</strong> Conteneur qui peut contenir des fichiers ou d'autres dossiers (sous-dossiers).</li>
+                    <li><strong>Fichier :</strong> L'unité d'information (une photo, un texte).</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-teal-800 mt-6">2. Opérations Avancées</h2>
+                <ul class="list-none space-y-4">
+                    <li><strong class="text-teal-700">Renommer :</strong> Ne changez jamais l'extension (.exe, .pdf) sinon le SE ne saura plus quel logiciel lancer.</li>
+                    <li><strong class="text-teal-700">Compresser :</strong> Créer une 'archive' (ZIP). Utile pour regrouper 50 photos en 1 seul fichier léger pour un email.</li>
+                    <li><strong class="text-teal-700">Chemin d'accès (Path) :</strong> C'est l'adresse exacte, ex: <code>C:\\Devoirs\\Maths\\Exercice1.pdf</code>.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-teal-800 mt-6">3. Les Extensions à Connaître</h2>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div class="p-2 border bg-gray-50"><strong>Texte :</strong> .docx, .txt, .pdf</div>
+                    <div class="p-2 border bg-gray-50"><strong>Image :</strong> .jpg, .png, .gif</div>
+                    <div class="p-2 border bg-gray-50"><strong>Audio/Vidéo :</strong> .mp3, .mp4, .avi</div>
+                    <div class="p-2 border bg-gray-50"><strong>Exécutable :</strong> .exe, .msi, .app</div>
+                </div>
+            </div>
+        `
+    }
+};
+
 
         // --- Fonctions de la Modale Carte Mentale (Maintenues mais inutilisées pour Leçon 1) ---
         window.closeMindMap = function() {
