@@ -1,50 +1,75 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CS-Lycee</title>
 
     <!-- CONFIGURATION DU FAVICON (maintenue) -->
-    <link rel="icon" type="image/png" href="https://aghbalouinfo-design.github.io/aghbalou-info.github.io/cyberpunk-me.png">
+    <link rel="icon" type="image/png"
+        href="https://aghbalouinfo-design.github.io/aghbalou-info.github.io/cyberpunk-me.png">
     <link rel="apple-touch-icon" href="https://aghbalouinfo-design.github.io/aghbalou-info.github.io/cyberpunk-me.png">
-    
+
     <!-- Chargement de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <style>
         /* Importation de la police Inter */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-        
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f v 6; /* Fond très léger, harmonieux */
+            background-color: #f3f4f v 6;
+            /* Fond très léger, harmonieux */
         }
 
         /* --- Couleurs de Thème et de Module (Vives) --- */
         /* Couleur de Marque (Navigation/Accentuation) */
         .gradient-theme {
             /* Dégradé Vert-Bleu (Teal Vif vers Cyan Profond) */
-            background-image: linear-gradient(to right, #20c997, #17a2b8); 
+            background-image: linear-gradient(to right, #20c997, #17a2b8);
         }
 
         /* Couleurs Primaires pour chaque Module */
-        .bg-module-m01 { background-image: linear-gradient(to right, #2563eb, #3b82f6); } /* Bleu Vif */
-        .bg-module-m02 { background-image: linear-gradient(to right, #059669, #10b981); } /* Vert Émeraude */
-        .bg-module-m03 { background-image: linear-gradient(to right, #4f46e5, #6366f1); } /* Indigo Profond */
-        .bg-module-m04 { background-image: linear-gradient(to right, #dc2626, #ef4444); } /* Rouge Alerte/Archive */
+        .bg-module-m01 {
+            background-image: linear-gradient(to right, #2563eb, #3b82f6);
+        }
+
+        /* Bleu Vif */
+        .bg-module-m02 {
+            background-image: linear-gradient(to right, #059669, #10b981);
+        }
+
+        /* Vert Émeraude */
+        .bg-module-m03 {
+            background-image: linear-gradient(to right, #4f46e5, #6366f1);
+        }
+
+        /* Indigo Profond */
+        .bg-module-m04 {
+            background-image: linear-gradient(to right, #dc2626, #ef4444);
+        }
+
+        /* Rouge Alerte/Archive */
 
 
         /* --- Hiérarchie Visuelle (Opacité et Estompage) --- */
         .module-card-active {
-            opacity: 1; /* En cours */
+            opacity: 1;
+            /* En cours */
         }
+
         .module-card-completed {
-            opacity: 0.75; /* Terminé/Archivé */
+            opacity: 0.75;
+            /* Terminé/Archivé */
         }
+
         .module-card-upcoming {
-            opacity: 0.60; /* À venir (grisé) */
-            filter: grayscale(20%); /* Léger grisonnement */
+            opacity: 0.60;
+            /* À venir (grisé) */
+            filter: grayscale(20%);
+            /* Léger grisonnement */
         }
 
 
@@ -56,10 +81,12 @@
         .module-card:hover:not(.module-card-upcoming) {
             transform: translateY(-4px);
             box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-            opacity: 1 !important; /* L'opacité remonte au survol */
+            opacity: 1 !important;
+            /* L'opacité remonte au survol */
         }
+
         .module-card:hover.module-card-upcoming {
-             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
 
         /* Amélioration Mobile */
@@ -68,20 +95,22 @@
                 padding: 10px 12px;
                 font-size: 1rem;
             }
+
             .info-card {
                 margin-bottom: 24px;
             }
+
             .sequence-heading {
                 font-size: 1.25rem;
             }
         }
-        
+
         /* Accordéon des modules */
         .card-body {
             max-height: 500px;
             overflow: hidden;
             transition: max-height 0.5s ease-in-out;
-            padding-top: 16px; 
+            padding-top: 16px;
         }
 
         .collapsed .card-body {
@@ -95,6 +124,7 @@
             padding-left: 1.5rem;
             margin-bottom: 2rem;
         }
+
         .lesson-section h3 {
             color: #17a2b8;
             border-bottom: 2px solid #e2e8f0;
@@ -108,20 +138,21 @@
         details summary {
             list-style: none;
         }
+
         details summary::-webkit-details-marker {
             display: none;
         }
-        
+
         /* Rotation de l'icône pour la section DÉTAILS */
         .notes-summary-icon {
             /* Commence par pointer vers la droite (fermée) */
-            transform: rotate(-90deg); 
+            transform: rotate(-90deg);
             transition: transform 0.3s ease;
         }
 
         details[open] .notes-summary-icon {
             /* Pointe vers le bas (ouverte) */
-            transform: rotate(0deg); 
+            transform: rotate(0deg);
         }
 
         /* Style Modal (Maintenue pour la réutilisation mais cachée pour la Leçon 1) */
@@ -137,6 +168,7 @@
             align-items: center;
             z-index: 50;
         }
+
         .modal-content {
             background-color: white;
             max-width: 90%;
@@ -145,11 +177,15 @@
             border-radius: 1rem;
             position: relative;
         }
+
         .image-flottante {
-    float: right; /* Positionne l'image à gauche et permet au texte de l'entourer */
-    margin-right: 15px; /* Ajoute de l'espace à droite de l'image (optionnel) */
+            float: right;
+            /* Positionne l'image à gauche et permet au texte de l'entourer */
+            margin-right: 15px;
+            /* Ajoute de l'espace à droite de l'image (optionnel) */
         }
-        .image-center{
+
+        .image-center {
             display: block;
             margin-left: auto;
             margin-right: auto;
@@ -157,36 +193,56 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Conteneur principal -->
     <div id="app" class="min-h-screen">
-        
+
         <!-- Navigation -->
-       <nav class="bg-white shadow-md sticky top-0 z-10">
+        <nav class="bg-white shadow-md sticky top-0 z-10">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
-                    <a href="#" onclick="navigateTo('accueil')" class="flex-shrink-0 text-2xl font-bold gradient-theme bg-clip-text text-transparent">
+                    <a href="#" onclick="navigateTo('accueil')"
+                        class="flex-shrink-0 text-2xl font-bold gradient-theme bg-clip-text text-transparent">
                         Info-Aghbalou
                     </a>
 
                     <div class="hidden md:flex space-x-4 nav-links">
-                        <a href="#" onclick="navigateTo('accueil')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-accueil">Accueil</a>
-                        <a href="#" onclick="navigateTo('modules')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-modules">Modules</a>
-                        <a href="#" onclick="navigateTo('ressources')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-ressources">Ressources</a>
-                        <a href="#" onclick="navigateTo('calendrier')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-calendrier">Calendrier</a>
-                        <a href="#" onclick="navigateTo('devoirs')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-devoirs">Devoirs</a>
-                        <a href="#" onclick="navigateTo('contact')" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium" id="nav-contact">Contact</a>
+                        <a href="#" onclick="navigateTo('accueil')"
+                            class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
+                            id="nav-accueil">Accueil</a>
+                        <a href="#" onclick="navigateTo('modules')"
+                            class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
+                            id="nav-modules">Modules</a>
+                        <a href="#" onclick="navigateTo('ressources')"
+                            class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
+                            id="nav-ressources">Ressources</a>
+                        <a href="#" onclick="navigateTo('calendrier')"
+                            class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
+                            id="nav-calendrier">Calendrier</a>
+                        <a href="#" onclick="navigateTo('devoirs')"
+                            class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
+                            id="nav-devoirs">Devoirs</a>
+                        <a href="#" onclick="navigateTo('contact')"
+                            class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
+                            id="nav-contact">Contact</a>
                     </div>
-                    
+
                     <div class="md:hidden flex items-center">
-                        <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <button id="mobile-menu-button" type="button"
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500"
+                            aria-controls="mobile-menu" aria-expanded="false">
                             <span class="sr-only">Ouvrir le menu principal</span>
-                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
-                            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
                     </div>
@@ -196,16 +252,28 @@
 
             <div class="md:hidden hidden" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                    <a href="#" onclick="mobileNavigateTo('accueil')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-accueil">Accueil</a>
-                    <a href="#" onclick="mobileNavigateTo('modules')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-modules">Modules</a>
-                    <a href="#" onclick="mobileNavigateTo('ressources')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-ressources">Ressources</a>
-                    <a href="#" onclick="mobileNavigateTo('calendrier')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-calendrier">Calendrier</a>
-                    <a href="#" onclick="mobileNavigateTo('devoirs')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-devoirs">Devoirs</a>
-                    <a href="#" onclick="mobileNavigateTo('contact')" class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium" id="mobile-nav-contact">Contact</a>
+                    <a href="#" onclick="mobileNavigateTo('accueil')"
+                        class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
+                        id="mobile-nav-accueil">Accueil</a>
+                    <a href="#" onclick="mobileNavigateTo('modules')"
+                        class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
+                        id="mobile-nav-modules">Modules</a>
+                    <a href="#" onclick="mobileNavigateTo('ressources')"
+                        class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
+                        id="mobile-nav-ressources">Ressources</a>
+                    <a href="#" onclick="mobileNavigateTo('calendrier')"
+                        class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
+                        id="mobile-nav-calendrier">Calendrier</a>
+                    <a href="#" onclick="mobileNavigateTo('devoirs')"
+                        class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
+                        id="mobile-nav-devoirs">Devoirs</a>
+                    <a href="#" onclick="mobileNavigateTo('contact')"
+                        class="text-gray-700 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
+                        id="mobile-nav-contact">Contact</a>
                 </div>
             </div>
         </nav>
-        
+
         <!-- Contenu de la Page -->
         <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8" id="page-content-container">
             <!-- Le contenu de la page sera injecté ici par JavaScript -->
@@ -214,7 +282,8 @@
         <!-- Modale de Carte Mentale (Maintenue pour la réutilisation mais cachée pour la Leçon 1) -->
         <div id="mindmap-modal" class="modal-overlay hidden" onclick="closeMindMap()">
             <div class="modal-content p-8 w-11/12 md:w-3/4 lg:w-2/3" onclick="event.stopPropagation()">
-                <button onclick="closeMindMap()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold">
+                <button onclick="closeMindMap()"
+                    class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold">
                     &times;
                 </button>
                 <div id="mindmap-content">
@@ -228,8 +297,10 @@
 
         <!-- Footer -->
         <footer class="bg-gray-100 mt-12 py-6 text-center text-gray-600 text-sm">
-            <p>&copy; 2024 Hub Pédagogique Informatique. Développé par <span class="font-bold">Younes TICHOUA</span>.</p>
-            <p>Version 3.1 | <a href="#" onclick="navigateTo('accueil')" class="text-teal-600 hover:text-teal-800">Retour à l'accueil</a></p>
+            <p>&copy; 2024 Hub Pédagogique Informatique. Développé par <span class="font-bold">Younes TICHOUA</span>.
+            </p>
+            <p>Version 3.1 | <a href="#" onclick="navigateTo('accueil')"
+                    class="text-teal-600 hover:text-teal-800">Retour à l'accueil</a></p>
         </footer>
     </div>
 
@@ -240,7 +311,7 @@
 
         // Variables Firestore (même si non utilisées dans ce fichier, elles doivent être définies)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        
+
         // URL EXTERNE POUR LA CARTE MENTALE DE LA LEÇON 1
         const EXTERNAL_MINDMAP_URL = 'https://aghbalouinfo-design.github.io/aghbalou-info.github.io/Mindmap.html';
         // URL de la photo de l'enseignant, utilisée dans la page Contact
@@ -259,29 +330,29 @@
             checkPro: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`,
         };
 
-//------>>>>>>>ADD HERE<<<<<<<<<<----------///
+        //------>>>>>>>ADD HERE<<<<<<<<<<----------///
         // --- Données Structurées des Leçons (avec Ressources et MindMap) ---
         const lessonData = {
             'M1-sequence01-L1': {
-    title: "Leçon 1 : Information, traitement et Informatique",
-    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
-    
-    // ✅ OVERVIEW AMÉLIORÉ
-    overview: "Cette leçon introduit les concepts fondamentaux de l'informatique : la distinction entre donnée, information et connaissance, le rôle du traitement dans la transformation des données, et le modèle IPO (Entrée – Traitement – Sortie). Elle se termine par une définition claire de l'informatique comme science du traitement automatique de l'information.",
-    
-    objectives: [
-        "Distinguer les notions de donnée, information et connaissance, et comprendre leurs relations",
-        "Expliquer la notion de traitement et le cycle IPO",
-        "Définir le terme « informatique »"
-    ],
-    successCriteria: [
-        "Je peux donner un exemple de donnée et le transformer en information.",
-        "Je peux décrire Entrée – Traitement – Sortie pour un cas réel.",
-        "Je peux expliquer ce que signifie automatique et définir l’informatique simplement"
-    ],
+                title: "Leçon 1 : Information, traitement et Informatique",
+                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
 
-    // ✅ NOTES DE COURS DÉTAILLÉES (complètes et sans digitalisation)
-    detailedNotes: `
+                // ✅ OVERVIEW AMÉLIORÉ
+                overview: "Cette leçon introduit les concepts fondamentaux de l'informatique : la distinction entre donnée, information et connaissance, le rôle du traitement dans la transformation des données, et le modèle IPO (Entrée – Traitement – Sortie). Elle se termine par une définition claire de l'informatique comme science du traitement automatique de l'information.",
+
+                objectives: [
+                    "Distinguer les notions de donnée, information et connaissance, et comprendre leurs relations",
+                    "Expliquer la notion de traitement et le cycle IPO",
+                    "Définir le terme « informatique »"
+                ],
+                successCriteria: [
+                    "Je peux donner un exemple de donnée et le transformer en information.",
+                    "Je peux décrire Entrée – Traitement – Sortie pour un cas réel.",
+                    "Je peux expliquer ce que signifie automatique et définir l’informatique simplement"
+                ],
+
+                // ✅ NOTES DE COURS DÉTAILLÉES (complètes et sans digitalisation)
+                detailedNotes: `
         <h4 class="text-xl font-bold text-teal-800 mb-3">1. Donnée, Information et Connaissance</h4>
         <p class="mb-4 text-gray-700">Ces trois notions sont essentielles pour comprendre le rôle de l'informatique :</p>
         <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
@@ -314,52 +385,52 @@
 
         `,
 
-    // ✅ RESSOURCES ET ACTIVITÉS
-    resourcesAndActivities: [
-        { type: "Worksheet", title: "Fiche : Donnée vs Information vs Connaissance", objective: "Clarifier les concepts", link: "fiche_concepts_L1.pdf", icon: "document" },
-        { type: "Exercice", title: "Cas pratique : Identifier Entrée, Traitement, Sortie", objective: "Application du cycle IPO", link: "exercice_IPO_L1.pdf", icon: "document" },
-        { type: "Tuto Vidéo", title: "Comprendre le cycle IPO en 5 min", objective: "Visualisation du processus", link: "video_cycle_IPO_L1.mp4", icon: "video" },
-        { type: "Application", title: "Quiz interactif (App Web)", objective: "Auto-évaluation", link: "#", icon: "app" }
-    ],
+                // ✅ RESSOURCES ET ACTIVITÉS
+                resourcesAndActivities: [
+                    { type: "Worksheet", title: "Fiche : Donnée vs Information vs Connaissance", objective: "Clarifier les concepts", link: "fiche_concepts_L1.pdf", icon: "document" },
+                    { type: "Exercice", title: "Cas pratique : Identifier Entrée, Traitement, Sortie", objective: "Application du cycle IPO", link: "exercice_IPO_L1.pdf", icon: "document" },
+                    { type: "Tuto Vidéo", title: "Comprendre le cycle IPO en 5 min", objective: "Visualisation du processus", link: "video_cycle_IPO_L1.mp4", icon: "video" },
+                    { type: "Application", title: "Quiz interactif (App Web)", objective: "Auto-évaluation", link: "#", icon: "app" }
+                ],
 
-    // ✅ QUIZ
-    quiz: [
-        { id: 1, question: "Quelle est la différence entre donnée et information ?", options: ["Aucune", "La donnée est brute, l'information est interprétée", "L'information est toujours numérique"], answer: "La donnée est brute, l'information est interprétée", explanation: "Une donnée seule n'a pas de sens, elle devient information lorsqu'elle est contextualisée." },
-        { id: 2, question: "Que signifie IPO ?", options: ["Input-Process-Output", "Information-Programme-Ordre", "Initialisation-Procédure-Opération"], answer: "Input-Process-Output", explanation: "C'est le modèle de base du traitement informatique." },
-        { id: 3, question: "Vrai ou Faux : L'informatique est le traitement manuel de l'information.", answer: "Faux", explanation: "L'informatique implique un traitement automatique, sans intervention humaine directe." }
-    ],
+                // ✅ QUIZ
+                quiz: [
+                    { id: 1, question: "Quelle est la différence entre donnée et information ?", options: ["Aucune", "La donnée est brute, l'information est interprétée", "L'information est toujours numérique"], answer: "La donnée est brute, l'information est interprétée", explanation: "Une donnée seule n'a pas de sens, elle devient information lorsqu'elle est contextualisée." },
+                    { id: 2, question: "Que signifie IPO ?", options: ["Input-Process-Output", "Information-Programme-Ordre", "Initialisation-Procédure-Opération"], answer: "Input-Process-Output", explanation: "C'est le modèle de base du traitement informatique." },
+                    { id: 3, question: "Vrai ou Faux : L'informatique est le traitement manuel de l'information.", answer: "Faux", explanation: "L'informatique implique un traitement automatique, sans intervention humaine directe." }
+                ],
 
-    koLink: { 
-        url: "https://drive.google.com/file/d/1qyIt0I7j9tieqHQn47Q9fz1wdUnwC-ZG/view?usp=drive_link", 
-        label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" 
-    },
-    mindMapUrl: EXTERNAL_MINDMAP_URL
-},
-            
+                koLink: {
+                    url: "https://drive.google.com/file/d/1qyIt0I7j9tieqHQn47Q9fz1wdUnwC-ZG/view?usp=drive_link",
+                    label: "Télécharger l'Organisateur de Connaissances (KO - PDF)"
+                },
+                mindMapUrl: EXTERNAL_MINDMAP_URL
+            },
+
             // Autres leçons simplifiées
             'M1-sequence01-L2': {
-    title: "Leçon 2 : Système informatique, Représentation de l'information",
-    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+                title: "Leçon 2 : Système informatique, Représentation de l'information",
+                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
 
-    // ✅ OVERVIEW AMÉLIORÉ
-    overview: "Cette leçon explique comment l'information est représentée dans un système informatique. Nous abordons le rôle du système binaire, les conversions entre binaire et décimal, la notion de taille des fichiers numériques, et la distinction entre matériel (hardware) et logiciel (software).",
+                // ✅ OVERVIEW AMÉLIORÉ
+                overview: "Cette leçon explique comment l'information est représentée dans un système informatique. Nous abordons le rôle du système binaire, les conversions entre binaire et décimal, la notion de taille des fichiers numériques, et la distinction entre matériel (hardware) et logiciel (software).",
 
-    objectives: [
-        "Expliquer la notion de représentation de l’information et pourquoi on utilise le binaire en informatique",
-        "Effectuer des conversions binaire → décimal et décimal → binaire",
-        "Identifier la taille approximative de fichiers numériques courants et comparer leur taille",
-        "Distinguer le hardware du software"
-    ],
+                objectives: [
+                    "Expliquer la notion de représentation de l’information et pourquoi on utilise le binaire en informatique",
+                    "Effectuer des conversions binaire → décimal et décimal → binaire",
+                    "Identifier la taille approximative de fichiers numériques courants et comparer leur taille",
+                    "Distinguer le hardware du software"
+                ],
 
-    successCriteria: [
-        "Je peux expliquer pourquoi les ordinateurs utilisent le binaire",
-        "Je peux convertir un nombre décimal en binaire et inversement",
-        "Je peux estimer la taille d’un fichier texte, image ou audio",
-        "Je peux donner des exemples de hardware et de software"
-    ],
+                successCriteria: [
+                    "Je peux expliquer pourquoi les ordinateurs utilisent le binaire",
+                    "Je peux convertir un nombre décimal en binaire et inversement",
+                    "Je peux estimer la taille d’un fichier texte, image ou audio",
+                    "Je peux donner des exemples de hardware et de software"
+                ],
 
-    // ✅ NOTES DE COURS DÉTAILLÉES
-    detailedNotes: `
+                // ✅ NOTES DE COURS DÉTAILLÉES
+                detailedNotes: `
 <h4 class="text-xl font-bold text-teal-800 mb-3">1. Définition générale d’un système informatique</h4>
 <p class="mb-4 text-gray-700">
 Un <strong>système informatique</strong> est un ensemble organisé de composants matériels (<em>hardware</em>) et logiciels (<em>software</em>) qui permet de :
@@ -467,54 +538,55 @@ On soustrait les puissances de 2 (poids) les plus grandes possibles jusqu’à a
 </table>
 `,
 
-    // ✅ RESSOURCES ET ACTIVITÉS
-    resourcesAndActivities: [
-        { type: "Worksheet", title: "Fiche : Pourquoi le binaire ?", objective: "Compréhension du système binaire", link: "fiche_binaire_L2.pdf", icon: "document" },
-        { type: "Exercice", title: "Conversions binaire ↔ décimal", objective: "Application pratique", link: "exercice_conversion_L2.pdf", icon: "document" },
-        { type: "Tuto Vidéo", title: "Introduction au langage Binaire ", objective: "Pourquoi le binaire ?", link: "https://youtu.be/VRdp_vaNRoY?si=e-NoDSGw7uzVal0_", icon: "video" },
-        { type: "Application", title: "Simulateur de conversion binaire", objective: "Pratique interactive", link: "https://md5decrypt.net/Outils-conversion/", icon: "app" }
-    ],
+                // ✅ RESSOURCES ET ACTIVITÉS
+                resourcesAndActivities: [
+                    { type: "Worksheet", title: "Fiche : Pourquoi le binaire ?", objective: "Compréhension du système binaire", link: "fiche_binaire_L2.pdf", icon: "document" },
+                    { type: "Exercice", title: "Conversions binaire ↔ décimal", objective: "Application pratique", link: "exercice_conversion_L2.pdf", icon: "document" },
+                    { type: "Tuto Vidéo", title: "Introduction au langage Binaire ", objective: "Pourquoi le binaire ?", link: "https://youtu.be/VRdp_vaNRoY?si=e-NoDSGw7uzVal0_", icon: "video" },
+                    { type: "Application", title: "Simulateur de conversion binaire", objective: "Pratique interactive", link: "https://md5decrypt.net/Outils-conversion/", icon: "app" }
+                ],
 
-    // ✅ QUIZ
-    quiz: [
-        { id: 1, question: "Pourquoi les ordinateurs utilisent-ils le binaire ?", options: ["Parce que c'est plus rapide", "Parce que les circuits électroniques ont deux états", "Parce que c'est plus simple à lire"], answer: "Parce que les circuits électroniques ont deux états", explanation: "Les ordinateurs fonctionnent avec des signaux électriques : ouvert (0) ou fermé (1)." },
-        { id: 2, question: "Combien de bits dans un octet ?", options: ["4", "8", "16"], answer: "8", explanation: "Un octet est composé de 8 bits." },
-        { id: 3,
-        question: "Massin  souhaite faire une copie de sauvegarde des données de son téléphone portable. L'application de sauvegarde installée sur son téléphone affiche les valeurs suivantes en Go  :<br><br><span style='font-weight:normal; text-align:left; display:inline-block; padding-left: 20px;'>Photos : 17.25 Go<br>Documents : 3.25 Go<br>Messages : 21.25 Go<br>Autres : 2.75 Go</span><br><br>La capacité totale de telephone est de 50 Go. Combien d'espace libre reste-t-il ? (Répondez en octets, 1ko = 1000 octets).", 
-        options: ["5 000 000 000 octets", "5 000 500 000 octets", "44 500 000 000 octets", "5 500 000 000 octets"], 
-        answer: "5 500 000 000 octets", 
-        explanation: "Espace utilisé = 17.25 + 3.25 + 21.25 + 2.75 = 44.5 Go. Espace libre = 50 Go - 44.5 Go = 5.5 Go. Puisque 1Go = 1 milliard d'octets, 5.5 Go = 5 500 000 000 octets." 
-    
-     }
-    ],
+                // ✅ QUIZ
+                quiz: [
+                    { id: 1, question: "Pourquoi les ordinateurs utilisent-ils le binaire ?", options: ["Parce que c'est plus rapide", "Parce que les circuits électroniques ont deux états", "Parce que c'est plus simple à lire"], answer: "Parce que les circuits électroniques ont deux états", explanation: "Les ordinateurs fonctionnent avec des signaux électriques : ouvert (0) ou fermé (1)." },
+                    { id: 2, question: "Combien de bits dans un octet ?", options: ["4", "8", "16"], answer: "8", explanation: "Un octet est composé de 8 bits." },
+                    {
+                        id: 3,
+                        question: "Massin  souhaite faire une copie de sauvegarde des données de son téléphone portable. L'application de sauvegarde installée sur son téléphone affiche les valeurs suivantes en Go  :<br><br><span style='font-weight:normal; text-align:left; display:inline-block; padding-left: 20px;'>Photos : 17.25 Go<br>Documents : 3.25 Go<br>Messages : 21.25 Go<br>Autres : 2.75 Go</span><br><br>La capacité totale de telephone est de 50 Go. Combien d'espace libre reste-t-il ? (Répondez en octets, 1ko = 1000 octets).",
+                        options: ["5 000 000 000 octets", "5 000 500 000 octets", "44 500 000 000 octets", "5 500 000 000 octets"],
+                        answer: "5 500 000 000 octets",
+                        explanation: "Espace utilisé = 17.25 + 3.25 + 21.25 + 2.75 = 44.5 Go. Espace libre = 50 Go - 44.5 Go = 5.5 Go. Puisque 1Go = 1 milliard d'octets, 5.5 Go = 5 500 000 000 octets."
 
-    koLink: { 
-        url: "https://drive.google.com/file/d/1qyIt0I7j9tieqHQn47Q9fz1wdUnwC-ZG/view?usp=drive_link", 
-        label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" 
-    },
-    mindMapUrl: EXTERNAL_MINDMAP_URL
-},
+                    }
+                ],
+
+                koLink: {
+                    url: "https://drive.google.com/file/d/1qyIt0I7j9tieqHQn47Q9fz1wdUnwC-ZG/view?usp=drive_link",
+                    label: "Télécharger l'Organisateur de Connaissances (KO - PDF)"
+                },
+                mindMapUrl: EXTERNAL_MINDMAP_URL
+            },
             // M1S2L1
-    'M1-sequence02-L1': {
-    title: "Leçon 1 : Découverte de l'ordinateur : Rôles, familles et schéma fonctionnel",
-    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+            'M1-sequence02-L1': {
+                title: "Leçon 1 : Découverte de l'ordinateur : Rôles, familles et schéma fonctionnel",
+                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
 
-    // ✅ OVERVIEW
-    overview: "Cette leçon présente la définition d’un ordinateur, ses rôles fondamentaux, les différentes familles (des superordinateurs aux smartphones) et le schéma fonctionnel de base (Entrée, Traitement, Sortie, Stockage).",
+                // ✅ OVERVIEW
+                overview: "Cette leçon présente la définition d’un ordinateur, ses rôles fondamentaux, les différentes familles (des superordinateurs aux smartphones) et le schéma fonctionnel de base (Entrée, Traitement, Sortie, Stockage).",
 
-    objectives: [
-        "Définir ce qu'est un ordinateur.",
-        "Identifier les différentes catégories d'ordinateurs (serveur, desktop, nano-ordinateur...).",
-        "Expliquer le schéma fonctionnel de base."
-    ],
+                objectives: [
+                    "Définir ce qu'est un ordinateur.",
+                    "Identifier les différentes catégories d'ordinateurs (serveur, desktop, nano-ordinateur...).",
+                    "Expliquer le schéma fonctionnel de base."
+                ],
 
-    successCriteria: [
-        "Je peux nommer 3 types d'ordinateurs et leur usage principal.",
-        "Je peux dessiner le schéma fonctionnel simple d'un ordinateur."
-    ],
+                successCriteria: [
+                    "Je peux nommer 3 types d'ordinateurs et leur usage principal.",
+                    "Je peux dessiner le schéma fonctionnel simple d'un ordinateur."
+                ],
 
-    // ✅ NOTES DE COURS DÉTAILLÉES
-    detailedNotes: `
+                // ✅ NOTES DE COURS DÉTAILLÉES
+                detailedNotes: `
         <h4 class="text-xl font-bold text-teal-800 mb-3">1. Qu'est-ce qu'un ordinateur ?</h4>
         <p class="mb-4 text-gray-700">
         Un ordinateur est une machine électronique capable de <strong>traiter automatiquement des informations</strong> selon des instructions (programmes). Il reçoit des données en entrée, les transforme et fournit des résultats en sortie.
@@ -542,98 +614,98 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
     
 `,
 
-    // ✅ RESSOURCES ET ACTIVITÉS
-    resourcesAndActivities: [
-        { type: "Worksheet", title: "Fiche : Les familles d'ordinateurs", objective: "Identifier les catégories et leurs usages", link: "fiche_familles_L1.pdf", icon: "document" },
-        { type: "Exercice", title: "Dessiner le schéma fonctionnel d'un ordinateur", objective: "Compréhension du cycle Entrée-Traitement-Sortie", link: "exercice_schema_L1.pdf", icon: "document" },
-        { type: "Tuto Vidéo", title: "Découverte des composants d'un ordinateur", objective: "Visualisation des rôles", link: "video_composants_L1.mp4", icon: "video" },
-        { type: "Application", title: "Quiz interactif (App Web)", objective: "Auto-évaluation ludique", link: "#", icon: "app" }
-    ],
+                // ✅ RESSOURCES ET ACTIVITÉS
+                resourcesAndActivities: [
+                    { type: "Worksheet", title: "Fiche : Les familles d'ordinateurs", objective: "Identifier les catégories et leurs usages", link: "fiche_familles_L1.pdf", icon: "document" },
+                    { type: "Exercice", title: "Dessiner le schéma fonctionnel d'un ordinateur", objective: "Compréhension du cycle Entrée-Traitement-Sortie", link: "exercice_schema_L1.pdf", icon: "document" },
+                    { type: "Tuto Vidéo", title: "Découverte des composants d'un ordinateur", objective: "Visualisation des rôles", link: "video_composants_L1.mp4", icon: "video" },
+                    { type: "Application", title: "Quiz interactif (App Web)", objective: "Auto-évaluation ludique", link: "#", icon: "app" }
+                ],
 
-    // ✅ QUIZ
-    quiz: [
-        { id: 1, question: "Quel est le rôle principal d'un ordinateur ?", options: ["Stocker des données", "Traiter automatiquement des informations", "Afficher des images"], answer: "Traiter automatiquement des informations", explanation: "Un ordinateur transforme des données en informations utiles grâce à des programmes." },
-        { id: 2, question: "Donnez un exemple de nano-ordinateur :", options: ["Serveur", "Raspberry Pi", "Superordinateur"], answer: "Raspberry Pi", explanation: "Le Raspberry Pi est un nano-ordinateur utilisé pour des projets spécifiques." },
-        { id: 3, question: "Quels sont les 4 éléments du schéma fonctionnel ?", options: ["Entrée, Sortie, Réseau, Stockage", "Entrée, Traitement, Sortie, Memoire", "Entrée, CPU, stockage, Mémoire"], answer: "Entrée, Traitement, Sortie, Memoire", explanation: "C'est le cycle fondamental du fonctionnement d'un ordinateur." }
-    ],
+                // ✅ QUIZ
+                quiz: [
+                    { id: 1, question: "Quel est le rôle principal d'un ordinateur ?", options: ["Stocker des données", "Traiter automatiquement des informations", "Afficher des images"], answer: "Traiter automatiquement des informations", explanation: "Un ordinateur transforme des données en informations utiles grâce à des programmes." },
+                    { id: 2, question: "Donnez un exemple de nano-ordinateur :", options: ["Serveur", "Raspberry Pi", "Superordinateur"], answer: "Raspberry Pi", explanation: "Le Raspberry Pi est un nano-ordinateur utilisé pour des projets spécifiques." },
+                    { id: 3, question: "Quels sont les 4 éléments du schéma fonctionnel ?", options: ["Entrée, Sortie, Réseau, Stockage", "Entrée, Traitement, Sortie, Memoire", "Entrée, CPU, stockage, Mémoire"], answer: "Entrée, Traitement, Sortie, Memoire", explanation: "C'est le cycle fondamental du fonctionnement d'un ordinateur." }
+                ],
 
-    koLink: { 
-        url: "https://example.com/ko_m02_s01_l01.pdf", 
-        label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" 
-    },
-    mindMapUrl: null
-},
+                koLink: {
+                    url: "https://example.com/ko_m02_s01_l01.pdf",
+                    label: "Télécharger l'Organisateur de Connaissances (KO - PDF)"
+                },
+                mindMapUrl: null
+            },
 
-  'M1-sequence02-L2': { 
-    title: "Leçon 2 : Au cœur du traitement : Le CPU et l'architecture Von Neumann",
-    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
-    overview: "Plongée au cœur du 'cerveau' de l'ordinateur (CPU). Découverte de ses composants (UC, UAL) et du principe de Von Neumann qui explique comment il exécute un programme.",
-    objectives: [
-        "Expliquer le principe de l'architecture Von Neumann (données et instructions en mémoire).",
-        "Distinguer une donnée d'une instruction.",
-        "Identifier les composants du CPU (UC, UAL, registres, horloge, bus) et leur rôle."
-    ],
-    successCriteria: [
-        "Je peux expliquer la différence entre l'Unité de Contrôle (UC) et l'Unité Arithmétique et Logique (UAL).",
-        "Je peux expliquer pourquoi les instructions et les données sont toutes les deux dans la mémoire."
-    ],
-    resourcesAndActivities: [
-    // Doit avoir "link", "title", "type", "objective", "icon"
-    { 
-        type: "Exercice PDF", 
-        title: "Schéma vierge de Von Neumann à compléter", 
-        objective: "Mémorisation visuelle", 
-        link: "exercice_schema_M1S2L2.pdf", 
-        icon: "pdf" 
-    },
-    { 
-        type: "Vidéo Explicative", 
-        title: "Vidéo : L'architecture de Von Neumann (5 min)", 
-        objective: "Synthèse visuelle", 
-        link: "https://www.youtube.com/watch?v=13F24qW1X-o", 
-        icon: "video" 
-    }
-],
-    quiz: [
-    { 
-        id: 1, 
-        question: "Dans l'analogie de la recette de cuisine, les 'ingrédients' (ex: le nombre 5) correspondent à :", 
-        options: ["Données", "Instructions", "CPU", "Bus"], 
-        answer: "Données", 
-        explanation: "Les données sont les informations brutes (ingrédients) que le CPU va traiter en suivant les instructions (la recette)." 
-    },
-    { 
-        id: 2, 
-        question: "Quelle est l'idée principale de l'architecture de Von Neumann ?", 
-        options: ["Stocker les données et les instructions dans la même mémoire", "Avoir un CPU très rapide", "Utiliser un clavier et une souris", "Connecter l'ordinateur à Internet"], 
-        answer: "Stocker les données et les instructions dans la même mémoire", 
-        explanation: "L'architecture de Von Neumann utilise une mémoire unique pour le programme (instructions) et les informations (données)." 
-    },
-    { 
-        id: 3, 
-        question: "Quelle partie du CPU est la 'calculette' qui effectue les additions et les opérations logiques ?", 
-        options: ["L'Unité de Commande (UC)", "L'Unité Arithmétique et Logique (UAL)", "La RAM", "Les Registres"], 
-        answer: "L'Unité Arithmétique et Logique (UAL)", 
-        explanation: "L'UAL (ou ALU en anglais) est le composant qui exécute tous les calculs arithmétiques et les comparaisons logiques." 
-    },
-    { 
-        id: 4, 
-        question: "Lequel des composants suivants peut exécuter une instruction ?", 
-        options: ["L'Horloge", "L'Unité arithmétique et logique (UAL)", "Le Bus"], 
-        answer: "L'Unité arithmétique et logique (UAL)", 
-        explanation: "L'UAL est la partie du CPU qui exécute les calculs (arithmétiques) et les comparaisons (logiques). L'horloge donne le rythme et le bus transporte les données." 
-    },
-   { 
-        id: 5, 
-        question: "Quel composant du processeur décode les instructions ?", 
-        options: ["Les Registres", "L'Unité arithmétique et logique (UAL)", "L'Unité de Commande (UC)"], 
-        answer: "L'Unité de Commande (UC)", 
-        explanation: "C'est l'Unité de Commande (UC) qui lit et décode les instructions. L'UAL les exécute et les registres stockent temporairement les données." 
-    }
-],
-    koLink: { url: "https://example.com/ko_m02_s01_l02.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-    mindMapUrl: null, // Remis à 'null' selon vos indications
-    detailedNotes: `
+            'M1-sequence02-L2': {
+                title: "Leçon 2 : Au cœur du traitement : Le CPU et l'architecture Von Neumann",
+                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+                overview: "Plongée au cœur du 'cerveau' de l'ordinateur (CPU). Découverte de ses composants (UC, UAL) et du principe de Von Neumann qui explique comment il exécute un programme.",
+                objectives: [
+                    "Expliquer le principe de l'architecture Von Neumann (données et instructions en mémoire).",
+                    "Distinguer une donnée d'une instruction.",
+                    "Identifier les composants du CPU (UC, UAL, registres, horloge, bus) et leur rôle."
+                ],
+                successCriteria: [
+                    "Je peux expliquer la différence entre l'Unité de Contrôle (UC) et l'Unité Arithmétique et Logique (UAL).",
+                    "Je peux expliquer pourquoi les instructions et les données sont toutes les deux dans la mémoire."
+                ],
+                resourcesAndActivities: [
+                    // Doit avoir "link", "title", "type", "objective", "icon"
+                    {
+                        type: "Exercice PDF",
+                        title: "Schéma vierge de Von Neumann à compléter",
+                        objective: "Mémorisation visuelle",
+                        link: "exercice_schema_M1S2L2.pdf",
+                        icon: "pdf"
+                    },
+                    {
+                        type: "Vidéo Explicative",
+                        title: "Vidéo : L'architecture de Von Neumann (5 min)",
+                        objective: "Synthèse visuelle",
+                        link: "https://www.youtube.com/watch?v=13F24qW1X-o",
+                        icon: "video"
+                    }
+                ],
+                quiz: [
+                    {
+                        id: 1,
+                        question: "Dans l'analogie de la recette de cuisine, les 'ingrédients' (ex: le nombre 5) correspondent à :",
+                        options: ["Données", "Instructions", "CPU", "Bus"],
+                        answer: "Données",
+                        explanation: "Les données sont les informations brutes (ingrédients) que le CPU va traiter en suivant les instructions (la recette)."
+                    },
+                    {
+                        id: 2,
+                        question: "Quelle est l'idée principale de l'architecture de Von Neumann ?",
+                        options: ["Stocker les données et les instructions dans la même mémoire", "Avoir un CPU très rapide", "Utiliser un clavier et une souris", "Connecter l'ordinateur à Internet"],
+                        answer: "Stocker les données et les instructions dans la même mémoire",
+                        explanation: "L'architecture de Von Neumann utilise une mémoire unique pour le programme (instructions) et les informations (données)."
+                    },
+                    {
+                        id: 3,
+                        question: "Quelle partie du CPU est la 'calculette' qui effectue les additions et les opérations logiques ?",
+                        options: ["L'Unité de Commande (UC)", "L'Unité Arithmétique et Logique (UAL)", "La RAM", "Les Registres"],
+                        answer: "L'Unité Arithmétique et Logique (UAL)",
+                        explanation: "L'UAL (ou ALU en anglais) est le composant qui exécute tous les calculs arithmétiques et les comparaisons logiques."
+                    },
+                    {
+                        id: 4,
+                        question: "Lequel des composants suivants peut exécuter une instruction ?",
+                        options: ["L'Horloge", "L'Unité arithmétique et logique (UAL)", "Le Bus"],
+                        answer: "L'Unité arithmétique et logique (UAL)",
+                        explanation: "L'UAL est la partie du CPU qui exécute les calculs (arithmétiques) et les comparaisons (logiques). L'horloge donne le rythme et le bus transporte les données."
+                    },
+                    {
+                        id: 5,
+                        question: "Quel composant du processeur décode les instructions ?",
+                        options: ["Les Registres", "L'Unité arithmétique et logique (UAL)", "L'Unité de Commande (UC)"],
+                        answer: "L'Unité de Commande (UC)",
+                        explanation: "C'est l'Unité de Commande (UC) qui lit et décode les instructions. L'UAL les exécute et les registres stockent temporairement les données."
+                    }
+                ],
+                koLink: { url: "https://example.com/ko_m02_s01_l02.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+                mindMapUrl: null, // Remis à 'null' selon vos indications
+                detailedNotes: `
 <div class="space-y-6 text-gray-800">
     <h2 class="text-2xl font-bold text-blue-800">Introduction</h2>
     <p>Aujourd'hui, nous allons regarder ce qu'il se passe à l'intérieur du "cerveau" de l'ordinateur : le <strong>Processeur (CPU)</strong>. Pour comprendre comment il fonctionne, nous devons d'abord comprendre le plan sur lequel il est construit : l'architecture de Von Neumann.</p>
@@ -723,95 +795,95 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
     </div>
 </div>
 `
-  },
+            },
 
 
 
 
-'M1-sequence02-L3': { 
-    title: "Leçon 3 : Les Mémoires (Vive, Morte et de Masse)",
-    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
-    overview: "Comprendre les différents types de mémoire et leur rôle. Distinction entre la mémoire de travail (RAM), la mémoire de démarrage (ROM) et le stockage permanent (SSD/HDD).",
-    objectives: [
-        "Distinguer RAM et ROM (rôle, volatilité).",
-        "Différencier la mémoire vive (RAM) de la mémoire de masse (stockage).",
-        "Comprendre la notion de hiérarchie des mémoires (vitesse vs capacité)."
-    ],
-    successCriteria: [
-        "Je peux expliquer ce qui se passe dans la RAM quand j'ouvre un logiciel.",
-        "Je peux expliquer pourquoi un ordinateur a besoin à la fois d'un SSD/HDD et de RAM."
-    ],
-    resourcesAndActivities: [
-  // Doit avoir "link", "title", "type", "objective", "icon"
-  { 
-      type: "Exercice PDF", 
-      title: "Tableau comparatif (RAM, ROM, Masse)", 
-      objective: "Synthèse et mémorisation des 3 types", 
-      link: "exercice_tableau_M1S2L3.pdf", 
-      icon: "pdf" 
-  },
-  { 
-      type: "Vidéo Explicative", 
-      title: "Vidéo : RAM, ROM, Stockage expliqués (5 min)", 
-      objective: "Distinguer les 3 types de mémoires", 
-      link: "https://www.youtube.com/watch?v=g_n5v4m3SgA", 
-      icon: "video" 
-  },
-  { 
-      type: "Exercice Interactif", 
-      title: "Jeu : Quelle mémoire pour quel usage ?", 
-      objective: "Appliquer les connaissances à des cas concrets", 
-      link: "exercice_memoires_M1S2L3.html", 
-      icon: "web" 
-  }
-],
-quiz: [
-  { 
-      id: 1, 
-      question: "Quelle est la caractéristique principale de la mémoire RAM ?", 
-      options: ["Elle est non-volatile", "Elle est volatile (s'efface sans courant)", "Elle stocke le BIOS", "Elle est très lente"], 
-      answer: "Elle est volatile (s'efface sans courant)", 
-      explanation: "La RAM est la mémoire de travail ; elle a besoin d'électricité pour conserver les données. C'est pourquoi on dit qu'elle est volatile." 
-  },
-  { 
-      id: 2, 
-      question: "À quoi sert la mémoire ROM (Mémoire Morte) ?", 
-      options: ["À stocker vos photos et vidéos", "À exécuter les logiciels ouverts", "À démarrer l'ordinateur (contient le BIOS/UEFI)", "À accélérer les jeux vidéo"], 
-      answer: "À démarrer l'ordinateur (contient le BIOS/UEFI)", 
-      explanation: "La ROM contient les instructions fondamentales (le BIOS ou l'UEFI) que l'ordinateur exécute au tout premier démarrage." 
-  },
-  { 
-      id: 3, 
-      question: "Où sont stockés vos fichiers (documents, jeux, photos) de manière permanente ?", 
-      options: ["Dans la RAM", "Dans la ROM", "Dans le processeur (CPU)", "Dans la Mémoire de Masse (Disque Dur/SSD)"], 
-      answer: "Dans la Mémoire de Masse (Disque Dur/SSD)", 
-      explanation: "La mémoire de masse (HDD ou SSD) est non-volatile, elle est conçue pour stocker durablement de grandes quantités de données." 
-  },
-  { 
-      id: 4, 
-      question: "Quand vous ouvrez un logiciel (ex: Word), ses données sont copiées DE... VERS...", 
-      options: ["La RAM vers le SSD", "La ROM vers la RAM", "La Mémoire de Masse vers la RAM", "La RAM vers la ROM"], 
-      answer: "La Mémoire de Masse vers la RAM", 
-      explanation: "Le logiciel est stocké en permanence sur la Mémoire de Masse (SSD/HDD) et est chargé (copié) dans la RAM (mémoire de travail) pour être exécuté rapidement." 
-  },
-  { 
-      id: 5, 
-      question: "Quelle est la mémoire la plus rapide, mais qui s'efface quand on éteint l'ordinateur ?", 
-      options: ["Le SSD (Masse)", "La ROM", "La RAM", "Le Disque Dur (Masse)"], 
-      answer: "La RAM", 
-      explanation: "La RAM est la mémoire la plus rapide pour le travail actif, mais elle est volatile (perd ses données sans courant)." 
-  },
-  { 
-      id: 6, 
-      question: "Lequel de ces éléments est un exemple de Mémoire de Masse ?", 
-      options: ["Le BIOS", "La barrette de 16Go", "Une clé USB", "L'Unité de Commande"], 
-      answer: "Une clé USB", 
-      explanation: "Une clé USB, comme un SSD ou un HDD, est un support de stockage non-volatile conçu pour conserver des données à long terme." 
-  }
-],
-    koLink: { url: "https://example.com/ko_m02_s01_l03.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-    mindMapUrl: null,
-    detailedNotes: `
+            'M1-sequence02-L3': {
+                title: "Leçon 3 : Les Mémoires (Vive, Morte et de Masse)",
+                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+                overview: "Comprendre les différents types de mémoire et leur rôle. Distinction entre la mémoire de travail (RAM), la mémoire de démarrage (ROM) et le stockage permanent (SSD/HDD).",
+                objectives: [
+                    "Distinguer RAM et ROM (rôle, volatilité).",
+                    "Différencier la mémoire vive (RAM) de la mémoire de masse (stockage).",
+                    "Comprendre la notion de hiérarchie des mémoires (vitesse vs capacité)."
+                ],
+                successCriteria: [
+                    "Je peux expliquer ce qui se passe dans la RAM quand j'ouvre un logiciel.",
+                    "Je peux expliquer pourquoi un ordinateur a besoin à la fois d'un SSD/HDD et de RAM."
+                ],
+                resourcesAndActivities: [
+                    // Doit avoir "link", "title", "type", "objective", "icon"
+                    {
+                        type: "Exercice PDF",
+                        title: "Tableau comparatif (RAM, ROM, Masse)",
+                        objective: "Synthèse et mémorisation des 3 types",
+                        link: "exercice_tableau_M1S2L3.pdf",
+                        icon: "pdf"
+                    },
+                    {
+                        type: "Vidéo Explicative",
+                        title: "Vidéo : RAM, ROM, Stockage expliqués (5 min)",
+                        objective: "Distinguer les 3 types de mémoires",
+                        link: "https://www.youtube.com/watch?v=g_n5v4m3SgA",
+                        icon: "video"
+                    },
+                    {
+                        type: "Exercice Interactif",
+                        title: "Jeu : Quelle mémoire pour quel usage ?",
+                        objective: "Appliquer les connaissances à des cas concrets",
+                        link: "exercice_memoires_M1S2L3.html",
+                        icon: "web"
+                    }
+                ],
+                quiz: [
+                    {
+                        id: 1,
+                        question: "Quelle est la caractéristique principale de la mémoire RAM ?",
+                        options: ["Elle est non-volatile", "Elle est volatile (s'efface sans courant)", "Elle stocke le BIOS", "Elle est très lente"],
+                        answer: "Elle est volatile (s'efface sans courant)",
+                        explanation: "La RAM est la mémoire de travail ; elle a besoin d'électricité pour conserver les données. C'est pourquoi on dit qu'elle est volatile."
+                    },
+                    {
+                        id: 2,
+                        question: "À quoi sert la mémoire ROM (Mémoire Morte) ?",
+                        options: ["À stocker vos photos et vidéos", "À exécuter les logiciels ouverts", "À démarrer l'ordinateur (contient le BIOS/UEFI)", "À accélérer les jeux vidéo"],
+                        answer: "À démarrer l'ordinateur (contient le BIOS/UEFI)",
+                        explanation: "La ROM contient les instructions fondamentales (le BIOS ou l'UEFI) que l'ordinateur exécute au tout premier démarrage."
+                    },
+                    {
+                        id: 3,
+                        question: "Où sont stockés vos fichiers (documents, jeux, photos) de manière permanente ?",
+                        options: ["Dans la RAM", "Dans la ROM", "Dans le processeur (CPU)", "Dans la Mémoire de Masse (Disque Dur/SSD)"],
+                        answer: "Dans la Mémoire de Masse (Disque Dur/SSD)",
+                        explanation: "La mémoire de masse (HDD ou SSD) est non-volatile, elle est conçue pour stocker durablement de grandes quantités de données."
+                    },
+                    {
+                        id: 4,
+                        question: "Quand vous ouvrez un logiciel (ex: Word), ses données sont copiées DE... VERS...",
+                        options: ["La RAM vers le SSD", "La ROM vers la RAM", "La Mémoire de Masse vers la RAM", "La RAM vers la ROM"],
+                        answer: "La Mémoire de Masse vers la RAM",
+                        explanation: "Le logiciel est stocké en permanence sur la Mémoire de Masse (SSD/HDD) et est chargé (copié) dans la RAM (mémoire de travail) pour être exécuté rapidement."
+                    },
+                    {
+                        id: 5,
+                        question: "Quelle est la mémoire la plus rapide, mais qui s'efface quand on éteint l'ordinateur ?",
+                        options: ["Le SSD (Masse)", "La ROM", "La RAM", "Le Disque Dur (Masse)"],
+                        answer: "La RAM",
+                        explanation: "La RAM est la mémoire la plus rapide pour le travail actif, mais elle est volatile (perd ses données sans courant)."
+                    },
+                    {
+                        id: 6,
+                        question: "Lequel de ces éléments est un exemple de Mémoire de Masse ?",
+                        options: ["Le BIOS", "La barrette de 16Go", "Une clé USB", "L'Unité de Commande"],
+                        answer: "Une clé USB",
+                        explanation: "Une clé USB, comme un SSD ou un HDD, est un support de stockage non-volatile conçu pour conserver des données à long terme."
+                    }
+                ],
+                koLink: { url: "https://example.com/ko_m02_s01_l03.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+                mindMapUrl: null,
+                detailedNotes: `
 
 <h4 class="text-xl font-bold text-teal-800 mb-3">Introduction</h4> <p class="mb-4 text-gray-700"> Pour fonctionner, un ordinateur a besoin de mémoriser des informations. Il n'existe pas une seule "mémoire" capable de tout faire, car les besoins sont différents. C'est pourquoi on utilise trois types principaux. </p>
 
@@ -829,126 +901,126 @@ quiz: [
 </tr> </tbody> </table> `},
 
 
-'M1-sequence02-L4': { 
-    title: "Leçon 4 : Carte mère et périphériques",
-    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
-    overview: "Identifier les composants qui connectent tout (carte mère, alimentation) et ceux qui permettent à l'ordinateur de communiquer avec l'utilisateur (périphériques d'entrée et de sortie).",
-    objectives: [
-        "Identifier le rôle de la carte mère.",
-        "Classifier les périphériques (entrée, sortie, entrée/sortie).",
-        "Identifier les autres composants vitaux (alimentation, carte réseau)."
-    ],
-    successCriteria: [
-        "Je peux citer 3 périphériques d'entrée et 3 de sortie.",
-        "Je peux expliquer que la carte mère sert à connecter tous les composants entre eux."
-    ],
-    resourcesAndActivities: [
-  {
-      type: "Exercice PDF",
-      title: "Identifier les ports et slots de la carte mère",
-      objective: "Reconnaître visuellement les connecteurs sur une carte mère",
-      link: "exercice_carte_mere_M1S2L4.pdf",
-      icon: "pdf"
-  },
-  {
-      type: "Vidéo Explicative",
-      title: "Vidéo : Tout comprendre sur la carte mère (7 min)",
-      objective: "Comprendre le rôle central et les interconnexions de la carte mère",
-      link: "https://www.youtube.com/watch?v=exemple_carte_mere",
-      icon: "video"
-  },
-  {
-      type: "Quiz Interactif",
-      title: "Quiz : Périphériques et leurs fonctions",
-      objective: "Classer les périphériques selon leur fonction (entrée, sortie, E/S)",
-      link: "quiz_peripheriques_M1S2L4.html",
-      icon: "web"
-  },
-  {
-      type: "Guide Pratique",
-      title: "Guide : Choisir ses périphériques (Clavier, Souris, Écran)",
-      objective: "Apprendre les critères de choix pour les périphériques courants",
-      link: "guide_choix_peripheriques_M1S2L4.pdf",
-      icon: "pdf"
-  }
-],
-quiz: [
-  {
-      id: 1,
-      question: "Quel est le rôle principal de la carte mère dans un ordinateur ?",
-      options: [
-          "Stocker toutes les données de manière permanente",
-          "Fournir l'énergie électrique à tous les composants",
-          "Connecter et permettre la communication entre tous les composants",
-          "Afficher les images et vidéos sur l'écran"
-      ],
-      answer: "Connecter et permettre la communication entre tous les composants",
-      explanation: "La carte mère est la plaque maîtresse qui relie et fait communiquer le CPU, la RAM, les cartes d'extension, etc."
-  },
-  {
-      id: 2,
-      question: "Lequel de ces éléments est un périphérique d'ENTRÉE ?",
-      options: [
-          "Une imprimante",
-          "Un microphone",
-          "Un écran",
-          "Des haut-parleurs"
-      ],
-      answer: "Un microphone",
-      explanation: "Un microphone permet d'envoyer du son (information) à l'ordinateur, c'est donc un périphérique d'entrée."
-  },
-  {
-      id: 3,
-      question: "Un écran tactile est un exemple de périphérique :",
-      options: [
-          "D'entrée seulement",
-          "De sortie seulement",
-          "D'entrée/sortie",
-          "De stockage"
-      ],
-      answer: "D'entrée/sortie",
-      explanation: "L'écran tactile reçoit des commandes par le toucher (entrée) et affiche des informations (sortie) simultanément."
-  },
-  {
-      id: 4,
-      question: "Quel composant est responsable de convertir les données en signaux vidéo pour l'affichage à l'écran ?",
-      options: [
-          "La carte mère",
-          "La carte réseau",
-          "La carte graphique (GPU)",
-          "L'alimentation (PSU)"
-      ],
-      answer: "La carte graphique (GPU)",
-      explanation: "La carte graphique (GPU) est spécialement conçue pour gérer et afficher tout ce qui apparaît à l'écran."
-  },
-  {
-      id: 5,
-      question: "L'alimentation (PSU) a pour fonction principale de :",
-      options: [
-          "Démarrer le système d'exploitation",
-          "Stocker les programmes et fichiers",
-          "Fournir le courant électrique stable aux composants",
-          "Connecter l'ordinateur à Internet"
-      ],
-      answer: "Fournir le courant électrique stable aux composants",
-      explanation: "L'alimentation (PSU) est essentielle pour convertir le courant du secteur en une énergie utilisable par tous les composants internes de l'ordinateur."
-  },
-  {
-      id: 6,
-      question: "Quelle partie de la carte mère permet de connecter une carte graphique ou une carte réseau supplémentaire ?",
-      options: [
-          "Le Socket CPU",
-          "Les Slots RAM",
-          "Les Slots d'extension (PCIe)",
-          "Les Connecteurs de stockage SATA"
-      ],
-      answer: "Les Slots d'extension (PCIe)",
-      explanation: "Les slots d'extension, souvent appelés PCIe, sont les emplacements où l'on insère des cartes additionnelles comme les cartes graphiques ou d'autres cartes d'extension."
-  }
-],
-    koLink: { url: "https://example.com/ko_m02_s01_l04.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-    mindMapUrl: null,
-detailedNotes: `
+            'M1-sequence02-L4': {
+                title: "Leçon 4 : Carte mère et périphériques",
+                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+                overview: "Identifier les composants qui connectent tout (carte mère, alimentation) et ceux qui permettent à l'ordinateur de communiquer avec l'utilisateur (périphériques d'entrée et de sortie).",
+                objectives: [
+                    "Identifier le rôle de la carte mère.",
+                    "Classifier les périphériques (entrée, sortie, entrée/sortie).",
+                    "Identifier les autres composants vitaux (alimentation, carte réseau)."
+                ],
+                successCriteria: [
+                    "Je peux citer 3 périphériques d'entrée et 3 de sortie.",
+                    "Je peux expliquer que la carte mère sert à connecter tous les composants entre eux."
+                ],
+                resourcesAndActivities: [
+                    {
+                        type: "Exercice PDF",
+                        title: "Identifier les ports et slots de la carte mère",
+                        objective: "Reconnaître visuellement les connecteurs sur une carte mère",
+                        link: "exercice_carte_mere_M1S2L4.pdf",
+                        icon: "pdf"
+                    },
+                    {
+                        type: "Vidéo Explicative",
+                        title: "Vidéo : Tout comprendre sur la carte mère (7 min)",
+                        objective: "Comprendre le rôle central et les interconnexions de la carte mère",
+                        link: "https://www.youtube.com/watch?v=exemple_carte_mere",
+                        icon: "video"
+                    },
+                    {
+                        type: "Quiz Interactif",
+                        title: "Quiz : Périphériques et leurs fonctions",
+                        objective: "Classer les périphériques selon leur fonction (entrée, sortie, E/S)",
+                        link: "quiz_peripheriques_M1S2L4.html",
+                        icon: "web"
+                    },
+                    {
+                        type: "Guide Pratique",
+                        title: "Guide : Choisir ses périphériques (Clavier, Souris, Écran)",
+                        objective: "Apprendre les critères de choix pour les périphériques courants",
+                        link: "guide_choix_peripheriques_M1S2L4.pdf",
+                        icon: "pdf"
+                    }
+                ],
+                quiz: [
+                    {
+                        id: 1,
+                        question: "Quel est le rôle principal de la carte mère dans un ordinateur ?",
+                        options: [
+                            "Stocker toutes les données de manière permanente",
+                            "Fournir l'énergie électrique à tous les composants",
+                            "Connecter et permettre la communication entre tous les composants",
+                            "Afficher les images et vidéos sur l'écran"
+                        ],
+                        answer: "Connecter et permettre la communication entre tous les composants",
+                        explanation: "La carte mère est la plaque maîtresse qui relie et fait communiquer le CPU, la RAM, les cartes d'extension, etc."
+                    },
+                    {
+                        id: 2,
+                        question: "Lequel de ces éléments est un périphérique d'ENTRÉE ?",
+                        options: [
+                            "Une imprimante",
+                            "Un microphone",
+                            "Un écran",
+                            "Des haut-parleurs"
+                        ],
+                        answer: "Un microphone",
+                        explanation: "Un microphone permet d'envoyer du son (information) à l'ordinateur, c'est donc un périphérique d'entrée."
+                    },
+                    {
+                        id: 3,
+                        question: "Un écran tactile est un exemple de périphérique :",
+                        options: [
+                            "D'entrée seulement",
+                            "De sortie seulement",
+                            "D'entrée/sortie",
+                            "De stockage"
+                        ],
+                        answer: "D'entrée/sortie",
+                        explanation: "L'écran tactile reçoit des commandes par le toucher (entrée) et affiche des informations (sortie) simultanément."
+                    },
+                    {
+                        id: 4,
+                        question: "Quel composant est responsable de convertir les données en signaux vidéo pour l'affichage à l'écran ?",
+                        options: [
+                            "La carte mère",
+                            "La carte réseau",
+                            "La carte graphique (GPU)",
+                            "L'alimentation (PSU)"
+                        ],
+                        answer: "La carte graphique (GPU)",
+                        explanation: "La carte graphique (GPU) est spécialement conçue pour gérer et afficher tout ce qui apparaît à l'écran."
+                    },
+                    {
+                        id: 5,
+                        question: "L'alimentation (PSU) a pour fonction principale de :",
+                        options: [
+                            "Démarrer le système d'exploitation",
+                            "Stocker les programmes et fichiers",
+                            "Fournir le courant électrique stable aux composants",
+                            "Connecter l'ordinateur à Internet"
+                        ],
+                        answer: "Fournir le courant électrique stable aux composants",
+                        explanation: "L'alimentation (PSU) est essentielle pour convertir le courant du secteur en une énergie utilisable par tous les composants internes de l'ordinateur."
+                    },
+                    {
+                        id: 6,
+                        question: "Quelle partie de la carte mère permet de connecter une carte graphique ou une carte réseau supplémentaire ?",
+                        options: [
+                            "Le Socket CPU",
+                            "Les Slots RAM",
+                            "Les Slots d'extension (PCIe)",
+                            "Les Connecteurs de stockage SATA"
+                        ],
+                        answer: "Les Slots d'extension (PCIe)",
+                        explanation: "Les slots d'extension, souvent appelés PCIe, sont les emplacements où l'on insère des cartes additionnelles comme les cartes graphiques ou d'autres cartes d'extension."
+                    }
+                ],
+                koLink: { url: "https://example.com/ko_m02_s01_l04.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+                mindMapUrl: null,
+                detailedNotes: `
 <h4 class="text-xl font-bold text-teal-800 mb-3">🖥️ Leçon 4 : Carte mère et périphériques</h4>
 <p class="mb-4 text-gray-700">
     Cette leçon explore les composants essentiels qui permettent à un ordinateur de fonctionner comme un tout cohérent. Nous allons identifier la pièce maîtresse qui connecte tout le reste (la carte mère) et les éléments qui assurent la communication entre l'ordinateur et l'utilisateur (les périphériques).
@@ -1041,390 +1113,897 @@ detailedNotes: `
     <li>Souvent intégrée à la carte mère, mais peut aussi être une carte d'extension.</li>
 </ul>
 `
-},
+            },
 
-'M1-sequence02-L5': { 
-    title: "Leçon 5 : Synthèse et Spécifications Techniques",
-    moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
-    overview: "Cette leçon introduit la représentation de l’information en binaire, explique pourquoi les ordinateurs utilisent le système binaire, apprend aux apprenants à convertir des nombres binaires en décimaux et inversement, et se termine par une activité pratique pour identifier et comparer la taille des fichiers numériques (texte, image, audio, vidéo).",
-    objectives: [
-        "Identifier les spécifications clés (CPU, RAM, Stockage) sur une fiche technique.",
-        "Mettre en relation un besoin (ex: 'Gamer') avec des composants spécifiques (ex: 'RAM élevée').",
-        "Justifier le choix d'une configuration pour un utilisateur donné."
-    ],
-    successCriteria: [
-        "Je peux lire une publicité pour un PC et identifier la quantité de RAM et le type de stockage.",
-        "Je peux expliquer pourquoi un 'gamer' a besoin de composants différents d'un 'bureauticien'."
-    ],
-    resourcesAndActivities: [], 
-    quiz: [],
-    koLink: { url: "https://example.com/ko_m02_s01_l05.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-    mindMapUrl: null,
-    detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
-},
-          
-          
-  // M2S1L1
-            
-    // --- LEÇON 1 : FONCTIONNALITÉS DU SYSTÈME D'EXPLOITATION ---
-    'M2-sequence01-L1': { 
-        title: "Leçon 1 : Les fonctionnalités d'un Système d'Exploitation",
-        moduleTitle: "M02 : Logiciels",
-        overview: "Découverte du rôle de 'chef d'orchestre' du Système d'Exploitation (SE) et comment il fait le lien entre l'utilisateur, les logiciels et le matériel.",
-        objectives: [
-            "Définir ce qu'est un Système d'Exploitation.",
-            "Identifier les fonctions principales : gestion du processeur, de la mémoire et des périphériques.",
-            "Comprendre la notion de pilote (driver).",
-            "Expliquer le processus de démarrage (Boot)."
-        ],
-        successCriteria: [
-            "Je peux citer 3 rôles majeurs du SE.",
-            "Je peux expliquer pourquoi un ordinateur ne peut pas démarrer sans SE."
-        ],
-        resourcesAndActivities: [
-            { 
-                type: "matching", 
-                title: "Activité : Les fonctions du SE", 
-                instructions: "Reliez chaque fonction du SE à son rôle concret.",
-                pairs: [
-                    { term: "Gestion du Processeur", definition: "Décider quel logiciel a le droit d'utiliser le CPU à un instant T." },
-                    { term: "Gestion de la Mémoire", definition: "Réserver des 'cases' en RAM pour chaque application ouverte." },
-                    { term: "Gestion des Périphériques", definition: "Communiquer avec l'imprimante, la souris ou le clavier." },
-                    { term: "Interface Utilisateur", definition: "Afficher le bureau et les icônes pour permettre l'interaction." }
+            'M1-sequence02-L5': {
+                title: "Leçon 5 : Synthèse et Spécifications Techniques",
+                moduleTitle: "M01 : Généralités sur les Systèmes Informatiques",
+                overview: "Cette leçon introduit la représentation de l’information en binaire, explique pourquoi les ordinateurs utilisent le système binaire, apprend aux apprenants à convertir des nombres binaires en décimaux et inversement, et se termine par une activité pratique pour identifier et comparer la taille des fichiers numériques (texte, image, audio, vidéo).",
+                objectives: [
+                    "Identifier les spécifications clés (CPU, RAM, Stockage) sur une fiche technique.",
+                    "Mettre en relation un besoin (ex: 'Gamer') avec des composants spécifiques (ex: 'RAM élevée').",
+                    "Justifier le choix d'une configuration pour un utilisateur donné."
                 ],
-                scenario: "",
-                questions: []
-            }
-        ], 
-        quiz: [
-            {
-                type: "qcm",
-                question: "Quel est le rôle principal du Système d'Exploitation ?",
-                options: [
-                    { text: "Servir d'intermédiaire entre le matériel et l'utilisateur", correct: true },
-                    { text: "Permettre uniquement de naviguer sur Internet", correct: false },
-                    { text: "Remplacer le processeur physiquement", correct: false }
+                successCriteria: [
+                    "Je peux lire une publicité pour un PC et identifier la quantité de RAM et le type de stockage.",
+                    "Je peux expliquer pourquoi un 'gamer' a besoin de composants différents d'un 'bureauticien'."
                 ],
-                explanation: "Sans SE, l'utilisateur devrait parler directement en langage binaire au matériel, ce qui est impossible."
+                resourcesAndActivities: [],
+                quiz: [],
+                koLink: { url: "https://example.com/ko_m02_s01_l05.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
+                mindMapUrl: null,
+                detailedNotes: `<p class="text-gray-600">Les notes détaillées pour cette leçon sont en cours de rédaction. Revenez bientôt !</p>`
             },
-            {
-                type: "qcm",
-                question: "Comment appelle-t-on le petit logiciel qui permet au SE de reconnaître un nouveau matériel ?",
-                options: [
-                    { text: "Un registre", correct: false },
-                    { text: "Un pilote (ou driver)", correct: true },
-                    { text: "Un bus", correct: false }
+
+
+            // M2S1L1
+
+            // --- LEÇON 1 : FONCTIONNALITÉS DU SYSTÈME D'EXPLOITATION ---
+            // --- LEÇON 1 : FONCTIONNALITÉS DU SYSTÈME D'EXPLOITATION ---
+            'M2-sequence01-L1': {
+                title: "Leçon 1 : Les fonctionnalités d'un Système d'Exploitation",
+                moduleTitle: "M02 : Logiciels",
+                overview: "Comprendre le rôle du Système d'Exploitation (SE) comme interface vitale entre l'utilisateur, les applications et le matériel, ainsi que ses fonctions de gestion interne.",
+                objectives: [
+                    "Définir le concept de Système d'Exploitation (SE).",
+                    "Identifier les fonctions de gestion (CPU, RAM, Périphériques).",
+                    "Comprendre le rôle des pilotes (drivers).",
+                    "Expliquer le processus de démarrage (Boot)."
                 ],
-                explanation: "Le pilote contient les instructions spécifiques pour faire fonctionner un matériel."
-            },
-            {
-                type: "qcm",
-                question: "Que se passe-t-il lors du 'Boot' (démarrage) ?",
-                options: [
-                    { text: "Le SE est copié du disque dur vers la mémoire vive (RAM)", correct: true },
-                    { text: "L'ordinateur efface tous les fichiers temporaires", correct: false },
-                    { text: "Le processeur fabrique de l'électricité", correct: false }
+                successCriteria: [
+                    "Je peux citer 4 fonctions principales du SE.",
+                    "Je peux expliquer l'importance du chargement du noyau en RAM au démarrage.",
+                    "Je peux définir le rôle d'un pilote informatique."
                 ],
-                explanation: "Le démarrage est le processus de chargement du SE pour rendre la machine utilisable."
-            },
-            {
-                type: "qcm",
-                question: "Lequel de ces éléments n'est PAS une fonction du SE ?",
-                options: [
-                    { text: "La gestion de la mémoire vive", correct: false },
-                    { text: "La compression physique des circuits du CPU", correct: true },
-                    { text: "La gestion des droits d'accès des utilisateurs", correct: false }
+                resourcesAndActivities: [
+                    {
+                        type: "Fiche de synthèse",
+                        title: "Le SE : Chef d'orchestre de l'ordinateur",
+                        objective: "Visualiser les couches d'interaction entre matériel et utilisateur",
+                        link: "synthese_fonctions_SE_M2L1.pdf",
+                        icon: "pdf"
+                    },
+                    {
+                        type: "Vidéo Explicative",
+                        title: "Le processus de Boot et le noyau (5 min)",
+                        objective: "Comprendre comment l'ordinateur s'éveille",
+                        link: "https://www.youtube.com/watch?v=exemple_boot_process",
+                        icon: "video"
+                    }
                 ],
-                explanation: "Le SE gère le logiciel et l'utilisation du matériel, il ne modifie pas physiquement les composants."
-            },
-            {
-                type: "qcm",
-                question: "Pourquoi un ordinateur ne peut-il pas fonctionner sans SE ?",
-                options: [
-                    { text: "Parce que les composants ne sauraient pas comment communiquer entre eux", correct: true },
-                    { text: "Parce que l'écran resterait éteint à jamais", correct: false },
-                    { text: "Parce que le processeur chaufferait trop", correct: false }
+                quiz: [
+                    {
+                        id: 1,
+                        question: "Quelle est la définition la plus précise d'un Système d'Exploitation ?",
+                        options: [
+                            "Un logiciel de traitement de texte avancé",
+                            "Un ensemble de programmes gérant les ressources matérielles et fournissant des services aux logiciels",
+                            "Une pièce matérielle située sur la carte mère",
+                            "Un navigateur internet permettant d'accéder au web"
+                        ],
+                        answer: "Un ensemble de programmes gérant les ressources matérielles et fournissant des services aux logiciels",
+                        explanation: "Le SE est la couche logicielle fondamentale qui permet à tout le reste de fonctionner en gérant le hardware."
+                    },
+                    {
+                        id: 2,
+                        question: "Que se passe-t-il lors du processus de 'Boot' ?",
+                        options: [
+                            "Le disque dur est formaté",
+                            "Le SE est chargé depuis le stockage vers la mémoire vive (RAM)",
+                            "L'ordinateur télécharge ses mises à jour",
+                            "Le processeur s'éteint pour économiser de l'énergie"
+                        ],
+                        answer: "Le SE est chargé depuis le stockage vers la mémoire vive (RAM)",
+                        explanation: "Le boot est le chargement initial du noyau du SE pour rendre la machine opérationnelle."
+                    },
+                    {
+                        id: 3,
+                        question: "À quoi sert un 'Pilote' (Driver) ?",
+                        options: [
+                            "À refroidir le processeur",
+                            "À permettre au SE de communiquer avec un périphérique spécifique",
+                            "À naviguer dans les dossiers personnels",
+                            "À protéger l'ordinateur contre les virus"
+                        ],
+                        answer: "À permettre au SE de communiquer avec un périphérique spécifique",
+                        explanation: "C'est un traducteur qui explique au SE comment utiliser un matériel précis (ex: une imprimante)."
+                    },
+                    {
+                        id: 4,
+                        question: "La gestion du processeur par le SE consiste à :",
+                        options: [
+                            "Augmenter physiquement la vitesse du CPU",
+                            "Décider quel programme utilise le CPU et pendant combien de temps",
+                            "Remplacer le CPU s'il tombe en panne",
+                            "Empêcher le CPU de consommer de l'électricité"
+                        ],
+                        answer: "Décider quel programme utilise le CPU et pendant combien de temps",
+                        explanation: "On appelle cela l'ordonnancement : le SE gère le partage du temps de calcul."
+                    },
+                    {
+                        id: 5,
+                        question: "Si le SE ne gérait pas la RAM, que se passerait-il ?",
+                        options: [
+                            "Les logiciels pourraient écraser les données les uns des autres",
+                            "L'écran s'éteindrait automatiquement",
+                            "Le clavier ne fonctionnerait plus",
+                            "La batterie se déchargerait plus vite"
+                        ],
+                        answer: "Les logiciels pourraient écraser les données les uns des autres",
+                        explanation: "Le SE isole les zones de mémoire pour que chaque application fonctionne en sécurité."
+                    },
+                    {
+                        id: 6,
+                        question: "Lequel de ces éléments fait partie du SE ?",
+                        options: [
+                            "Microsoft Word",
+                            "Le Noyau (Kernel)",
+                            "Google Chrome",
+                            "Adobe Photoshop"
+                        ],
+                        answer: "Le Noyau (Kernel)",
+                        explanation: "Le noyau est la partie centrale et vitale de tout système d'exploitation."
+                    }
                 ],
-                explanation: "Le SE fournit les protocoles de communication de base entre tous les éléments matériels."
-            }
-        ],
-        koLink: { url: "https://example.com/ko_m02_s01_l01.pdf", label: "Télécharger l'Organisateur de Connaissances (KO - PDF)" },
-        mindMapUrl: null,
-        detailedNotes: `
-            <div class="space-y-6 text-gray-800">
-                <h2 class="text-2xl font-bold text-teal-800">1. Définition du Système d'Exploitation (SE)</h2>
-                <p>Le <strong>Système d'Exploitation</strong> (OS - Operating System) est le logiciel de base qui permet de transformer une machine complexe en un outil utilisable. Il démarre lors du <strong>Boot</strong>, processus où le noyau du SE est transféré du stockage vers la RAM.</p>
-                
-                <h2 class="text-2xl font-bold text-teal-800 mt-6">2. Les 4 Missions de Contrôle</h2>
-                <ul class="list-none space-y-4">
-                    <li>
-                        <strong class="text-teal-700 underline italic">A. Le Chef d'Orchestre (Processeur) :</strong><br>
-                        Il gère le multitâche. Il distribue le temps de calcul du CPU entre les applications ouvertes (Navigateur, Musique, Jeu).
-                    </li>
-                    <li>
-                        <strong class="text-teal-700 underline italic">B. Le Gardien des Portes (Mémoire) :</strong><br>
-                        Il s'assure que chaque logiciel a assez de place en RAM et empêche un logiciel de 'voler' ou d'écraser les données d'un autre.
-                    </li>
-                    <li>
-                        <strong class="text-teal-700 underline italic">C. Le Traducteur (Pilotes) :</strong><br>
-                        Chaque matériel (carte graphique, imprimante) a son propre langage. Le <strong>Pilote (Driver)</strong> traduit les ordres du SE pour le matériel spécifique.
-                    </li>
-                    <li>
-                        <strong class="text-teal-700 underline italic">D. L'Interface (Utilisateur) :</strong><br>
-                        Il présente les données sous une forme compréhensible (icônes, textes) plutôt que sous forme de suites de 0 et de 1.
-                    </li>
-                </ul>
-            </div>
+                detailedNotes: `
+<h4 class="text-xl font-bold text-teal-800 mb-3">💻 Leçon 1 : Fonctionnalités du Système d'Exploitation</h4>
+<p class="mb-4 text-gray-700">
+    Le Système d'Exploitation (OS en anglais) est le premier programme qui s'exécute lors du démarrage de l'ordinateur. Sans lui, le matériel n'est qu'une boîte vide.
+</p>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">1. Définition et Rôle Global</h4>
+<p class="mb-4 text-gray-700">
+    Le SE agit comme une interface entre trois acteurs : <strong>l'utilisateur</strong>, les <strong>logiciels d'application</strong> (comme Word ou Chrome) et le <strong>matériel</strong> (CPU, RAM, Disque).
+</p>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Les fonctions de gestion interne</h4>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Gestion du Processeur (CPU) :</strong> Le SE gère le multitâche. Il alloue des tranches de temps de calcul à chaque programme pour donner l'impression qu'ils tournent tous en même temps.</li>
+    <li><strong>Gestion de la Mémoire Vive (RAM) :</strong> Le SE réserve des espaces mémoire pour chaque application et s'assure qu'une application ne peut pas accéder aux données d'une autre.</li>
+    <li><strong>Gestion des Périphériques :</strong> Grâce aux <strong>pilotes (drivers)</strong>, le SE peut piloter des milliers d'appareils différents (imprimantes, scanners, cartes graphiques).</li>
+    <li><strong>Gestion des fichiers :</strong> Il organise la lecture et l'écriture des données sur les supports de stockage.</li>
+</ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Le processus de démarrage (Boot)</h4>
+<p class="mb-4 text-gray-700">
+    Lorsqu'on appuie sur le bouton "On", un petit programme permanent (le BIOS/UEFI) vérifie le matériel puis va chercher le <strong>Noyau (Kernel)</strong> du système d'exploitation sur le disque dur pour le copier dans la <strong>RAM</strong>. C'est seulement à partir de ce moment que l'ordinateur devient interactif.
+</p>
         `
-    },
+            },
 
-    // --- LEÇON 2 : ENVIRONNEMENT D'UN SE ---
-    'M2-sequence01-L2': { 
-        title: "Leçon 2 : Environnement d’un système d’exploitation",
-        moduleTitle: "M02 : Logiciels",
-        overview: "Découverte des interfaces (GUI vs CLI) et des éléments visuels du bureau, ainsi que le panorama des SE actuels.",
-        objectives: [
-            "Identifier les différents types d'interfaces utilisateur (GUI vs CLI).",
-            "Maîtriser les composants du bureau : barre des tâches, icônes, fenêtres.",
-            "Citer les principaux SE et leurs usages spécifiques.",
-            "Comprendre la notion d'écosystème logiciel."
-        ],
-        successCriteria: [
-            "Je peux distinguer une interface graphique d'une ligne de commande.",
-            "Je peux nommer et manipuler les éléments d'une fenêtre (réduire, fermer, agrandir).",
-            "Je peux identifier le SE d'un appareil à partir de son interface."
-        ],
-        resourcesAndActivities: [
-            { 
-                type: "analysis", 
-                title: "Analyse : Quel SE choisir ?", 
-                instructions: "Lisez les besoins et déduisez le SE idéal.",
-                scenario: "Alice est graphiste et utilise des logiciels Apple exclusifs. Bob est un hacker qui veut tout personnaliser gratuitement. Charlie cherche un téléphone simple et sécurisé chez Apple.",
-                questions: [
-                    { question: "Quel SE pour Alice ?", answer: "macOS" },
-                    { question: "Quel SE pour Bob ?", answer: "Linux" },
-                    { question: "Quel SE pour Charlie ?", answer: "iOS" }
+            // --- LEÇON 2 : ENVIRONNEMENT D'UN SE ---
+            'M2-sequence01-L2': {
+                title: "Leçon 2 : Environnement d’un système d’exploitation",
+                moduleTitle: "M02 : Logiciels",
+                overview: "Explorer l'espace de travail utilisateur (Bureau, fenêtres) et comparer les grands écosystèmes (Windows, macOS, Linux, Android).",
+                objectives: [
+                    "Distinguer Interface Graphique (GUI) et Ligne de commande (CLI).",
+                    "Maîtriser les éléments du bureau : barre des tâches, icônes, fenêtres.",
+                    "Identifier les principaux SE mobiles et desktop.",
+                    "Comprendre la notion d'écosystème logiciel."
                 ],
-                pairs: []
-            }
-        ],
-        quiz: [
-            {
-                type: "qcm",
-                question: "Comment s'appelle l'écran principal qui s'affiche après le démarrage ?",
-                options: [
-                    { text: "La fenêtre principale", correct: false },
-                    { text: "Le Bureau (Desktop)", correct: true },
-                    { text: "La zone de stockage", correct: false }
+                successCriteria: [
+                    "Je peux citer les 3 boutons de contrôle d'une fenêtre.",
+                    "Je peux nommer 2 SE pour PC et 2 SE pour smartphones.",
+                    "Je sais expliquer pourquoi une application Android ne tourne pas sur Windows."
                 ],
-                explanation: "Le Bureau est l'espace de travail principal où l'on place nos icônes et dossiers."
-            },
-            {
-                type: "qcm",
-                question: "Quel élément permet de passer rapidement d'un logiciel ouvert à un autre ?",
-                options: [
-                    { text: "Le menu démarrer", correct: false },
-                    { text: "La barre des tâches", correct: true },
-                    { text: "Le papier peint", correct: false }
+                resourcesAndActivities: [
+                    {
+                        type: "Tutoriel Vidéo",
+                        title: "Personnaliser son environnement Windows/Linux",
+                        objective: "Maîtriser les paramètres d'affichage et la barre des tâches",
+                        link: "https://www.youtube.com/watch?v=exemple_gui",
+                        icon: "video"
+                    },
+                    {
+                        type: "Infographie",
+                        title: "Comparatif des SE : Windows vs macOS vs Linux",
+                        objective: "Choisir le SE adapté à ses besoins",
+                        link: "infographie_comparatif_SE_M2L2.pdf",
+                        icon: "pdf"
+                    }
                 ],
-                explanation: "La barre des tâches affiche les applications actives et permet de basculer entre elles."
-            },
-            {
-                type: "qcm",
-                question: "Que signifie CLI (Command Line Interface) ?",
-                options: [
-                    { text: "Une interface où l'on tape des ordres au clavier", correct: true },
-                    { text: "Une interface avec des icônes colorées", correct: false },
-                    { text: "Une interface pilotée uniquement par la voix", correct: false }
+                quiz: [
+                    {
+                        id: 1,
+                        question: "Que signifie l'acronyme GUI ?",
+                        options: [
+                            "Global Unit Interface",
+                            "Graphical User Interface (Interface Graphique)",
+                            "General Utility Instrument",
+                            "Gestural User Interaction"
+                        ],
+                        answer: "Graphical User Interface (Interface Graphique)",
+                        explanation: "C'est une interface visuelle avec des fenêtres et des icônes, par opposition au texte pur."
+                    },
+                    {
+                        id: 2,
+                        question: "Lequel de ces éléments n'est PAS un composant standard d'une fenêtre ?",
+                        options: [
+                            "Le bouton Fermer",
+                            "Le bouton Réduire",
+                            "Le bouton de Formatage du disque",
+                            "La barre de titre"
+                        ],
+                        answer: "Le bouton de Formatage du disque",
+                        explanation: "Les contrôles de fenêtre gèrent uniquement l'affichage (Réduire, Agrandir, Fermer)."
+                    },
+                    {
+                        id: 3,
+                        question: "Quelle est la particularité principale de Linux ?",
+                        options: [
+                            "Il est obligatoire sur tous les PC",
+                            "Il est Open Source et souvent gratuit",
+                            "Il ne possède pas d'interface graphique",
+                            "Il appartient à Microsoft"
+                        ],
+                        answer: "Il est Open Source et souvent gratuit",
+                        explanation: "Linux est développé par une communauté et permet une personnalisation totale."
+                    },
+                    {
+                        id: 4,
+                        question: "Où se trouvent généralement les icônes des programmes ouverts sur Windows ?",
+                        options: [
+                            "Dans la corbeille",
+                            "Dans la barre des tâches",
+                            "Sur le papier peint uniquement",
+                            "Dans le panneau de configuration"
+                        ],
+                        answer: "Dans la barre des tâches",
+                        explanation: "La barre des tâches permet de basculer rapidement entre les applications actives."
+                    },
+                    {
+                        id: 5,
+                        question: "Pourquoi parle-t-on d'écosystème pour Apple ?",
+                        options: [
+                            "Parce que leurs appareils sont verts",
+                            "Parce que leurs matériels et logiciels sont conçus pour fonctionner parfaitement ensemble",
+                            "Parce que c'est une entreprise de jardinage",
+                            "Parce qu'on ne peut pas utiliser internet avec"
+                        ],
+                        answer: "Parce que leurs matériels et logiciels sont conçus pour fonctionner parfaitement ensemble",
+                        explanation: "Un écosystème lie étroitement les appareils (iPhone, Mac) et les services (iCloud)."
+                    },
+                    {
+                        id: 6,
+                        question: "Lequel est un SE conçu spécifiquement pour les appareils mobiles ?",
+                        options: [
+                            "Windows Server",
+                            "Android",
+                            "macOS",
+                            "Ubuntu Desktop"
+                        ],
+                        answer: "Android",
+                        explanation: "Android et iOS sont les deux leaders du marché des smartphones."
+                    }
                 ],
-                explanation: "Le CLI est une interface textuelle, contrairement au GUI qui est visuel."
-            },
-            {
-                type: "qcm",
-                question: "Quel système est le plus utilisé sur les serveurs web et les supercalculateurs ?",
-                options: [
-                    { text: "Windows", correct: false },
-                    { text: "Linux", correct: true },
-                    { text: "iOS", correct: false }
-                ],
-                explanation: "Linux est privilégié pour sa stabilité et sa sécurité dans le monde professionnel."
-            },
-            {
-                type: "qcm",
-                question: "Lequel de ces boutons n'est pas standard sur une fenêtre Windows ?",
-                options: [
-                    { text: "Réduire", correct: false },
-                    { text: "Agrandir / Restaurer", correct: false },
-                    { text: "Autodestruction", correct: true }
-                ],
-                explanation: "Les trois boutons classiques sont Réduire, Agrandir/Niveau inférieur et Fermer."
-            }
-        ],
-        koLink: { url: "https://example.com/ko_m02_s01_l02.pdf", label: "Télécharger l'KO (PDF)" },
-        mindMapUrl: null,
-        detailedNotes: `
-            <div class="space-y-6 text-gray-800">
-                <h2 class="text-2xl font-bold text-teal-800">1. L'Interface Graphique (GUI)</h2>
-                <p>Aujourd'hui, nous utilisons majoritairement des <strong>GUI</strong> (Graphical User Interface). Ses composants clés sont :</p>
-                <ul class="list-disc list-outside pl-6 space-y-2">
-                    <li><strong>Le Bureau :</strong> L'arrière-plan où l'on dépose des raccourcis.</li>
-                    <li><strong>La Barre des tâches :</strong> Située en bas, elle contient le bouton Démarrer, les icônes de notification (heure, Wi-Fi) et les logiciels ouverts.</li>
-                    <li><strong>La Fenêtre :</strong> Cadre rectangulaire affichant un logiciel. Elle possède des boutons pour la <em>réduire</em> dans la barre des tâches, l'<em>agrandir</em> en plein écran ou la <em>fermer</em>.</li>
-                </ul>
+                detailedNotes: `
+<h4 class="text-xl font-bold text-teal-800 mb-3">🖥️ Leçon 2 : Environnement d'un Système d'Exploitation</h4>
+<p class="mb-4 text-gray-700">
+    L'environnement d'un SE est ce que l'utilisateur voit et manipule au quotidien. Il a beaucoup évolué, passant du texte pur aux interfaces tactiles modernes.
+</p>
 
-                <h2 class="text-2xl font-bold text-teal-800 mt-6">2. Panorama et Écosystèmes</h2>
-                <p>Un <strong>Écosystème</strong> est un ensemble cohérent de matériels et logiciels. </p>
-                <table class="min-w-full bg-white border">
-                    <thead>
-                        <tr class="bg-teal-600 text-white">
-                            <th class="py-2 px-4 border">Appareil</th>
-                            <th class="py-2 px-4 border">Systèmes dominants</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="py-2 px-4 border font-semibold">PC / Laptop</td>
-                            <td class="py-2 px-4 border">Windows (90%), macOS, Linux</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border font-semibold">Smartphone</td>
-                            <td class="py-2 px-4 border">Android (Ouvert), iOS (Apple)</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border font-semibold">Serveurs</td>
-                            <td class="py-2 px-4 border">Linux (Majoritaire), Windows Server</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">1. Les types d'Interfaces</h4>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>GUI (Graphical User Interface) :</strong> Utilise des éléments visuels (fenêtres, icônes, menus, pointeur). C'est l'interface standard pour le grand public.</li>
+    <li><strong>CLI (Command Line Interface) :</strong> L'utilisateur tape des commandes textuelles. C'est plus complexe mais beaucoup plus puissant pour l'administration système.</li>
+</ul>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">2. Éléments du Bureau (Desktop)</h4>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Le Bureau :</strong> L'espace de travail principal où l'on dépose des raccourcis.</li>
+    <li><strong>La Barre des tâches :</strong> Permet de lancer des programmes et de voir ceux qui sont actifs. Elle contient souvent la zone de notification (heure, Wi-Fi, batterie).</li>
+    <li><strong>Les Fenêtres :</strong> Chaque logiciel s'exécute dans une fenêtre. Les trois boutons classiques sont : 
+        <ul class="list-disc list-inside ml-8">
+            <li><em>Réduire :</em> Cache la fenêtre dans la barre des tâches.</li>
+            <li><em>Agrandir/Niveau inférieur :</em> Bascule entre plein écran et fenêtre mobile.</li>
+            <li><em>Fermer :</em> Arrête le programme.</li>
+        </ul>
+    </li>
+</ul>
+
+
+<h4 class="text-lg font-bold text-teal-700 mt-6 mb-2">1. Exploration interactive</h4>
+<p class="mb-4 text-xs text-gray-500 italic font-medium">Cliquez sur les points bleus de l'image ci-dessous pour découvrir le rôle de chaque zone.</p>
+
+<!-- CONTENEUR IFRAME -->
+<div class="my-4 border-2 border-teal-100 rounded-xl overflow-hidden shadow-lg bg-white">
+    <div class="bg-teal-600 px-4 py-2 text-white flex items-center space-x-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+        <span class="text-xs font-bold uppercase tracking-wider">Éléments du Bureau</span>
+    </div>
+    
+    <div class="relative w-full" style="padding-top: 56.25%;"> 
+        <iframe 
+            src="desktop-hotspot.html" 
+            class="absolute top-0 left-0 w-full h-full border-none"
+            title="Activité Interface">
+        </iframe>
+    </div>
+</div>
+
+<h4 class="text-xl font-bold text-teal-800 mt-6 mb-3">3. Comparatif des Systèmes</h4>
+<p class="mb-4 text-gray-700">Chaque SE a sa propre cible :</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+    <li><strong>Windows :</strong> Le plus polyvalent, compatible avec la majorité des logiciels et jeux.</li>
+    <li><strong>macOS :</strong> Réputé pour son design et sa stabilité, exclusif aux ordinateurs Apple.</li>
+    <li><strong>Linux :</strong> Gratuit, sécurisé et très utilisé par les développeurs et les serveurs.</li>
+    <li><strong>Android / iOS :</strong> Optimisés pour le tactile, la gestion de l'énergie et la mobilité.</li>
+</ul>
         `
-    },
+            },
 
-    // --- LEÇON 3 : GESTION DES FICHIERS ---
-    'M2-sequence01-L3': { 
-        title: "Leçon 3 : Gestion des fichiers et dossiers",
-        moduleTitle: "M02 : Logiciels",
-        overview: "Apprendre à organiser, manipuler et protéger ses données à travers l'arborescence et la compression.",
-        objectives: [
-            "Comprendre et dessiner une structure arborescente.",
-            "Maîtriser les opérations : créer, renommer, déplacer, copier, supprimer.",
-            "Comprendre l'utilité de la compression (fichiers ZIP/RAR).",
-            "Identifier les extensions de fichiers et leurs logiciels associés."
-        ],
-        successCriteria: [
-            "Je peux créer une arborescence logique pour un projet scolaire.",
-            "Je peux compresser un dossier pour l'envoyer par email.",
-            "Je connais la différence entre 'Copier' et 'Couper'."
-        ],
-        resourcesAndActivities: [
-            { 
-                type: "matching", 
-                title: "Activité : Extensions de fichiers", 
-                instructions: "Associez l'extension au type de contenu.",
-                pairs: [
-                    { term: ".docx", definition: "Document texte (Word)" },
-                    { term: ".jpg", definition: "Image compressée" },
-                    { term: ".mp4", definition: "Vidéo numérique" },
-                    { term: ".pdf", definition: "Document figé multiplateforme" },
-                    { term: ".zip", definition: "Archive compressée" }
+            // --- LEÇON 3 : GESTION DES FICHIERS ---
+            'M2-sequence01-L3': {
+                title: "Leçon 3 : Gestion des fichiers et dossiers",
+                moduleTitle: "M02 : Logiciels",
+                overview: "Apprendre à organiser ses données, maîtriser l'arborescence, les extensions de fichiers et la compression pour une gestion efficace.",
+                objectives: [
+                    "Comprendre l'organisation arborescente (Racine, Dossier, Fichier).",
+                    "Pratiquer les opérations de base et les raccourcis clavier.",
+                    "Identifier les extensions de fichiers courantes.",
+                    "Comprendre l'utilité de la compression (.zip, .rar)."
                 ],
-                scenario: "",
-                questions: []
-            }
-        ],
-        quiz: [
-            {
-                type: "qcm",
-                question: "Quelle est la différence entre 'Copier' et 'Couper' ?",
-                options: [
-                    { text: "'Couper' supprime l'original après le collage", correct: true },
-                    { text: "'Copier' est plus rapide que 'Couper'", correct: false },
-                    { text: "Il n'y a aucune différence", correct: false }
+                successCriteria: [
+                    "Je peux expliquer ce qu'est un chemin d'accès.",
+                    "Je sais identifier le type d'un fichier par son extension.",
+                    "Je peux compresser plusieurs fichiers dans une archive."
                 ],
-                explanation: "Copier crée un double, Couper déplace l'élément d'un endroit à un autre."
-            },
-            {
-                type: "qcm",
-                question: "À quoi sert de compresser un fichier (ex: format .zip) ?",
-                options: [
-                    { text: "À augmenter la qualité d'une image", correct: false },
-                    { text: "À réduire la taille occupée sur le disque et faciliter l'envoi", correct: true },
-                    { text: "À empêcher les virus de lire le fichier", correct: false }
+                resourcesAndActivities: [
+                    {
+                        type: "Guide Pratique",
+                        title: "Raccourcis clavier indispensables (Copier, Coller, etc.)",
+                        objective: "Gagner en rapidité dans la manipulation de fichiers",
+                        link: "guide_raccourcis_M2L3.pdf",
+                        icon: "pdf"
+                    },
+                    {
+                        type: "Atelier",
+                        title: "Créer une arborescence de projet scolaire",
+                        objective: "Apprendre à classer ses documents logiquement",
+                        link: "exercice_arborescence_M2L3.pdf",
+                        icon: "pdf"
+                    }
                 ],
-                explanation: "La compression réduit le poids des fichiers en éliminant les redondances."
-            },
-            {
-                type: "qcm",
-                question: "Dans l'arborescence, qu'est-ce qu'un dossier 'Parent' ?",
-                options: [
-                    { text: "Le dossier qui contient un autre dossier", correct: true },
-                    { text: "Le premier dossier créé sur l'ordinateur", correct: false },
-                    { text: "Un dossier protégé par un mot de passe", correct: false }
+                quiz: [
+                    {
+                        id: 1,
+                        question: "Quelle est la fonction d'une 'Extension' de fichier (ex: .pdf) ?",
+                        options: [
+                            "Cacher le nom de l'auteur",
+                            "Indiquer au SE quel logiciel utiliser pour ouvrir le fichier",
+                            "Augmenter la taille du fichier",
+                            "Protéger le fichier contre la suppression"
+                        ],
+                        answer: "Indiquer au SE quel logiciel utiliser pour ouvrir le fichier",
+                        explanation: "L'extension lie le fichier à une application (ex: .docx avec Word)."
+                    },
+                    {
+                        id: 2,
+                        question: "Qu'est-ce qu'une structure 'Arborescente' ?",
+                        options: [
+                            "Une organisation de fichiers en forme d'arbre (dossiers et sous-dossiers)",
+                            "Un virus qui détruit les fichiers",
+                            "Un logiciel de dessin pour les paysages",
+                            "Un système qui plante régulièrement"
+                        ],
+                        answer: "Une organisation de fichiers en forme d'arbre (dossiers et sous-dossiers)",
+                        explanation: "L'arborescence permet de classer les fichiers du général (racine) au particulier."
+                    },
+                    {
+                        id: 3,
+                        question: "Quelle est la différence entre 'Copier' et 'Couper' ?",
+                        options: [
+                            "Il n'y a aucune différence",
+                            "'Couper' supprime l'élément original après le collage, 'Copier' le garde",
+                            "'Copier' est pour les textes, 'Couper' pour les images",
+                            "'Couper' rend le fichier invisible"
+                        ],
+                        answer: "'Couper' supprime l'élément original après le collage, 'Copier' le garde",
+                        explanation: "Couper est utilisé pour déplacer un fichier, Copier pour le dupliquer."
+                    },
+                    {
+                        id: 4,
+                        question: "Lequel de ces chemins d'accès est correct sur Windows ?",
+                        options: [
+                            "C://Documents/Images/vacances.jpg",
+                            "C:\\Utilisateurs\\Moi\\Documents\\rapport.docx",
+                            "https://google.com/search",
+                            "Avenue des Champs Élysées, Paris"
+                        ],
+                        answer: "C:\\Utilisateurs\\Moi\\Documents\\rapport.docx",
+                        explanation: "Sur Windows, on utilise le backslash (\\) pour séparer les dossiers."
+                    },
+                    {
+                        id: 5,
+                        question: "À quoi sert la compression de fichiers (ex: fichier .zip) ?",
+                        options: [
+                            "À rendre le fichier illisible pour toujours",
+                            "À réduire la taille des fichiers et les regrouper",
+                            "À améliorer la résolution des photos",
+                            "À transformer un texte en musique"
+                        ],
+                        answer: "À réduire la taille des fichiers et les regrouper",
+                        explanation: "La compression facilite le stockage et l'envoi par email."
+                    },
+                    {
+                        id: 6,
+                        question: "Lequel de ces fichiers est un fichier IMAGE ?",
+                        options: [
+                            "vacances.mp3",
+                            "vacances.jpg",
+                            "vacances.exe",
+                            "vacances.txt"
+                        ],
+                        answer: "vacances.jpg",
+                        explanation: ".jpg, .png et .gif sont des formats d'image courants."
+                    }
                 ],
-                explanation: "Le dossier parent est le niveau supérieur dans la hiérarchie de l'arborescence."
-            },
-            {
-                type: "qcm",
-                question: "Lequel de ces noms de fichiers est le plus explicite ?",
-                options: [
-                    { text: "image1.jpg", correct: false },
-                    { text: "SansTitre_final_v2.pdf", correct: false },
-                    { text: "2023_Expose_Histoire_Napoleon.docx", correct: true }
-                ],
-                explanation: "Un bon nom contient la date, le sujet et le type de document."
-            },
-            {
-                type: "qcm",
-                question: "Où vont les fichiers supprimés avant d'être définitivement effacés ?",
-                options: [
-                    { text: "Dans le cache du processeur", correct: false },
-                    { text: "Dans la Corbeille (Trash)", correct: true },
-                    { text: "Sur le Cloud", correct: false }
-                ],
-                explanation: "La corbeille est une zone de transit qui permet de récupérer un fichier effacé par erreur."
-            }
-        ],
-        koLink: { url: "https://example.com/ko_m02_s01_l03.pdf", label: "Télécharger l'KO (PDF)" },
-        mindMapUrl: null,
-        detailedNotes: `
-            <div class="space-y-6 text-gray-800">
-                <h2 class="text-2xl font-bold text-teal-800">1. L'Arborescence : Un Arbre Généalogique</h2>
-                <p>Le SE organise les données sous forme d'arbre :</p>
-                <ul class="list-disc list-inside ml-4">
-                    <li><strong>La Racine :</strong> Le disque physique (C: ou D:).</li>
-                    <li><strong>Dossier / Répertoire :</strong> Conteneur qui peut contenir des fichiers ou d'autres dossiers (sous-dossiers).</li>
-                    <li><strong>Fichier :</strong> L'unité d'information (une photo, un texte).</li>
-                </ul>
+                detailedNotes: `
+<h4 class="text-xl font-bold text-teal-800 mb-3">📁 Leçon 3 : Gestion des fichiers et dossiers</h4>
+<p class="mb-4 text-gray-700">
+    Savoir gérer ses fichiers est la base de la productivité numérique. Cela évite de perdre des documents et facilite le partage.
+</p>
 
-                <h2 class="text-2xl font-bold text-teal-800 mt-6">2. Opérations Avancées</h2>
-                <ul class="list-none space-y-4">
-                    <li><strong class="text-teal-700">Renommer :</strong> Ne changez jamais l'extension (.exe, .pdf) sinon le SE ne saura plus quel logiciel lancer.</li>
-                    <li><strong class="text-teal-700">Compresser :</strong> Créer une 'archive' (ZIP). Utile pour regrouper 50 photos en 1 seul fichier léger pour un email.</li>
-                    <li><strong class="text-teal-700">Chemin d'accès (Path) :</strong> C'est l'adresse exacte, ex: <code>C:\\Devoirs\\Maths\\Exercice1.pdf</code>.</li>
-                </ul>
+<div class="space-y-6 text-gray-800">
+    
 
-                <h2 class="text-2xl font-bold text-teal-800 mt-6">3. Les Extensions à Connaître</h2>
-                <div class="grid grid-cols-2 gap-4 text-sm">
-                    <div class="p-2 border bg-gray-50"><strong>Texte :</strong> .docx, .txt, .pdf</div>
-                    <div class="p-2 border bg-gray-50"><strong>Image :</strong> .jpg, .png, .gif</div>
-                    <div class="p-2 border bg-gray-50"><strong>Audio/Vidéo :</strong> .mp3, .mp4, .avi</div>
-                    <div class="p-2 border bg-gray-50"><strong>Exécutable :</strong> .exe, .msi, .app</div>
-                </div>
+    <!-- Section 1 -->
+    <h3 class="text-xl font-bold text-teal-800 flex items-center">
+        <span class="bg-teal-600 text-white rounded-full w-7 h-7 flex items-center justify-center mr-2 text-sm">1</span>
+        L'Explorateur de fichiers
+    </h3>
+    <p class="mb-4">C'est l'outil indispensable pour naviguer dans votre ordinateur.</p>
+    <div class="bg-gray-100 p-4 rounded-lg flex items-start space-x-4">
+        <div class="text-teal-600 font-bold">Raccourci :</div>
+        <div class="flex-1 text-gray-700">
+            Appuyez sur <kbd class="px-2 py-1 bg-white border rounded shadow-sm text-xs font-mono">Win + E</kbd> pour l'ouvrir instantanément.
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <h3 class="text-xl font-bold text-teal-800 mt-8 flex items-center">
+        <span class="bg-teal-600 text-white rounded-full w-7 h-7 flex items-center justify-center mr-2 text-sm">2</span>
+        Comprendre l'Arborescence
+    </h3>
+    <p>Windows organise les données comme une pyramide inversée :</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+        <div class="p-3 bg-white border border-gray-200 rounded-lg text-center shadow-sm">
+            <div class="text-2xl mb-1">💽</div>
+            <div class="font-bold text-teal-700">Le Disque (C:)</div>
+            <div class="text-xs text-gray-500">La Racine (Point de départ)</div>
+        </div>
+        <div class="p-3 bg-white border border-gray-200 rounded-lg text-center shadow-sm">
+            <div class="text-2xl mb-1">📁</div>
+            <div class="font-bold text-teal-700">Les Dossiers</div>
+            <div class="text-xs text-gray-500">Conteneurs / Répertoires</div>
+        </div>
+        <div class="p-3 bg-white border border-gray-200 rounded-lg text-center shadow-sm">
+            <div class="text-2xl mb-1">📄</div>
+            <div class="font-bold text-teal-700">Les Fichiers</div>
+            <div class="text-xs text-gray-500">Documents finaux (images, textes)</div>
+        </div>
+    </div>
+    <div class="text-center italic text-gray-400 text-sm p-4 border-2 border-dashed border-gray-200 rounded-xl">
+ <img src="Images/file-path.png" 
+                 alt="Interface Microsoft Word" 
+                 class="w-full h-auto block opacity-100">
+                   
+    </div>
+
+    <!-- Section 3 -->
+    <h3 class="text-xl font-bold text-teal-800 mt-8 flex items-center">
+        <span class="bg-teal-600 text-white rounded-full w-7 h-7 flex items-center justify-center mr-2 text-sm">3</span>
+        Opérations Fondamentales
+    </h3>
+    <div class="space-y-4">
+        <div class="flex items-start">
+            <div class="w-24 font-bold text-teal-600 pt-1">Sélection :</div>
+            <div class="flex-1 bg-white p-2 rounded border text-sm">
+                <p>• <strong>Un élément :</strong> Clic gauche.</p>
+                <p>• <strong>Plusieurs éléments à la suite :</strong> Maintenir <kbd class="px-1 bg-gray-100 border rounded text-[10px]">Shift</kbd>.</p>
+                <p>• <strong>Plusieurs éléments séparés :</strong> Maintenir <kbd class="px-1 bg-gray-100 border rounded text-[10px]">Ctrl</kbd>.</p>
             </div>
-        `
-    }
-};
+        </div>
+        <div class="flex items-start">
+            <div class="w-24 font-bold text-teal-600 pt-1">Action :</div>
+            <div class="flex-1 bg-white p-2 rounded border text-sm">
+                <p>• <strong>Copier :</strong> <kbd class="px-1 bg-gray-100 border rounded text-[10px]">Ctrl + C</kbd> (Dupliquer).</p>
+                <p>• <strong>Couper :</strong> <kbd class="px-1 bg-gray-100 border rounded text-[10px]">Ctrl + X</kbd> (Déplacer).</p>
+                <p>• <strong>Renommer :</strong> Touche <kbd class="px-1 bg-gray-100 border rounded text-[10px]">F2</kbd>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4 -->
+    <h3 class="text-xl font-bold text-teal-800 mt-8 flex items-center">
+        <span class="bg-teal-600 text-white rounded-full w-7 h-7 flex items-center justify-center mr-2 text-sm">4</span>
+        Extensions de fichiers
+    </h3>
+    <table class="w-full text-sm text-left border-collapse border border-gray-200">
+        <thead class="bg-teal-600 text-white">
+            <tr>
+                <th class="p-2 border">Type</th>
+                <th class="p-2 border">Extensions</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white">
+            <tr>
+                <td class="p-2 border font-medium">Bureautique</td>
+                <td class="p-2 border font-mono text-teal-600">.docx, .pdf, .xlsx</td>
+            </tr>
+            <tr class="bg-gray-50">
+                <td class="p-2 border font-medium">Médias</td>
+                <td class="p-2 border font-mono text-teal-600">.jpg, .mp3, .mp4</td>
+            </tr>
+            <tr>
+                <td class="p-2 border font-medium">Archives</td>
+                <td class="p-2 border font-mono text-teal-600">.zip, .rar</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Section 5 -->
+    <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mt-8">
+        <h4 class="font-bold text-amber-800 flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Le saviez-vous ?
+        </h4>
+        <p class="text-sm text-amber-900">
+            La <strong>compression (.zip)</strong> permet de regrouper plusieurs fichiers en un seul document plus léger, idéal pour l'envoi par e-mail !
+        </p>
+    </div>
+</div>
+`
+            },
+
+            // --- LEÇON 1 : INTERFACE ET FONCTIONNALITÉS DE BASE ---
+            'M2-sequence02-L1': {
+                title: "Leçon 1 : Interface et fonctionnalités de base",
+                moduleTitle: "M02 : Logiciels - Séquence 02 : Traitement de texte",
+                overview: "Se familiariser avec l'environnement de travail d'un traitement de texte (type MS Word) et comprendre les fonctions élémentaires de gestion de document.",
+                objectives: [
+                    "Identifier les éléments de l'interface (Ruban, onglets, barres).",
+                    "Savoir créer, ouvrir et enregistrer un document.",
+                    "Distinguer 'Enregistrer' et 'Enregistrer sous'.",
+                    "Utiliser les modes d'affichage et le zoom."
+                ],
+                successCriteria: [
+                    "Je peux nommer 5 éléments de l'interface graphique.",
+                    "Je sais choisir le bon format d'enregistrement (.docx ou .pdf).",
+                    "Je sais naviguer entre les différents onglets du ruban."
+                ],
+                resourcesAndActivities: [
+                    {
+                        type: "Schéma Interactif",
+                        title: "Schéma : L'anatomie de l'écran Word",
+                        objective: "Mémoriser l'emplacement des outils principaux",
+                        link: "schema_interface_word_M2S2L1.pdf",
+                        icon: "pdf"
+                    },
+                    {
+                        type: "Vidéo",
+                        title: "Vidéo : Premier pas et gestion des fichiers (6 min)",
+                        objective: "Apprendre à organiser ses documents textuels",
+                        link: "https://www.youtube.com/watch?v=exemple_interface_base",
+                        icon: "video"
+                    }
+                ],
+                quiz: [
+                    {
+                        id: 1,
+                        question: "Comment appelle-t-on la large bande en haut contenant les outils classés par onglets ?",
+                        options: [
+                            "La barre d'état",
+                            "Le Ruban",
+                            "Le volet de navigation",
+                            "La barre de lancement rapide"
+                        ],
+                        answer: "Le Ruban",
+                        explanation: "Le Ruban est l'élément central de l'interface où sont regroupées toutes les commandes (Accueil, Insertion, etc.)."
+                    },
+                    {
+                        id: 2,
+                        question: "Quelle est la différence entre 'Enregistrer' et 'Enregistrer sous' ?",
+                        options: [
+                            "Il n'y a aucune différence",
+                            "'Enregistrer sous' permet de changer le nom, l'emplacement ou le format du fichier",
+                            "'Enregistrer' supprime le fichier original",
+                            "'Enregistrer sous' sert uniquement pour les impressions"
+                        ],
+                        answer: "'Enregistrer sous' permet de changer le nom, l'emplacement ou le format du fichier",
+                        explanation: "'Enregistrer' met à jour le fichier actuel, 'Enregistrer sous' crée une nouvelle version ou change le format."
+                    },
+                    {
+                        id: 3,
+                        question: "Quelle extension est le format standard des documents Word modernes ?",
+                        options: [
+                            ".txt",
+                            ".pdf",
+                            ".docx",
+                            ".xlsx"
+                        ],
+                        answer: ".docx",
+                        explanation: "Le .docx est le format XML ouvert utilisé par Microsoft Word depuis la version 2007."
+                    },
+                    {
+                        id: 4,
+                        question: "Où se trouve la barre qui indique le nombre de mots et le numéro de page ?",
+                        options: [
+                            "En haut, dans le ruban",
+                            "À droite, avec les barres de défilement",
+                            "En bas, dans la barre d'état",
+                            "Dans l'onglet 'Fichier'"
+                        ],
+                        answer: "En bas, dans la barre d'état",
+                        explanation: "La barre d'état fournit des informations en temps réel sur le document en cours."
+                    },
+                    {
+                        id: 5,
+                        question: "À quoi sert la 'Barre d'outils Accès rapide' ?",
+                        options: [
+                            "À naviguer sur Internet",
+                            "À accéder aux commandes fréquentes (Enregistrer, Annuler) en un clic",
+                            "À changer la couleur du texte rapidement",
+                            "À fermer l'ordinateur"
+                        ],
+                        answer: "À accéder aux commandes fréquentes (Enregistrer, Annuler) en un clic",
+                        explanation: "Elle est située tout en haut à gauche et est personnalisable pour gagner du temps."
+                    },
+                    {
+                        id: 6,
+                        question: "Quel onglet faut-il cliquer pour accéder aux options d'impression et d'exportation ?",
+                        options: [
+                            "Accueil",
+                            "Insertion",
+                            "Fichier (ou menu Backstage)",
+                            "Affichage"
+                        ],
+                        answer: "Fichier (ou menu Backstage)",
+                        explanation: "L'onglet Fichier gère tout ce qui concerne le document en tant qu'objet (ouvrir, fermer, imprimer, protéger)."
+                    }
+                ],
+                detailedNotes: `
+
+<h4 class="text-xl font-bold text-teal-800 mb-3">📝 Leçon 1 : Interface et fonctionnalités de base</h4>
+<p class="mb-4 text-gray-700 text-sm leading-relaxed">
+    Le traitement de texte (Texteur) est un logiciel d’application indispensable pour produire des documents texte. Avant de commencer, explorons l'environnement de travail.
+    Exemples de logiciels : Microsoft Word, Google Docs, LibreOffice Writer.
+    </p>
+
+<h4 class="text-lg font-bold text-teal-700 mt-6 mb-2">1. Exploration interactive</h4>
+<p class="mb-4 text-xs text-gray-500 italic font-medium">Cliquez sur les points vert de l'image ci-dessous pour découvrir le rôle de chaque zone.</p>
+
+<!-- CONTENEUR IFRAME -->
+<div class="my-4 border-2 border-teal-100 rounded-xl overflow-hidden shadow-lg bg-white">
+    <div class="bg-teal-600 px-4 py-2 text-white flex items-center space-x-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+        <span class="text-xs font-bold uppercase tracking-wider">Interface Microsoft Word</span>
+    </div>
+    
+    <div class="relative w-full" style="padding-top: 56.25%;"> 
+        <iframe 
+            src="word-hotspot.html" 
+            class="absolute top-0 left-0 w-full h-full border-none"
+            title="Activité Interface">
+        </iframe>
+    </div>
+</div>
+
+<h4 class="text-lg font-bold text-teal-700 mt-6 mb-2">2. Ce qu'il faut retenir</h4>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 text-sm">
+    <div class="p-3 bg-white rounded border-l-4 border-teal-500 shadow-sm">
+        <strong>Le Ruban :</strong> C'est le menu principal avec tous les outils. Il est organisé en Onglets (Accueil, Insertion, Mise en page...).
+    </div>
+    <div class="p-3 bg-white rounded border-l-4 border-teal-500 shadow-sm">
+        <strong>Barre d'état :</strong> Située en bas (pages, mots, langue).
+    </div>
+    <div class="p-3 bg-white rounded border-l-4 border-teal-500 shadow-sm">
+        <strong>Mode Backstage :</strong> L'onglet "Fichier" pour gérer le document global.
+    </div>
+    <div class="p-3 bg-white rounded border-l-4 border-teal-500 shadow-sm">
+        <strong>Zoom :</strong> Pour adapter la taille visuelle de la page.
+    </div>
+</div>
+
+<h4 class="text-lg font-bold text-teal-700 mt-6 mb-2">3. Gestion des fichiers</h4>
+<p class="text-sm text-gray-700 mb-4">
+    Pour sauvegarder votre travail, utilisez <strong>Fichier > Enregistrer</strong> ou le raccourci <kbd class="px-2 py-1 bg-gray-100 border rounded text-xs">Ctrl + S</kbd>.
+</p>
+
+`
+            },
+
+            // --- LEÇON 2 : ÉLABORATION D'UN DOCUMENT ---
+            'M2-sequence02-L2': {
+                title: "Leçon 2 : Élaboration d’un document",
+                moduleTitle: "M02 : Logiciels - Séquence 02 : Traitement de texte",
+                overview: "Apprendre les techniques de saisie correcte, la mise en forme du texte et des paragraphes, ainsi que l'enrichissement du document par des illustrations.",
+                objectives: [
+                    "Maîtriser les règles de saisie et de ponctuation.",
+                    "Appliquer des mises en forme de caractères et de paragraphes.",
+                    "Gérer la mise en page (marges, orientation).",
+                    "Insérer et positionner des illustrations (images, formes).",
+                    "Préparer et lancer une impression."
+                ],
+                successCriteria: [
+                    "Je sais modifier la police, la taille et l'alignement d'un texte.",
+                    "Je peux insérer une image et l'habiller pour qu'elle s'intègre au texte.",
+                    "Je sais utiliser le correcteur orthographique.",
+                    "Je sais changer l'orientation de la page (Portrait/Paysage)."
+                ],
+                resourcesAndActivities: [
+                    {
+                        type: "Guide Pratique",
+                        title: "Guide : Les règles de ponctuation informatique",
+                        objective: "Éviter les erreurs de saisie courantes",
+                        link: "guide_ponctuation_M2S2L2.pdf",
+                        icon: "pdf"
+                    },
+                    {
+                        type: "Exercice Pratique",
+                        title: "Atelier : Création d'une affiche illustrée",
+                        objective: "Combiner texte, mise en forme et images",
+                        link: "exercice_affiche_M2S2L2.docx",
+                        icon: "web"
+                    }
+                ],
+                quiz: [
+                    {
+                        id: 1,
+                        question: "Quelle touche permet de passer à la ligne tout en créant un nouveau paragraphe ?",
+                        options: [
+                            "Espace",
+                            "Entrée (Enter)",
+                            "Maj + Entrée",
+                            "Tabulation"
+                        ],
+                        answer: "Entrée (Enter)",
+                        explanation: "La touche Entrée crée une marque de paragraphe. Pour un simple retour à la ligne sans changer de paragraphe, on utilise Maj+Entrée."
+                    },
+                    {
+                        id: 2,
+                        question: "L'alignement 'Justifié' permet de :",
+                        options: [
+                            "Aligner le texte à gauche seulement",
+                            "Aligner le texte à droite seulement",
+                            "Répartir le texte de manière égale entre les marges gauche et droite",
+                            "Centrer le texte au milieu de la page"
+                        ],
+                        answer: "Répartir le texte de manière égale entre les marges gauche et droite",
+                        explanation: "Le texte justifié donne un aspect propre et professionnel (comme dans les journaux) en alignant les deux côtés."
+                    },
+                    {
+                        id: 3,
+                        question: "Pour mettre un texte en 'Paysage', dans quel onglet faut-il aller ?",
+                        options: [
+                            "Insertion",
+                            "Accueil",
+                            "Mise en page (ou Disposition)",
+                            "Révision"
+                        ],
+                        answer: "Mise en page (ou Disposition)",
+                        explanation: "L'orientation (Portrait/Paysage) fait partie de la mise en page globale du document."
+                    },
+                    {
+                        id: 4,
+                        question: "Comment appelle-t-on l'espace situé entre deux lignes de texte dans un paragraphe ?",
+                        options: [
+                            "L'espacement",
+                            "L'interligne",
+                            "La marge",
+                            "Le retrait"
+                        ],
+                        answer: "L'interligne",
+                        explanation: "L'interligne permet d'aérer le texte pour faciliter la lecture."
+                    },
+                    {
+                        id: 5,
+                        question: "Quelle option permet de déplacer librement une image au milieu du texte ?",
+                        options: [
+                            "Le rognage",
+                            "L'habillage du texte",
+                            "La compression",
+                            "La rotation"
+                        ],
+                        answer: "L'habillage du texte",
+                        explanation: "L'habillage (ex: Carré ou Devant le texte) définit comment le texte se comporte autour de l'image."
+                    },
+                    {
+                        id: 6,
+                        question: "Quelle commande permet de copier uniquement la mise en forme d'un texte pour l'appliquer ailleurs ?",
+                        options: [
+                            "Copier / Coller",
+                            "Reproduire la mise en forme (Pinceau)",
+                            "Couper",
+                            "Effacer la mise en forme"
+                        ],
+                        answer: "Reproduire la mise en forme (Pinceau)",
+                        explanation: "L'outil pinceau est très puissant pour uniformiser les titres d'un document rapidement."
+                    }
+                ],
+                detailedNotes: `<h4 class="text-xl font-bold text-teal-800 mb-3">📄 Leçon 2 : Élaboration d’un document (La méthode efficace)</h4>
+<p class="mb-4 text-gray-700 italic">
+    Apprendre à créer un document professionnel en suivant une méthode rigoureuse en deux phases : d'abord se concentrer
+    sur le fond (le texte), puis sur la forme (la présentation).
+</p>
+<div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500 mb-6">
+    <h5 class="font-bold text-amber-800 mb-2">🚀 PHASE 1 : LE MODE BROUILLON (Le fond)</h5>
+    <p class="text-sm text-amber-900">
+        Dans cette phase, interdiction de toucher aux menus de décoration. On ne fait que taper du texte.
+    </p>
+</div>
+<h4 class="text-lg font-bold text-teal-700 mt-4 mb-2">1. La saisie "au kilomètre"</h4>
+<p class="mb-2 text-gray-700">C'est l'étape la plus importante : tapez tout votre texte d'une seule traite.</p>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4 mb-4">
+    <li>
+        <strong>La règle d'or :</strong> Ne vous arrêtez pas pour corriger ou mettre en forme.
+    </li>
+    <li><strong>Le retour à la ligne :</strong> N'appuyez sur <em>Entrée</em> QUE pour créer un nouveau paragraphe.</li>
+    <li>
+        <strong>La ponctuation :</strong>
+        <ul class="list-disc list-inside ml-8 text-sm">
+            <li>Signes simples ( . , ) : Pas d'espace avant, un espace après.</li>
+            <li>Signes doubles ( : ; ! ? ) : Un espace avant, un espace après.</li>
+            <li>Parenthèses/Guillemets : Espace à l'extérieur, pas d'espace à l'intérieur.</li>
+        </ul>
+    </li>
+</ul>
+<h4 class="text-lg font-bold text-teal-700 mt-4 mb-2">2. La correction orthographique</h4>
+<p class="mb-4 text-gray-700">
+    Une fois le texte tapé, utilisez les indicateurs visuels de Word :
+    •<span class="text-red-600 font-bold underline decoration-wavy">Vague rouge</span> : Faute d'orthographe.
+    •<span class="text-blue-600 font-bold underline decoration-wavy">Vague bleue</span> : Faute de grammaire ou
+    ponctuation.
+</p>
+<div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500 mb-6">
+    <h5 class="font-bold text-blue-800 mb-2">🎨 PHASE 2 : LE MODE PAGE (La forme)</h5>
+    <p class="text-sm text-blue-900">Maintenant que le texte est propre, on le rend beau et lisible.</p>
+</div>
+<h4 class="text-lg font-bold text-teal-700 mt-4 mb-2">3. Mise en page (Le cadre)</h4>
+<ul class="list-disc list-inside space-y-1 text-gray-700 ml-4 mb-4">
+    <li><strong>Orientation :</strong> Portrait (vertical) ou Paysage (horizontal).</li>
+    <li><strong>Marges :</strong> L'espace blanc tout autour de la feuille (Onglet Mise en page).</li>
+</ul>
+<h4 class="text-lg font-bold text-teal-700 mt-4 mb-2">4. Mise en forme du texte</h4>
+<ul class="list-disc list-inside space-y-2 text-gray-700 ml-4 mb-4">
+    <li>
+        <strong>Corps de texte :</strong> Sélectionnez tout (Ctrl+A), police sobre (Arial, Calibri...), taille 11 ou 12.
+    </li>
+    <li><strong>Titres :</strong> Plus grands (14 ou 16) et en <strong>Gras</strong> pour structurer le document.</li>
+    <li>
+        <strong>Paragraphes :</strong> Utilisez l'alignement <strong>Justifié</strong> pour un aspect professionnel et
+        l'<strong>Interligne</strong> pour aérer.
+    </li>
+</ul>
+<h4 class="text-lg font-bold text-teal-700 mt-4 mb-2">5. Illustrations et Finitions</h4>
+<p class="mb-2 text-gray-700">Insérez les images en dernier via l'onglet <strong>Insertion</strong>.</p>
+<div class="bg-gray-100 p-3 rounded border mb-4">
+    <p class="text-sm font-bold text-gray-800">💡 Astuce Habillage :</p>
+    <p class="text-sm text-gray-700">
+        Pour déplacer une image librement, cliquez sur l'icône à côté de l'image et choisissez "Carré" ou "Encadré".
+    </p>
+</div>
+<h4 class="text-lg font-bold text-teal-700 mt-4 mb-2">6. Impression</h4>
+<p class="mb-4 text-gray-700">
+    Vérifiez toujours l'<strong>Aperçu avant impression</strong> dans l'onglet Fichier pour s'assurer que la mise en
+    page est parfaite avant de consommer du papier.
+</p>
+`
+            }
+
+        };
 
 
         // --- Fonctions de la Modale Carte Mentale (Maintenues mais inutilisées pour Leçon 1) ---
-        window.closeMindMap = function() {
+        window.closeMindMap = function () {
             document.getElementById('mindmap-modal').classList.add('hidden');
         }
 
         /**
          * Ouvre la carte mentale. Utilise l'URL externe si définie, sinon affiche une alerte.
          */
-        window.openMindMap = function(lessonKey) {
+        window.openMindMap = function (lessonKey) {
             const mindMapUrl = lessonData[lessonKey]?.mindMapUrl;
 
             if (mindMapUrl) {
@@ -1439,13 +2018,13 @@ detailedNotes: `
         /**
          * Gère la soumission simulée du formulaire de contact.
          */
-        window.handleContactSubmit = function(event) {
+        window.handleContactSubmit = function (event) {
             event.preventDefault();
-            
+
             const formContainer = document.getElementById('contact-form-container');
-            
+
             // Empêcher les soumissions multiples
-            if (document.getElementById('success-message')) return; 
+            if (document.getElementById('success-message')) return;
 
             // Création du message de succès
             const successMessage = document.createElement('div');
@@ -1453,7 +2032,7 @@ detailedNotes: `
             successMessage.className = 'mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg text-center font-medium';
             successMessage.textContent = '✅ Message envoyé ! Je vous répondrai dans les plus brefs délais.';
             formContainer.appendChild(successMessage);
-            
+
             // Vider les champs
             document.getElementById('contact-subject').value = '';
             document.getElementById('contact-message').value = '';
@@ -1479,7 +2058,7 @@ detailedNotes: `
                 const feedbackElement = document.getElementById(`feedback-${id}`);
                 let isCorrect = false;
                 let userAnswer = '';
-                
+
                 // Logique de vérification (inchangée)
                 if (isQCM) {
                     const checkedRadio = document.querySelector(`input[name="q-${id}"]:checked`);
@@ -1492,7 +2071,7 @@ detailedNotes: `
                 }
 
                 feedbackElement.classList.remove('hidden', 'text-green-600', 'text-red-600');
-                
+
                 if (isCorrect) {
                     feedbackElement.classList.add('text-green-600');
                     feedbackElement.innerHTML = `✅ Correct ! ${explanation}`;
@@ -1592,13 +2171,13 @@ detailedNotes: `
 
             }).join('') : '<p class="text-gray-500">Aucune ressource ou activité spécifique pour cette leçon pour l\'instant.</p>';
             // LOGIQUE CARTE MENTALE (pointe maintenant vers l'URL externe)
-            const mindMapButtonHtml = data.mindMapUrl 
+            const mindMapButtonHtml = data.mindMapUrl
                 ? `<button onclick="openMindMap('${lessonKey}')" class="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
                         <svg xmlns="http://www.w3.org/2000/svg" class="-ml-1 mr-3 h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.3-.873-2.886.6-2.188 1.961a1.532 1.532 0 01-.582 2.286c-1.56.38-1.56 2.6 0 2.98a1.532 1.532 0 01.582 2.286c-.873 1.3.6 2.886 1.961 2.188a1.532 1.532 0 012.286.582c.38 1.56 2.6 1.56 2.98 0a1.532 1.532 0 012.286-.582c1.3.873 2.886-.6 2.188-1.961a1.532 1.532 0 01.582-2.286c1.56-.38 1.56-2.6 0-2.98a1.532 1.532 0 01-.582-2.286c.873-1.3-.6-2.886-1.961-2.188a1.532 1.532 0 01-2.286-.582zM10 8a2 2 0 100 4 2 2 0 000-4z" clip-rule="evenodd" /></svg>
                         Ouvrir la Carte Mentale (Lien Externe)
                     </button>`
                 : `<div class="w-full px-6 py-3 text-center bg-gray-300 text-gray-700 rounded-lg font-semibold shadow-md">🧠 Carte Mentale non disponible</div>`;
-                
+
             // LOGIQUE POUR LES NOTES DÉTAILLÉES 
             const detailedNotesHtml = data.detailedNotes ? `
                 <div class="bg-indigo-50 p-6 rounded-xl shadow-xl border border-indigo-200 border-l-8 border-indigo-500">
@@ -1606,7 +2185,7 @@ detailedNotes: `
                         <summary class="text-3xl font-extrabold text-indigo-800 hover:text-indigo-900 transition duration-150 py-1 flex items-center">
                             <!-- L'icône change de direction via le CSS .notes-summary-icon -->
                             <span class="notes-summary-icon mr-2">${icons.caret}</span>
-                            <span>Notes de Cours Détaillées (Version Web)</span>
+                            <span>Notes de Cours Détaillées</span>
                         </summary>
                         <div class="mt-4 pt-4 border-t border-indigo-200">
                             ${data.detailedNotes}
@@ -1728,13 +2307,13 @@ detailedNotes: `
                 buttonDisabled = true;
                 statusTagClass = 'bg-white/30 text-white';
             }
-            
+
             // Le texte doit toujours être blanc pour un bon contraste avec les couleurs vives (même estompées)
             const headerClass = `${colorClass} text-white`;
 
             return { headerClass, opacityClass, statusTagClass, buttonClass, buttonText, buttonDisabled };
         }
-        
+
         // --- Fonctions de Contenu des Pages (mise à jour de la page contact) ---
         const pageContent = {
             accueil: () => {
@@ -1758,7 +2337,7 @@ detailedNotes: `
                         // Utilise l'icône de succès (checkPro) définie au début du script
                         moduleStatusDisplay = `<div class="flex items-center space-x-1">${icons.checkPro} Terminé</div>`;
                     }
-                    
+
                     return `
                         <div class="module-card p-6 rounded-xl shadow-lg ${headerClass} ${opacityClass}">
                             <div class="text-white">
@@ -1797,81 +2376,101 @@ detailedNotes: `
             modules: () => {
                 // NOUVELLE STRUCTURE UTILISANT UNIQUEMENT LE STATUT POUR LA COULEUR
                 const modulesStructure = [
-                    { 
-                        id: 1, 
-                        title: "M01 : Généralités sur les Systèmes Informatiques", 
-                        status: "Terminé", 
+                    {
+                        id: 1,
+                        title: "M01 : Généralités sur les Systèmes Informatiques",
+                        status: "Terminé",
                         sequences: [
-                            { title: "Séquence 1 : Définitions et vocabulaire de base", lessons: [
-                                { title: "Leçon 1 : Information, traitement et Informatique", href: "M1-sequence01-L1" },
-                                { title: "Leçon 2 : Système informatique, Représentation de l'information", href: "M1-sequence01-L2" }
-                            ]},
-                            { title: "Séquence 2 : Structure de base d’un ordinateur", lessons: [
-                                { title: "Leçon 1 : Découverte de l'ordinateur : Rôles, familles et schéma fonctionnel", href: "M1-sequence02-L1" },
-                                { title: "Leçon 2 : Au cœur du traitement : Le CPU et l'architecture Von Neumann", href: "M1-sequence02-L2" },
-                                { title: "Leçon 3 : Les Mémoires (Vive, Morte et de Masse)", href: "M1-sequence02-L3" },
-                                { title: "Leçon 4 : Carte mère et périphériques", href: "M1-sequence02-L4" },
-                                { title: "Leçon 5 : Synthèse et Spécifications Techniques", href: "M1-sequence02-L5" },
-                            ]},
-                            { title: "Séquence 3 : Type de logiciels et dommaine d'application", lessons: [
-                                { title: "Leçon 1 : Type de logiciels", href: "M1-sequence03-L1" },
-                                { title: "Leçon 2 : Projet 01( voir Devoirs & Projets)", href: "M1-sequence03-L2" }
-                            ]}
+                            {
+                                title: "Séquence 1 : Définitions et vocabulaire de base", lessons: [
+                                    { title: "Leçon 1 : Information, traitement et Informatique", href: "M1-sequence01-L1" },
+                                    { title: "Leçon 2 : Système informatique, Représentation de l'information", href: "M1-sequence01-L2" }
+                                ]
+                            },
+                            {
+                                title: "Séquence 2 : Structure de base d’un ordinateur", lessons: [
+                                    { title: "Leçon 1 : Découverte de l'ordinateur : Rôles, familles et schéma fonctionnel", href: "M1-sequence02-L1" },
+                                    { title: "Leçon 2 : Au cœur du traitement : Le CPU et l'architecture Von Neumann", href: "M1-sequence02-L2" },
+                                    { title: "Leçon 3 : Les Mémoires (Vive, Morte et de Masse)", href: "M1-sequence02-L3" },
+                                    { title: "Leçon 4 : Carte mère et périphériques", href: "M1-sequence02-L4" },
+                                    { title: "Leçon 5 : Synthèse et Spécifications Techniques", href: "M1-sequence02-L5" },
+                                ]
+                            },
+                            {
+                                title: "Séquence 3 : Type de logiciels et dommaine d'application", lessons: [
+                                    { title: "Leçon 1 : Type de logiciels", href: "M1-sequence03-L1" },
+                                    { title: "Leçon 2 : Projet 01( voir Devoirs & Projets)", href: "M1-sequence03-L2" }
+                                ]
+                            }
                         ]
                     },
-                    { 
-                        id: 2, 
-                        title: "M02 : Les Logiciels", 
-                        status: "En cours", 
+                    {
+                        id: 2,
+                        title: "M02 : Les Logiciels",
+                        status: "En cours",
                         sequences: [
-                            { title: "Séquence 1 : Système d’exploitation", lessons: [
-                                { title: "Leçon 1 : Fonctionnalités de base d’un système d’exploitation", href: "M2-sequence01-L1" },
-                                { title: "Leçon 2 : Environnement d’un système d’exploitation", href: "M2-sequence01-L2" },
-                                { title: "Leçon 3 : Gestion des fichiers et dossiers", href: "M2-sequence01-L3" }
-                            ]},
-                            { title: "Séquence 2 : Traitement de texte", lessons: [
-                                { title: "Leçon 1 : Interface et outils de base", href: "M2-sequence02-L1" },
-                                { title: "Leçon 2 : Élaboration d’un document", href: "M2-sequence02-L2" }
-                            ]},
-                            { title: "Séquence 3 : Tableur", lessons: [
-                                { title: "Leçon 1 : Fonctionnalités d’un tableur", href: "M2-sequence03-L1" },
-                                { title: "Leçon 2 : Création de tableaux", href: "M2-sequence02-S3-L2" },
-                                { title: "Leçon 3 : Réalisation de graphiques", href: "M2-sequence03-L3" }
-                            ]}
+                            {
+                                title: "Séquence 1 : Système d’exploitation", lessons: [
+                                    { title: "Leçon 1 : Fonctionnalités de base d’un système d’exploitation", href: "M2-sequence01-L1" },
+                                    { title: "Leçon 2 : Environnement d’un système d’exploitation", href: "M2-sequence01-L2" },
+                                    { title: "Leçon 3 : Gestion des fichiers et dossiers", href: "M2-sequence01-L3" }
+                                ]
+                            },
+                            {
+                                title: "Séquence 2 : Traitement de texte", lessons: [
+                                    { title: "Leçon 1 : Interface et fonctionnalités de base", href: "M2-sequence02-L1" },
+                                    { title: "Leçon 2 : Élaboration d’un document", href: "M2-sequence02-L2" }
+                                ]
+                            },
+                            {
+                                title: "Séquence 3 : Tableur", lessons: [
+                                    { title: "Leçon 1 : Fonctionnalités d’un tableur", href: "M2-sequence03-L1" },
+                                    { title: "Leçon 2 : Création de tableaux", href: "M2-sequence02-S3-L2" },
+                                    { title: "Leçon 3 : Réalisation de graphiques", href: "M2-sequence03-L3" }
+                                ]
+                            }
                         ]
                     },
-                    { 
-                        id: 3, 
-                        title: "M03 : Algorithmique et Programmation", 
-                        status: "À venir", 
+                    {
+                        id: 3,
+                        title: "M03 : Algorithmique et Programmation",
+                        status: "À venir",
                         sequences: [
-                            { title: "Séquence 1 : Algorithme et structures de contrôle", lessons: [
-                                { title: "Leçon 1 : Notion d’algorithme", href: "sequence01-L1" },
-                                { title: "Leçon 2 : Instructions de base", href: "sequence01-L2" },
-                                { title: "Leçon 3 : Structures de contrôle (conditionnelles et répétitives)", href: "sequence01-L3" }
-                            ]},
-                            { title: "Séquence 2 : Langage de programmation", lessons: [
-                                { title: "Leçon 1 : Notion de programme", href: "sequence02-L1" },
-                                { title: "Leçon 2 : Langages de programmation", href: "sequence02-L2" },
-                                { title: "Leçon 3 : Transcription d’un algorithme en code", href: "sequence02-L3" }
-                            ]}
+                            {
+                                title: "Séquence 1 : Algorithme et structures de contrôle", lessons: [
+                                    { title: "Leçon 1 : Notion d’algorithme", href: "sequence01-L1" },
+                                    { title: "Leçon 2 : Instructions de base", href: "sequence01-L2" },
+                                    { title: "Leçon 3 : Structures de contrôle (conditionnelles et répétitives)", href: "sequence01-L3" }
+                                ]
+                            },
+                            {
+                                title: "Séquence 2 : Langage de programmation", lessons: [
+                                    { title: "Leçon 1 : Notion de programme", href: "sequence02-L1" },
+                                    { title: "Leçon 2 : Langages de programmation", href: "sequence02-L2" },
+                                    { title: "Leçon 3 : Transcription d’un algorithme en code", href: "sequence02-L3" }
+                                ]
+                            }
                         ]
                     },
-                    { 
-                        id: 4, 
-                        title: "M04 : Réseaux et Internet", 
-                        status: "À venir", 
+                    {
+                        id: 4,
+                        title: "M04 : Réseaux et Internet",
+                        status: "À venir",
                         sequences: [
-                            { title: "Séquence 1 : Notion de réseau informatique", lessons: [
-                                { title: "Leçon 1 : Définition et utilité d’un réseau", href: "sequence04-S1-L1" },
-                                { title: "Leçon 2 : Typologie des réseaux", href: "sequence04-S1-L2" },
-                                { title: "Leçon 3 : Topologies des réseaux", href: "sequence04-S1-L3" }
-                            ]},
-                            { title: "Séquence 2 : Réseau Internet", lessons: [
-                                { title: "Leçon 1 : Définition d’Internet", href: "sequence04-S2-L1" },
-                                { title: "Leçon 2 : Services Internet (Web, e-mail, chat pédagogique)", href: "sequence04-S2-L2" },
-                                { title: "Leçon 3 : Avantages et inconvénients d’Internet", href: "sequence04-S2-L3" }
-                            ]}
+                            {
+                                title: "Séquence 1 : Notion de réseau informatique", lessons: [
+                                    { title: "Leçon 1 : Définition et utilité d’un réseau", href: "sequence04-S1-L1" },
+                                    { title: "Leçon 2 : Typologie des réseaux", href: "sequence04-S1-L2" },
+                                    { title: "Leçon 3 : Topologies des réseaux", href: "sequence04-S1-L3" }
+                                ]
+                            },
+                            {
+                                title: "Séquence 2 : Réseau Internet", lessons: [
+                                    { title: "Leçon 1 : Définition d’Internet", href: "sequence04-S2-L1" },
+                                    { title: "Leçon 2 : Services Internet (Web, e-mail, chat pédagogique)", href: "sequence04-S2-L2" },
+                                    { title: "Leçon 3 : Avantages et inconvénients d’Internet", href: "sequence04-S2-L3" }
+                                ]
+                            }
                         ]
                     }
                 ];
@@ -1884,26 +2483,26 @@ detailedNotes: `
                             <h4 class="sequence-heading text-lg font-semibold text-gray-800 mb-2 p-1 rounded bg-gray-100">${seq.title}</h4>
                             <ul class="space-y-1 pl-4 text-gray-700">
                                 ${seq.lessons.map(lesson => {
-                                    // Les leçons d'un module "À venir" sont désactivées.
-                                    const isDisabled = module.status !== "En cours" && module.status !== "Terminé";
-                                    const linkClass = isDisabled ? 'text-gray-500 cursor-not-allowed' : 'text-gray-700 hover:text-teal-600';
-                                    
-                                    // CORRECTION : Utilisation de javascript:void(0) pour éviter le rechargement de la page 
-                                    // et s'assurer que l'action onclick est bien appelée.
-                                    const linkAction = isDisabled ? 'javascript:void(0)' : `MapsTo('${lesson.href}')`;
-                                    
-                                    return `
+                        // Les leçons d'un module "À venir" sont désactivées.
+                        const isDisabled = module.status !== "En cours" && module.status !== "Terminé";
+                        const linkClass = isDisabled ? 'text-gray-500 cursor-not-allowed' : 'text-gray-700 hover:text-teal-600';
+
+                        // CORRECTION : Utilisation de javascript:void(0) pour éviter le rechargement de la page 
+                        // et s'assurer que l'action onclick est bien appelée.
+                        const linkAction = isDisabled ? 'javascript:void(0)' : `MapsTo('${lesson.href}')`;
+
+                        return `
                                         <li class="pl-2 border-l-2 border-gray-300 hover:bg-gray-50 rounded">
                                             <a href="#" onclick="${linkAction}" class="block py-1 text-sm ${linkClass}">
                                                 ${lesson.title}
                                             </a>
                                         </li>
                                     `;
-                                }).join('')}
+                    }).join('')}
                             </ul>
                         </div>
                     `).join('');
-                    
+
                     // Contenu du statut
                     let statusIconText = module.status;
                     if (module.status === "Terminé") {
@@ -1912,7 +2511,7 @@ detailedNotes: `
 
                     // Définir M01 (id=1) comme étant le module par défaut à déplier (car il est "En cours")
                     //const isM1Active = module.id === 1;
-                     const isModuleActive = module.status === "En cours";
+                    const isModuleActive = module.status === "En cours";
 
 
                     return `
@@ -1944,10 +2543,10 @@ detailedNotes: `
             'M1-sequence02-L4': () => generateLessonPage('M1-sequence02-L4'),
             'M1-sequence02-L5': () => generateLessonPage('M1-sequence02-L5'),
             'M2-sequence01-L1': () => generateLessonPage('M2-sequence01-L1'),
-            'M2-sequence02-L2': () => generateLessonPage('M2-sequence01-L2'),
-            'M2-sequence02-L3': () => generateLessonPage('M2-sequence01-L2'),
-            'sequence02-S2-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S02-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
-            'sequence02-S2-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S02-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
+            'M2-sequence01-L2': () => generateLessonPage('M2-sequence01-L2'),
+            'M2-sequence01-L3': () => generateLessonPage('M2-sequence01-L3'),
+            'M2-sequence02-L1': () => generateLessonPage('M2-sequence02-L1'),
+            'M2-sequence02-L2': () => generateLessonPage('M2-sequence02-L2'),
             'sequence02-S3-L1': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S3-L2': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
             'sequence02-S3-L3': () => `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
@@ -2006,7 +2605,7 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
                     </ul>
                 </div>
             `,
-            
+
             calendrier: () => `
                 <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Calendrier des Événements</h2>
                 <div class="bg-white p-6 rounded-xl shadow-lg">
@@ -2080,14 +2679,14 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
         // --- Fonctions de Navigation et d'Initialisation ---
 
         // Met à jour la classe active dans la barre de navigation
-                // MODIFICATION : Mise à jour de la fonction updateNav pour gérer les liens mobiles
+        // MODIFICATION : Mise à jour de la fonction updateNav pour gérer les liens mobiles
         function updateNav(activeId) {
             const finalId = activeId.includes('sequence') ? 'modules' : activeId;
-            
+
             // Définir les classes pour les états actif/inactif
             const desktopActiveClasses = ['text-teal-700', 'font-extrabold', 'border-b-2', 'border-teal-700'];
             const desktopInactiveClasses = ['text-gray-700', 'font-medium'];
-            
+
             const mobileActiveClasses = ['bg-teal-50', 'text-teal-800', 'font-bold'];
             const mobileInactiveClasses = ['text-gray-700', 'font-medium'];
 
@@ -2095,7 +2694,7 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.classList.remove(...desktopActiveClasses);
                 link.classList.add(...desktopInactiveClasses);
-                
+
                 if (link.id === `nav-${finalId}`) {
                     link.classList.remove(...desktopInactiveClasses);
                     link.classList.add(...desktopActiveClasses);
@@ -2106,7 +2705,7 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
             document.querySelectorAll('#mobile-menu a').forEach(link => {
                 link.classList.remove(...mobileActiveClasses);
                 link.classList.add(...mobileInactiveClasses);
-                
+
                 if (link.id === `mobile-nav-${finalId}`) {
                     link.classList.remove(...mobileInactiveClasses);
                     link.classList.add(...mobileActiveClasses);
@@ -2125,7 +2724,7 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
                 }
             }
         }
-        
+
         // Navigation principale
         function navigateTo(pageName) {
             currentView = pageName;
@@ -2143,9 +2742,9 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
             }
 
             updateNav(pageName);
-            
+
             if (pageName === 'modules') {
-                   setTimeout(() => {
+                setTimeout(() => {
                     const moduleCards = document.querySelectorAll('.info-card');
                     let activeModuleFound = false;
 
@@ -2164,7 +2763,7 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
                             }
                         }
                     });
-                }, 50); 
+                }, 50);
             }
 
             window.scrollTo(0, 0);
@@ -2177,7 +2776,7 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
          * Alias pour navigateTo pour corriger le ReferenceError.
          * @param {string} pageName - Le nom de la page ou de la leçon à afficher.
          */
-        window.MapsTo = function(pageName) {
+        window.MapsTo = function (pageName) {
             console.warn("MapsTo() est obsolète. Utilisez navigateTo() à la place.");
             navigateTo(pageName);
         }
@@ -2189,7 +2788,7 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
             const iconClose = button.querySelector('svg.hidden');
 
             const isHidden = menu.classList.toggle('hidden');
-            
+
             // Basculer les icônes
             iconOpen.classList.toggle('hidden', !isHidden);
             iconClose.classList.toggle('hidden', isHidden);
@@ -2197,17 +2796,17 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
             // Mettre à jour l'accessibilité
             button.setAttribute('aria-expanded', !isHidden);
         }
-        
+
         // AJOUT : Fonction de navigation pour les liens mobiles (ferme le menu après clic)
         function mobileNavigateTo(pageName) {
             navigateTo(pageName); // Navigation normale
-            
+
             // Fermer le menu
             const menu = document.getElementById('mobile-menu');
             const button = document.getElementById('mobile-menu-button');
             const iconOpen = button.querySelector('svg.block');
             const iconClose = button.querySelector('svg.hidden');
-            
+
             menu.classList.add('hidden'); // Forcer la fermeture
             iconOpen.classList.remove('hidden'); // Afficher l'icône hamburger
             iconClose.classList.add('hidden'); // Cacher l'icône 'X'
@@ -2218,7 +2817,7 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
         // MODIFICATION : Ajout de l'écouteur d'événement pour le bouton mobile
         window.onload = () => {
             navigateTo(currentView);
-            
+
             const userIdDisplay = document.querySelector('footer p:first-child');
             if (userIdDisplay) {
                 // Ajout de l'ID utilisateur
@@ -2232,4 +2831,5 @@ l’informatique, ses inventeurs, ses grandes étapes et son impact sur la soci�
         window.toggleModule = toggleModule; 
     </script>
 </body>
+
 </html>

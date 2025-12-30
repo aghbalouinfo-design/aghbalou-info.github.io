@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploration de l'interface Word</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hotspot {
+            position: absolute;
+            width: 18px; /* Taille réduite de 24px à 18px */
+            height: 18px;
+            background-color: rgba(20, 184, 166, 0.85); /* Teal-500 */
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+            transition: transform 0.3s ease;
+            z-index: 10;
+        }
+        .hotspot:hover {
+            transform: scale(1.2);
+            background-color: rgba(13, 148, 136, 1);
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(20, 184, 166, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0); }
+        }
+        .info-panel {
+            display: none;
+            position: absolute;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            z-index: 100;
+            border: 1px solid #e2e8f0;
+            pointer-events: auto;
+            /* Animation d'apparition */
+            transform: translateY(-10px);
+            transition: all 0.2s ease-out;
+        }
+        /* Petit triangle sous l'infobox */
+        
+    </style>
+</head>
+<body class="bg-gray-50 font-sans p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+      
+
+        <div class="relative inline-block w-full overflow-hidden rounded-xl border-4 border-white shadow-2xl bg-white" id="container">
+            <!-- Image de l'interface (Placeholder de qualité) -->
+            <img src="Images/word-interface.jpg" 
+                 alt="Interface Microsoft Word" 
+                 class="w-full h-auto block opacity-100">
+            
+            
+
+            <!-- HOTSPOTS -->
+            <div class="hotspot" style="top: -1%; left: 5%;" onclick="showInfo(event, 'Barre d\'accès rapide', 'Elle contient les commandes que l\'on utilise tout le temps : Enregistrer, Annuler et Rétablir.')"></div>
+            
+            <div class="hotspot" style="top: 10%; left: 40%;" onclick="showInfo(event, 'Le Ruban', 'C\'est le menu principal. Il regroupe tous les outils par onglets (Accueil, Insertion, etc.).')"></div>
+            
+            <div class="hotspot" style="top: 1%; left: 25%;" onclick="showInfo(event, 'Les onglets', 'Elle permet de changer le ruban afficher')"></div>
+
+            <div class="hotspot" style="top: 50%; left: 50%;" onclick="showInfo(event, 'Zone de travail', 'C\'est ici que tu tapes ton texte. Elle représente ta feuille de papier.')"></div>
+
+            <div class="hotspot" style="top: 92%; left: 10%;" onclick="showInfo(event, 'Barre d\'état', 'Elle affiche le nombre de pages, de mots et la langue utilisée.')"></div>
+
+            <div class="hotspot" style="top: 90%; left: 90%;" onclick="showInfo(event, 'Le Zoom', 'Fait glisser le curseur pour agrandir ou rétrécir l\'affichage de ta page.')"></div>
+
+            <!-- Panneau d'information dynamique -->
+            <div id="infoBox" class="info-panel">
+                <h3 id="infoTitle" class="font-bold text-teal-700 text-base border-b pb-1 mb-2"></h3>
+                <p id="infoContent" class="text-gray-600 text-xs leading-relaxed"></p>
+                <div class="mt-2 text-right">
+                    <button onclick="closeInfo()" class="text-[10px] bg-gray-100 px-2 py-1 rounded hover:bg-gray-200 text-gray-500 font-bold">Fermer</button>
+                </div>
+            </div>
+        </div>
+
+       
+    </div>
+
+    <script>
+        const infoBox = document.getElementById('infoBox');
+        const infoTitle = document.getElementById('infoTitle');
+        const infoContent = document.getElementById('infoContent');
+        const container = document.getElementById('container');
+
+        function showInfo(event, title, text) {
+            // Empêcher la propagation pour ne pas fermer immédiatement
+            event.stopPropagation();
+
+            infoTitle.innerText = title;
+            infoContent.innerText = text;
+            
+            infoBox.style.display = 'block';
+            
+            // Calculer la position relative au conteneur de l'image
+            const rect = container.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const clickY = event.clientY - rect.top;
+            
+            // Positionner l'infobox AU-DESSUS (above) du point cliqué
+            // On retire la largeur de l'infobox / 2 pour centrer horizontalement
+            // On retire environ 150px (hauteur estimée) pour être au dessus
+            let topPos = clickY - infoBox.offsetHeight - 25;
+            let leftPos = clickX - (infoBox.offsetWidth / 2);
+
+            // Sécurité : si l'infobox sort par le haut
+            if (topPos < 10) {
+                topPos = clickY + 25; // On la met en dessous si pas de place en haut
+                infoBox.classList.add('below'); // Optionnel pour changer le triangle
+            }
+
+            // Sécurité : bords gauche/droite
+            if (leftPos < 10) leftPos = 10;
+            if (leftPos + infoBox.offsetWidth > rect.width - 10) {
+                leftPos = rect.width - infoBox.offsetWidth - 10;
+            }
+
+            infoBox.style.left = leftPos + 'px';
+            infoBox.style.top = topPos + 'px';
+        }
+
+        function closeInfo() {
+            infoBox.style.display = 'none';
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!infoBox.contains(e.target)) {
+                closeInfo();
+            }
+        });
+    </script>
+</body>
+</html>
