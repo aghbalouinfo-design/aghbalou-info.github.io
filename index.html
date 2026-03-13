@@ -2931,11 +2931,441 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
     <p class="text-yellow-700 text-xs mt-1">
         Un graphique sans titre ou sans légende est souvent incompréhensible. Prenez le temps de soigner la présentation !
     </p>
+    </div>
+    `,
+    },
+
+    "M3-sequence01-L1": {
+                    title: "Leçon 1 : Notion d’algorithme",
+                    moduleTitle: "M03 : Algorithmique et Programmation",
+                    overview:
+                        "Cette leçon introduit le concept d'algorithme, son origine historique, sa démarche de conception ainsi que ses modes de représentation (Pseudo-code et Organigramme).",
+                    objectives: [
+                        "Comprendre la définition et l'origine du mot algorithme",
+                        "Identifier les étapes de la démarche algorithmique",
+                        "Maîtriser la structure d'un algorithme en pseudo-code",
+                        "Connaître les symboles de base d'un organigramme",
+                    ],
+                    successCriteria: [
+                        "Je peux définir un algorithme et citer son origine.",
+                        "Je peux lister les 4 étapes de la démarche de résolution de problème.",
+                        "Je connais les trois parties obligatoires d'un pseudo-code.",
+                        "Je peux identifier les symboles graphiques d'un organigramme.",
+                    ],
+                    resourcesAndActivities: [
+                        {
+                            type: "Worksheet",
+                            title: "Fiche : Introduction aux Algorithmes",
+                            objective: "Concepts de base",
+                            link: "m3_s1_l1_concepts.pdf",
+                            icon: "document",
+                        },
+                        {
+                            type: "Exercice",
+                            title: "Cas pratique : Algorithmes de la vie quotidienne",
+                            objective: "Identification d'algorithmes",
+                            link: "m3_s1_l1_exercices.pdf",
+                            icon: "document",
+                        },
+                    ],
+                    quiz: [
+                        {
+                            id: 1,
+                            question: "D'où vient le nom 'algorithme' ?",
+                            options: [
+                                "D'un mot latin signifiant calcul",
+                                "Du mathématicien Muhammad al-Khawarizmi",
+                                "D'un acronyme informatique",
+                            ],
+                            answer: "Du mathématicien Muhammad al-Khawarizmi",
+                            explanation:
+                                "Le terme vient du nom d'al-Khawarizmi, mathématicien perse considéré comme le père de l'algèbre au IXe siècle.",
+                        },
+                        {
+                            id: 2,
+                            question:
+                                "Quelles sont les trois parties d'un algorithme en pseudo-code ?",
+                            options: [
+                                "Début, Traitement, Fin",
+                                "Entête, Déclarations, Corps",
+                                "Données, Calculs, Résultats",
+                            ],
+                            answer: "Entête, Déclarations, Corps",
+                            explanation:
+                                "Un algorithme structuré comprend toujours l'entête (nom), les déclarations (variables/constantes) et le corps (instructions).",
+                        },
+                        {
+                            id: 3,
+                            question:
+                                "Quel symbole de l'organigramme représente une prise de décision ?",
+                            options: [
+                                "Le rectangle",
+                                "Le parallélogramme",
+                                "Le losange",
+                            ],
+                            answer: "Le losange",
+                            explanation:
+                                "Le losange (ou diamant) est utilisé pour les conditions et les tests logiques.",
+                        },
+                    ],
+                    detailedNotes: `
+<div class="space-y-8">
+<section class="lesson-section">
+<h3 class="text-xl font-bold">I. Qu'est-ce qu'un algorithme ?</h3>
+<h4 class="text-lg font-bold mt-4">1. Définition et Origine</h4>
+<p>Un <strong>algorithme</strong> est une suite finie d’opérations élémentaires, à appliquer dans un ordre déterminé, sur des données pour résoudre un problème donné.</p>
+<div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 my-4 rounded-r-lg shadow-sm">
+  <p class="text-indigo-800 font-semibold mb-1 flex items-center">
+    <span class="mr-2">💡</span> Le saviez-vous ?
+  </p>
+  <p class="text-indigo-700 italic text-sm">
+    Le nom "algorithme" vient du mathématicien et astronome perse <strong>Muhammad al-Khawarizmi</strong>, considéré comme le père de l'algèbre, qui a formalisé cette notion au IXe siècle.
+  </p>
+</div>
+<h4 class="text-lg font-bold mt-4">2. Exemples de la vie courante</h4>
+<p>Suivre une recette de cuisine ou un plan de montage peut être considéré comme un algorithme.</p>
+<div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+  <p class="font-bold text-gray-700 mb-2 underline decoration-indigo-400">Algorithme : Calculer le carré d'un nombre</p>
+  <ol class="list-decimal list-inside space-y-1 text-gray-600">
+    <li>Choisir un nombre entier.</li>
+    <li>Le multiplier par lui-même.</li>
+    <li>Énoncer le résultat obtenu.</li>
+  </ol>
+</div>
+<h4 class="text-lg font-bold mt-4">3. Caractéristiques principales</h4>
+<ul class="list-disc list-inside ml-4 space-y-1">
+<li><strong>Logique :</strong> La réalisation d’un algorithme est un acte créatif basé sur la logique.</li>
+<li><strong>Finitude :</strong> Un algorithme doit obligatoirement être fini et se terminer après un nombre fini d’opérations.</li>
+<li><strong>Diversité :</strong> Un même problème peut être résolu au moyen de plusieurs algorithmes différents.</li>
+</ul>
+</section>
+<section class="lesson-section">
+<h3 class="text-xl font-bold">II. Comment concevoir un algorithme ?</h3>
+<p>Pour résoudre des problèmes à l’aide de l’outil informatique, il faut suivre une <strong>démarche algorithmique</strong> structurée :</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+  <div class="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-start">
+    <span class="bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center mr-3 shrink-0 text-xs">1</span>
+    <p><strong>Comprendre</strong> l’énoncé du problème en profondeur.</p>
+  </div>
+  <div class="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-start">
+    <span class="bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center mr-3 shrink-0 text-xs">2</span>
+    <p><strong>Décomposer</strong> le problème en sous-problèmes plus simples.</p>
+  </div>
+  <div class="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-start">
+    <span class="bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center mr-3 shrink-0 text-xs">3</span>
+    <div>
+      <p><strong>Identifier</strong> les éléments clés :</p>
+      <ul class="list-disc list-inside text-sm text-gray-600 mt-1">
+        <li>Données d'entrée</li>
+        <li>Traitements logiques</li>
+        <li>Résultats attendus</li>
+      </ul>
+    </div>
+  </div>
+  <div class="p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-start">
+    <span class="bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center mr-3 shrink-0 text-xs">4</span>
+    <p><strong>Élaborer</strong> la solution (l'algorithme).</p>
+  </div>
+</div>
+</section>
+<section class="lesson-section">
+<h3 class="text-xl font-bold">III. L'écriture d'un algorithme (Pseudo-code)</h3>
+<p>Le <strong>pseudocode</strong> est un langage intermédiaire entre le langage humain et la programmation.</p>
+<div class="my-4 overflow-hidden rounded-lg border border-indigo-100">
+  <div class="bg-indigo-600 text-white px-4 py-2 font-mono text-sm">Structure standard</div>
+  <div class="bg-slate-900 text-indigo-300 p-4 font-mono text-sm space-y-2">
+    <p><span class="text-pink-400 font-bold">Algorithme</span> Nom_De_L_Algorithme</p>
+    <p class="text-gray-500 italic">// Partie Déclarations</p>
+    <p><span class="text-pink-400 font-bold">Variables</span> x, y : Entier</p>
+    <p class="text-gray-500 italic">// Corps de l'algorithme</p>
+    <p><span class="text-pink-400 font-bold">Début</span></p>
+    <p class="pl-4">... instructions ...</p>
+    <p><span class="text-pink-400 font-bold">Fin</span></p>
+  </div>
+</div>
+</section>
+<section class="lesson-section">
+<h3 class="text-xl font-bold">IV. La représentation graphique : L'organigramme</h3>
+<p>L'organigramme permet de visualiser le flux logique de l'algorithme à l'aide de symboles normalisés.</p>
+<div class="overflow-x-auto my-6">
+  <table class="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+    <thead class="bg-gray-50">
+      <tr>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Symbole</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Nom</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <tr>
+        <td class="px-4 py-3 whitespace-nowrap"><span class="inline-block w-8 h-4 border-2 border-indigo-500 rounded-full"></span></td>
+        <td class="px-4 py-3 font-medium text-gray-900">Ovale</td>
+        <td class="px-4 py-3 text-sm text-gray-600">Début (Start) / Fin (End)</td>
+      </tr>
+      <tr>
+        <td class="px-4 py-3 whitespace-nowrap"><span class="inline-block w-8 h-6 border-2 border-indigo-500 origin-center -skew-x-12"></span></td>
+        <td class="px-4 py-3 font-medium text-gray-900">Parallélogramme</td>
+        <td class="px-4 py-3 text-sm text-gray-600">Lecture de données / Affichage</td>
+      </tr>
+      <tr>
+        <td class="px-4 py-3 whitespace-nowrap"><span class="inline-block w-8 h-6 border-2 border-indigo-500"></span></td>
+        <td class="px-4 py-3 font-medium text-gray-900">Rectangle</td>
+        <td class="px-4 py-3 text-sm text-gray-600">Traitements et calculs</td>
+      </tr>
+      <tr>
+        <td class="px-4 py-3 whitespace-nowrap"><span class="inline-block w-6 h-6 border-2 border-indigo-500 rotate-45 mb-1"></span></td>
+        <td class="px-4 py-3 font-medium text-gray-900">Losange</td>
+        <td class="px-4 py-3 text-sm text-gray-600">Condition / Décision</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
 </div>
 `,
+                    koLink: {
+                        url: "#",
+                        label: "Télécharger l'Organisateur de Connaissances (KO - PDF)",
+                    },
+                    mindMapUrl: null,
                 },
-            };
 
+    "M3-sequence01-L2": {
+    title: "Leçon 2 : Instructions de base",
+    moduleTitle: "M03 : Algorithmique et Programmation",
+    overview:
+    "Cette leçon aborde les concepts fondamentaux de la mémorisation des données (variables et constantes), l'opération d'affectation et les instructions de communication (Entrée/Sortie).",
+    objectives: [
+    "Découvrir la notion de variable et de type de données",
+    "Comprendre l'opération d'affectation et la règle d'écrasement",
+    "Maîtriser les instructions d'entrée (Saisir) et de sortie (Afficher)",
+    ],
+    successCriteria: [
+    "Je peux définir une variable comme un emplacement nommé en mémoire vive (RAM).",
+    "Je peux citer les 4 types de données fondamentaux.",
+    "Je sais utiliser la flèche d'affectation (←) pour modifier une valeur.",
+    "Je peux écrire un algorithme simple utilisant Saisir et Afficher.",
+    ],
+    resourcesAndActivities: [
+    {
+    type: "Worksheet",
+    title: "Fiche : Variables et Types",
+    objective: "Mémorisation des données",
+    link: "m3_s1_l2_variables.pdf",
+    icon: "document",
+    },
+    {
+    type: "Exercice",
+    title: "Série d'exercices : Manipulation de variables",
+    objective: "Pratique de l'affectation",
+    link: "m3_s1_l2_exercices.pdf",
+    icon: "document",
+    },
+    ],
+    quiz: [
+    {
+    id: 1,
+    question:
+        "Dans l'analogie du cours, que représente le post-it ?",
+    options: [
+        "Le nom de la variable",
+        "La valeur de la variable",
+        "Le sac en plastique",
+        ],
+        "answer": "La valeur de la variable",
+        "explanation":
+        "Le sac en plastique est le contenant (mémoire), l'étiquette est le nom, et le post-it est la valeur que l'on glisse à l'intérieur.",
+        },
+    {
+    id: 2,
+    question:
+        "Quel résultat de l'opération : 10 Mod 3 ?",
+    options: ["3", "1", "3.33"],
+    answer: "1",
+    explanation:
+        "L'opérateur Mod donne le reste de la division entière. 10 divisé par 3 égale 3, il reste 1.",
+    },
+    {
+    id: 3,
+    question:
+        "Pourquoi faut-il faire un 'Afficher' avant un 'Saisir' ?",
+    options: [
+        "Pour effacer l'écran",
+        "Pour guider l'utilisateur sur ce qu'il doit taper",
+        "Pour accélérer l'ordinateur",
+    ],
+    answer: "Pour guider l'utilisateur sur ce qu'il doit taper",
+    explanation:
+        "C'est la règle du 'Duo inséparable' : on pose une question avant d'attendre une réponse.",
+    },
+    ],
+    detailedNotes: `
+    <div class="space-y-10">
+    <section class="lesson-section">
+    <h3 class="text-xl font-bold">I. Variables et Types de données</h3>
+    <p>Pour qu'un programme se souvienne d'une information, il utilise la mémoire vive (<strong>RAM</strong>).</p>
+    <div class="bg-indigo-50 border-l-4 border-indigo-500 p-5 my-6 rounded-r-lg shadow-sm">
+    <p class="text-indigo-800 font-bold mb-2 flex items-center italic text-sm">
+    📌 Définition de Variable
+    </p>
+    <p class="text-indigo-900 leading-relaxed text-sm">
+    Une <strong>Variable</strong> est un emplacement en mémoire vive (RAM) dont la valeur est susceptible d'être modifiée (varier) durant l'exécution de l'algorithme.
+    </p>
+    </div>
+    <h4 class="text-lg font-bold mt-4">1. L'analogie du "Sac en plastique et Post-it"</h4>
+    <p>Imaginez la mémoire de l'ordinateur comme une armoire remplie de sacs en plastique :</p>
+    
+    <div class="my-6 flex justify-center">
+      <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100 max-w-xs text-center">
+        <img src="Images/plastic_bag.png" alt="Analogie du sac en plastique" class="w-32 h-auto mx-auto mb-3 opacity-90">
+        <p class="text-xs text-gray-500 italic">Un sac en plastique = Un emplacement mémoire</p>
+      </div>
+    </div>
+
+    <ul class="list-disc list-inside ml-4">
+    <li>🛍️ <strong>Le Sac en plastique :</strong> Représente l'emplacement en mémoire (le contenant).</li>
+    <li>🖊️ <strong>Le Nom (Marqueur) :</strong> Écrit avec un marqueur directement sur le sac pour l'identifier (ex: <code>nom_joueur</code>).</li>
+    <li>📝 <strong>Le Post-it (Valeur) :</strong> Le papier que l'on glisse à l'intérieur avec l'information.</li>
+    <li>🎨 <strong>La Couleur (Type) :</strong> La couleur du post-it indique le format (ex: Jaune pour les Nombres, Rose pour le Texte).</li>
+    </ul>
+    <h4 class="text-lg font-bold mt-4">2. Les Types de données fondamentaux</h4>
+    <div class="overflow-x-auto my-4 text-sm">
+    <table class="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+    <thead class="bg-gray-50">
+    <tr>
+    <th class="px-4 py-2 text-left font-semibold text-gray-700">Type</th>
+    <th class="px-4 py-2 text-left font-semibold text-gray-700">Description</th>
+    <th class="px-4 py-2 text-left font-semibold text-gray-700">Exemples</th>
+    </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200 text-gray-600">
+    <tr>
+    <td class="px-4 py-2 font-mono font-bold text-indigo-600">Entier</td>
+    <td class="px-4 py-2">Nombres sans virgule</td>
+    <td class="px-4 py-2">10, -5, 2026</td>
+    </tr>
+    <tr>
+    <td class="px-4 py-2 font-mono font-bold text-indigo-600">Réel</td>
+    <td class="px-4 py-2">Nombres à virgule</td>
+    <td class="px-4 py-2">12.5, 3.14</td>
+    </tr>
+    <tr>
+    <td class="px-4 py-2 font-mono font-bold text-indigo-600">Chaîne</td>
+    <td class="px-4 py-2">Texte (mots, phrases)</td>
+    <td class="px-4 py-2">"Hakimi", "Bonjour"</td>
+    </tr>
+    <tr>
+    <td class="px-4 py-2 font-mono font-bold text-indigo-600">Booléen</td>
+    <td class="px-4 py-2">État logique</td>
+    <td class="px-4 py-2">Vrai, Faux</td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    <h4 class="text-lg font-bold mt-4">3. Les Constantes</h4>
+    <p>Une <strong>constante</strong> est un sac en plastique "fermé à clé" : sa valeur est fixée au début et ne pourra <strong>jamais être modifiée</strong>.</p>
+    <ul class="list-disc list-inside ml-4">
+    <li><em>Exemple :</em> <code>constante PI = 3.14</code>.</li>
+    </ul>
+    </section>
+    <hr class="border-gray-100" />
+    <section class="lesson-section">
+    <h3 class="text-xl font-bold">II. L'Affectation</h3>
+    <p>L'<strong>affectation</strong> est l'opération qui consiste à "ranger" un post-it dans un sac en plastique. On utilise la flèche <strong><code>←</code></strong>.</p>
+    <h4 class="text-lg font-bold mt-4">1. Expressions et Opérateurs</h4>
+    <p>Une expression est une combinaison de valeurs reliées par des <strong>opérateurs</strong> :</p>
+    <ul class="list-disc list-inside ml-4">
+    <li><code>+</code> , <code>-</code> , <code>*</code> , <code>/</code> : Opérateurs arithmétiques classiques.</li>
+    <li><code>Div</code> : Quotient de la division entière (ex: <code>10 Div 3 = 3</code>).</li>
+    <li><code>Mod</code> : Reste de la division entière (ex: <code>10 Mod 3 = 1</code>).</li>
+    </ul>
+    <h4 class="text-lg font-bold mt-4">2. Les 3 Règles d'or</h4>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6 text-sm">
+    <div class="p-4 bg-amber-50 rounded-lg border-t-4 border-amber-400">
+    <p class="font-bold text-amber-800 mb-1 text-xs">1. Le Sens Unique</p>
+    <p class="text-[10px] text-amber-700">Le calcul se fait à droite, le stockage à gauche. <br/><code>A ← 5 + 2</code> ✅</p>
+    </div>
+    <div class="p-4 bg-amber-50 rounded-lg border-t-4 border-amber-400">
+    <p class="font-bold text-amber-800 mb-1 text-xs">2. L'Écrasement</p>
+    <p class="text-[10px] text-amber-700">On déchire l'ancien post-it pour mettre le nouveau. La valeur précédente est <strong>perdue</strong>.</p>
+    </div>
+    <div class="p-4 bg-amber-50 rounded-lg border-t-4 border-amber-400">
+    <p class="font-bold text-amber-800 mb-1 text-xs">3. Le Type</p>
+    <p class="text-[10px] text-amber-700">La couleur du post-it doit correspondre au sac en plastique (ex: pas de texte dans un Entier).</p>
+    </div>
+    </div>
+    <div class="bg-slate-900 rounded-lg p-5 border border-indigo-500 shadow-inner">
+    <p class="text-indigo-300 font-bold mb-3 flex items-center text-sm">
+    <span class="mr-2">⚔️</span> Cas pratique : Le Combat de Boss
+    </p>
+    <div class="font-mono text-xs space-y-2">
+    <p class="text-gray-500">// points_vie vaut 100</p>
+    <p class="text-pink-400">points_vie ← points_vie - 30</p>
+    <p class="text-gray-500">// On déchire le post-it 100, on écrit 70, et on le remet dans le sac en plastique.</p>
+    </div>
+    </div>
+    </section>
+    <hr class="border-gray-100" />
+    <section class="lesson-section">
+    <h3 class="text-xl font-bold">III. Instructions d'Entrée et Sortie</h3>
+    <h4 class="text-lg font-bold mt-4">1. La Sortie : <code>Afficher()</code></h4>
+    <p>C'est l'action de "montrer" le contenu du sac en plastique à l'utilisateur sur l'écran.</p>
+    <ul class="list-disc list-inside ml-4">
+    <li><code>Afficher("Joueur : ", pseudo)</code> : Affiche le texte et la valeur.</li>
+    </ul>
+    <h4 class="text-lg font-bold mt-4">2. L'Entrée : <code>Saisir()</code></h4>
+    <p>Le programme attend que l'utilisateur donne une info, l'écrit sur un post-it et le range dans le sac en plastique.</p>
+    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6 shadow-sm">
+    <p class="text-blue-800 font-bold text-sm mb-1 italic">💡 Le Duo Inséparable</p>
+    <p class="text-blue-700 text-xs leading-relaxed">On doit toujours <strong>Afficher</strong> une question avant de <strong>Saisir</strong> une réponse pour guider l'utilisateur.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="p-4 bg-red-50 rounded-lg border border-red-100 italic">
+    <p class="text-red-600 font-bold text-xs mb-2 text-center uppercase tracking-widest">À éviter ❌</p>
+    <p class="font-mono text-xs text-gray-700">Saisir(nom)</p>
+    </div>
+    <div class="p-4 bg-green-50 rounded-lg border border-green-100">
+    <p class="text-green-600 font-bold text-xs mb-2 text-center uppercase tracking-widest">À faire ✅</p>
+    <p class="font-mono text-xs text-gray-700">Afficher("Nom du joueur ?")<br/>Saisir(nom)</p>
+    </div>
+    </div>
+    </section>
+    <hr class="border-gray-100" />
+    <section class="lesson-section">
+    <h3 class="text-xl font-bold">IV. Exemple d'algorithme complet</h3>
+    <p>Voici comment structurer un programme utilisant une constante et des variables :</p>
+    <div class="overflow-hidden rounded-xl border border-indigo-200 shadow-lg my-6">
+    <div class="bg-indigo-600 px-4 py-2 text-white font-mono text-sm flex justify-between">
+    <span>Algorithme : Profil_Joueur</span>
+    <span class="opacity-50">Pseudo-code</span>
+    </div>
+    <div class="bg-slate-900 p-6 font-mono text-sm leading-relaxed">
+    <p class="text-pink-400 font-bold italic mb-2">// 1. Déclarations</p>
+    <p class="text-indigo-300"><span class="text-pink-400 font-bold">Variables :</span> nom : Chaîne, score : Entier</p>
+    <p class="text-indigo-300"><span class="text-pink-400 font-bold">Constantes :</span> EQUIPE = "PSG"</p>
+    <p class="text-pink-400 font-bold italic mt-4 mb-2">// 2. Actions</p>
+    <p class="text-indigo-100"><span class="text-pink-400 font-bold">Début</span></p>
+    <div class="pl-6 space-y-1">
+    <p class="text-cyan-400">Afficher("Quel est le nom du joueur ?")</p>
+    <p class="text-yellow-400">Saisir(nom) <span class="text-gray-500 italic">// Utilisateur tape "Hakimi"</span></p>
+    <p class="text-indigo-100">score ← 0</p>
+    <p class="text-cyan-400">Afficher("Joueur : ", nom)</p>
+    <p class="text-cyan-400">Afficher("Équipe : ", EQUIPE)</p>
+    <p class="text-cyan-400">Afficher("Score actuel : ", score)</p>
+    </div>
+    <p class="text-indigo-100"><span class="text-pink-400 font-bold">Fin</span></p>
+    </div>
+    </div>
+    </section>
+    </div>
+    `,
+    koLink: {
+    url: "#",
+    label: "Télécharger l'Organisateur de Connaissances (KO - PDF)",
+    },
+    mindMapUrl: null,
+    },
+    };
             // --- Fonctions de la Modale Carte Mentale (Maintenues mais inutilisées pour Leçon 1) ---
             window.closeMindMap = function () {
                 document
@@ -3332,12 +3762,12 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
                         {
                             id: 2,
                             title: "M02 : Les Logiciels",
-                            status: "En cours",
+                            status: "Terminé",
                         },
                         {
                             id: 3,
                             title: "M03 : Algorithmique et Programmation",
-                            status: "À venir",
+                            status: "En cours",
                         },
                         {
                             id: 4,
@@ -3466,7 +3896,7 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
                         {
                             id: 2,
                             title: "M02 : Les Logiciels",
-                            status: "En cours",
+                            status: "Terminé",
                             sequences: [
                                 {
                                     title: "Séquence 1 : Système d’exploitation",
@@ -3520,18 +3950,18 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
                         {
                             id: 3,
                             title: "M03 : Algorithmique et Programmation",
-                            status: "À venir",
+                            status: "En cours",
                             sequences: [
                                 {
                                     title: "Séquence 1 : Algorithme et structures de contrôle",
                                     lessons: [
                                         {
                                             title: "Leçon 1 : Notion d’algorithme",
-                                            href: "sequence01-L1",
+                                            href: "M3-sequence01-L1",
                                         },
                                         {
                                             title: "Leçon 2 : Instructions de base",
-                                            href: "sequence01-L2",
+                                            href: "M3-sequence01-L2",
                                         },
                                         {
                                             title: "Leçon 3 : Structures de contrôle (conditionnelles et répétitives)",
@@ -3708,6 +4138,10 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
                     generateLessonPage("M2-sequence03-L2"),
                 "M2-sequence03-L3": () =>
                     generateLessonPage("M2-sequence03-L3"),
+                "M3-sequence01-L1": () =>
+                    generateLessonPage("M3-sequence01-L1"),
+                "M3-sequence01-L2": () =>
+                    generateLessonPage("M3-sequence01-L2"),
                 "sequence02-S3-L1": () =>
                     `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
                 "sequence02-S3-L2": () =>
