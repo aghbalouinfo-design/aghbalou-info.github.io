@@ -3214,7 +3214,7 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
     </div>
     <h4 class="text-lg font-bold mt-4">1. L'analogie du "Sac en plastique et Post-it"</h4>
     <p>Imaginez la mémoire de l'ordinateur comme une armoire remplie de sacs en plastique :</p>
-    
+
     <div class="my-6 flex justify-center">
       <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100 max-w-xs text-center">
         <img src="Images/plastic_bag.png" alt="Analogie du sac en plastique" class="w-32 h-auto mx-auto mb-3 opacity-90">
@@ -3365,7 +3365,468 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
     },
     mindMapUrl: null,
     },
-    };
+    "M3-sequence01-L3": {
+        title: "Leçon 3 : Les Structures de Contrôle",
+        moduleTitle: "M03 : Algorithmique et Programmation",
+        overview:
+            "Cette leçon explore les mécanismes qui dirigent l'exécution des instructions : de l'enchaînement simple aux prises de décision complexes et au choix multiple.",
+        objectives: [
+            "Distinguer les trois types de structures de contrôle (Séquentielle, Conditionnelle, Répétitive)",
+            "Comprendre la notion de bloc d'instructions et d'indentation",
+            "Évaluer des expressions booléennes complexes",
+            "Maîtriser les formes de structures SI (Simple, Alternative, Imbriquée)",
+            "Utiliser la structure de choix multiple SELON",
+        ],
+        successCriteria: [
+            "Je sais classer un algorithme selon sa structure de contrôle.",
+            "Je peux utiliser l'indentation pour rendre mon code lisible.",
+            "Je sais utiliser les opérateurs logiques ET, OU et NON.",
+            "Je peux traduire un problème complexe en structures SI imbriquées ou SELON.",
+        ],
+        resourcesAndActivities: [
+            {
+                type: "Worksheet",
+                title: "Fiche : Logique et Conditions",
+                objective: "Maîtrise des tests logiques",
+                link: "m3_s1_l3_cours.pdf",
+                icon: "document",
+            },
+        ],
+        quiz: [
+            {
+                id: 1,
+                question: "Quelle structure permet de répéter des instructions ?",
+                options: ["Séquentielle", "Sélective", "Itérative"],
+                answer: "Itérative",
+                explanation:
+                    "Les structures répétitives sont aussi appelées structures itératives.",
+            },
+            {
+                id: 2,
+                question: "À quoi sert l'indentation en algorithmique ?",
+                options: [
+                    "À accélérer l'ordinateur",
+                    "À définir visuellement un bloc d'instructions",
+                    "À corriger les fautes d'orthographe",
+                ],
+                answer: "À définir visuellement un bloc d'instructions",
+                explanation:
+                    "L'indentation permet de voir immédiatement quelles instructions appartiennent à quel bloc (SI, SELON, etc.).",
+            },
+        ],
+        detailedNotes: `
+<div class="space-y-12">
+
+<!-- SECTION I -->
+<section class="lesson-section">
+<h3 class="text-xl font-bold">I. Introduction aux Structures de Contrôle</h3>
+
+<p>Les structures de contrôle sont les outils qui permettent de diriger l'ordonnancement des actions dans un algorithme. Elles déterminent l'ordre dans lequel les instructions sont exécutées.</p>
+
+<p>On distingue trois types principaux :</p>
+<ol class="list-decimal list-inside ml-4 space-y-1">
+<li><strong>Séquentielle</strong> : Les actions se suivent linéairement.</li>
+<li><strong>Conditionnelle (ou Sélective)</strong> : L'algorithme fait des choix selon des conditions.</li>
+<li><strong>Répétitive (ou Itérative)</strong> : Certaines actions sont répétées plusieurs fois.</li>
+</ol>
+</section>
+
+<hr class="border-gray-100" />
+
+<!-- SECTION II -->
+<section class="lesson-section">
+<h3 class="text-xl font-bold">II. La Structure Séquentielle</h3>
+
+<p>C'est la forme la plus simple : les instructions sont exécutées l'une après l'autre, dans l'ordre où elles sont écrites.</p>
+
+<h4 class="text-lg font-bold mt-4">Concepts Clés :</h4>
+<ul class="list-disc list-inside ml-4">
+<li><strong>Bloc d'instructions</strong> : Un regroupement de plusieurs instructions exécutées à la suite.</li>
+<li><strong>Indentation</strong> : Technique consistant à décaler les lignes vers la droite pour définir visuellement un bloc.</li>
+</ul>
+
+<div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 my-4 rounded-r-lg">
+  <p class="text-indigo-800 font-bold">💻 Exemple : Calcul de la moyenne</p>
+</div>
+
+<div class="bg-slate-900 rounded-xl border border-indigo-500 shadow-lg overflow-hidden my-6">
+  <div class="bg-indigo-600 px-4 py-2 text-white font-mono text-xs">ALGORITHME : calculer_moyenne</div>
+  <div class="p-6 font-mono text-xs leading-relaxed">
+    <p class="text-pink-400 font-bold uppercase mb-1">Déclaration</p>
+    <p class="text-indigo-300 pl-4">Variables N1, N2, M : Réel</p>
+    <p class="text-pink-400 font-bold uppercase mt-4 mb-1">Début</p>
+    <div class="pl-6 space-y-1">
+      <p class="text-cyan-400">Afficher('La note N° 1 : ')</p>
+      <p class="text-yellow-400">Lire(N1)</p>
+      <p class="text-cyan-400">Afficher('La note N° 2 : ')</p>
+      <p class="text-yellow-400">Lire(N2)</p>
+      <p class="text-indigo-100">M ← (N1 + N2) / 2</p>
+      <p class="text-cyan-400">Afficher('La moyenne est : ', M)</p>
+    </div>
+    <p class="text-pink-400 font-bold uppercase mt-4">Fin</p>
+  </div>
+</div>
+</section>
+
+<hr class="border-gray-100" />
+
+<!-- SECTION III -->
+<section class="lesson-section">
+<h3 class="text-xl font-bold">III. Les Expressions Booléennes & Opérateurs</h3>
+
+<p>Pour prendre des décisions, l'algorithme utilise des conditions qui sont des <strong>expressions booléennes</strong> (Vrai ou Faux).</p>
+
+<div class="overflow-x-auto my-6 text-xs">
+  <table class="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg">
+    <thead class="bg-gray-50 text-gray-700">
+      <tr>
+        <th class="px-4 py-3 text-left font-bold">Type</th>
+        <th class="px-4 py-3 text-left font-bold">Opérateurs</th>
+        <th class="px-4 py-3 text-left font-bold">Exemple</th>
+        <th class="px-4 py-3 text-left font-bold">Résultat</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-200 text-gray-600 font-medium">
+      <tr>
+        <td class="px-4 py-3 text-indigo-700 font-bold">Comparaison</td>
+        <td class="px-4 py-3 font-mono">= , &lt;&gt; , &gt; , &lt; , &gt;= , &lt;=</td>
+        <td class="px-4 py-3 font-mono">10 &lt;&gt; 5</td>
+        <td class="px-4 py-3 text-green-600 font-bold">Vrai</td>
+      </tr>
+      <tr>
+        <td class="px-4 py-3 text-purple-700 font-bold">Logique</td>
+        <td class="px-4 py-3 font-mono">ET, OU, NON</td>
+        <td class="px-4 py-3 font-mono">(5 > 2) ET (1 &lt; 0)</td>
+        <td class="px-4 py-3 text-red-600 font-bold">Faux</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<hr class="border-gray-100" />
+
+<!-- SECTION IV -->
+<section class="lesson-section">
+<h3 class="text-xl font-bold">IV. Les Structures Conditionnelles</h3>
+
+<h4 class="text-lg font-bold mt-4">A. La Forme Simple (Réduite)</h4>
+<p>On exécute un bloc d'actions <strong>uniquement si</strong> la condition est vraie.</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center my-6">
+  <div class="bg-slate-900 p-5 rounded-xl border border-indigo-500 shadow-lg">
+    <p class="text-pink-400 font-bold mb-3 flex items-center text-xs"><span class="mr-2">💻</span> Pseudo-code</p>
+    <pre class="text-indigo-100 text-[11px] font-mono leading-relaxed">
+SI (a > 0) ALORS
+   Afficher(a, ' est positif')
+finSI
+    </pre>
+  </div>
+  <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+    <svg width="200" height="220" viewBox="0 0 200 220" class="drop-shadow-sm">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+        </marker>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="1" dy="1" stdDeviation="1" flood-opacity="0.1"/>
+        </filter>
+      </defs>
+      
+      <path d="M100 20 L150 50 L100 80 L50 50 Z" fill="#fff7ed" stroke="#f97316" stroke-width="2" filter="url(#shadow)"/>
+      <text x="100" y="50" text-anchor="middle" dominant-baseline="central" font-size="10" font-weight="bold" fill="#9a3412">a > 0 ?</text>
+      
+      <path d="M150 50 L180 50 L180 160 L100 160" stroke="#94a3b8" stroke-width="2" fill="none"/>
+      <text x="165" y="40" font-size="9" fill="#ef4444" font-weight="bold">Faux</text>
+      
+      <line x1="100" y1="80" x2="100" y2="115" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <text x="105" y="95" font-size="9" fill="#22c55e" font-weight="bold">Vrai</text>
+      
+      <rect x="50" y="115" width="100" height="30" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" filter="url(#shadow)"/>
+      <text x="100" y="130" text-anchor="middle" dominant-baseline="central" font-size="9" font-weight="medium" fill="#166534">Afficher(+)</text>
+      
+      <line x1="100" y1="145" x2="100" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <rect x="60" y="175" width="80" height="25" rx="12.5" fill="#f8fafc" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+      <text x="100" y="187.5" text-anchor="middle" dominant-baseline="central" font-size="10" font-weight="bold" fill="#334155">Suite</text>
+    </svg>
+  </div>
+</div>
+
+<h4 class="text-lg font-bold mt-4">B. La Forme Alternative (Complète)</h4>
+<p>Elle permet de choisir entre deux chemins possibles.</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center my-6">
+  <div class="bg-slate-900 p-5 rounded-xl border border-indigo-500 shadow-lg">
+    <p class="text-pink-400 font-bold mb-3 flex items-center text-xs"><span class="mr-2">💻</span> Pseudo-code</p>
+    <pre class="text-indigo-100 text-[11px] font-mono leading-relaxed">
+SI (note >= 10) ALORS
+   Afficher("Admis")
+SINON
+   Afficher("Ajourné")
+finSI
+    </pre>
+  </div>
+  <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+    <svg width="260" height="200" viewBox="0 0 260 200" class="drop-shadow-sm">
+      <defs>
+        <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+        </marker>
+      </defs>
+      
+      <path d="M130 10 L180 40 L130 70 L80 40 Z" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+      <text x="130" y="40" text-anchor="middle" dominant-baseline="central" font-size="9" font-weight="bold" fill="#9a3412">note >= 10?</text>
+      
+      <path d="M180 40 L220 40 L220 80" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrowhead2)"/>
+      <text x="200" y="30" font-size="9" fill="#22c55e" font-weight="bold" text-anchor="middle">Vrai</text>
+      <rect x="190" y="80" width="60" height="30" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+      <text x="220" y="95" text-anchor="middle" dominant-baseline="central" font-size="8" fill="#166534">Admis</text>
+
+      <path d="M80 40 L40 40 L40 80" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrowhead2)"/>
+      <text x="60" y="30" font-size="9" fill="#ef4444" font-weight="bold" text-anchor="middle">Faux</text>
+      <rect x="10" y="80" width="60" height="30" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+      <text x="40" y="95" text-anchor="middle" dominant-baseline="central" font-size="8" fill="#991b1b">Ajourné</text>
+
+      <path d="M220 110 L220 140 L130 140" stroke="#94a3b8" stroke-width="2" fill="none"/>
+      <path d="M40 110 L40 140 L130 140" stroke="#94a3b8" stroke-width="2" fill="none"/>
+      
+      <line x1="130" y1="140" x2="130" y2="160" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead2)"/>
+      <rect x="90" y="160" width="80" height="25" rx="12.5" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+      <text x="130" y="172.5" text-anchor="middle" dominant-baseline="central" font-size="9" font-weight="bold" fill="#334155">Suite</text>
+    </svg>
+  </div>
+</div>
+
+<h4 class="text-lg font-bold mt-4">C. La Forme Généralisée (Imbriquée)</h4>
+<p>Utilisée pour tester plusieurs conditions successivement.</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center my-6">
+  <div class="bg-slate-900 p-5 rounded-xl border border-indigo-500 shadow-lg">
+    <p class="text-pink-400 font-bold mb-3 flex items-center text-xs"><span class="mr-2">💻</span> Exemple</p>
+    <pre class="text-indigo-100 text-[10px] font-mono leading-relaxed">
+SI (a > 0) ALORS
+   Afficher "Positif"
+SINON
+   SI (a &lt; 0) ALORS
+      Afficher "Négatif"
+   SINON
+      Afficher "Nul"
+   finSI
+finSI
+    </pre>
+  </div>
+  <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <svg width="280" height="240" viewBox="0 0 280 240" class="drop-shadow-sm">
+      <defs>
+        <marker id="arrowhead3" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+        </marker>
+      </defs>
+      
+      <path d="M140 10 L190 40 L140 70 L90 40 Z" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+      <text x="140" y="40" text-anchor="middle" dominant-baseline="central" font-size="8" font-weight="bold" fill="#9a3412">a > 0 ?</text>
+      
+      <path d="M190 40 L240 40 L240 80" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrowhead3)"/>
+      <rect x="210" y="80" width="60" height="25" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+      <text x="240" y="92.5" text-anchor="middle" dominant-baseline="central" font-size="7" fill="#166534">Positif</text>
+
+      <path d="M90 40 L50 40 L50 90" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrowhead3)"/>
+      
+      <path d="M50 90 L100 120 L50 150 L0 120 Z" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+      <text x="50" y="120" text-anchor="middle" dominant-baseline="central" font-size="8" font-weight="bold" fill="#9a3412">a &lt; 0 ?</text>
+      
+      <path d="M100 120 L140 120 L140 160" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrowhead3)"/>
+      <rect x="110" y="160" width="60" height="25" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+      <text x="140" y="172.5" text-anchor="middle" dominant-baseline="central" font-size="7" fill="#166534">Négatif</text>
+
+      <path d="M0 120 L-10 120 L-10 160" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrowhead3)" transform="translate(30,0)"/>
+      <rect x="10" y="160" width="60" height="25" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+      <text x="40" y="172.5" text-anchor="middle" dominant-baseline="central" font-size="7" fill="#991b1b">Nul</text>
+
+      <path d="M240 105 L240 210 L140 210" stroke="#94a3b8" stroke-width="2" fill="none"/>
+      <path d="M140 185 L140 210" stroke="#94a3b8" stroke-width="2" fill="none"/>
+      <path d="M40 185 L40 210 L140 210" stroke="#94a3b8" stroke-width="2" fill="none"/>
+    </svg>
+  </div>
+</div>
+</section>
+
+<hr class="border-gray-100" />
+
+<!-- SECTION V -->
+<section class="lesson-section">
+<h3 class="text-xl font-bold">V. La Structure de Choix Multiple (SELON)</h3>
+
+<p>Elle remplace avantageusement une longue série de conditions imbriquées.</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center my-6">
+  <div class="bg-slate-900 p-5 rounded-xl border border-indigo-500 shadow-lg">
+    <p class="text-pink-400 font-bold mb-3 flex items-center text-xs"><span class="mr-2">💻</span> Pseudo-code</p>
+    <pre class="text-indigo-100 text-[10px] font-mono leading-relaxed">
+SELON (code) FAIRE
+   CAS 1 : Afficher "Café"
+   CAS 2 : Afficher "Thé"
+   CAS 3 : Afficher "Chocolat"
+   AUTREMENT : Afficher "Erreur"
+finSELON
+    </pre>
+  </div>
+  <div class="flex flex-col items-center p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+    <svg width="300" height="220" viewBox="0 0 300 220" class="drop-shadow-sm">
+      <defs>
+        <marker id="arrowhead4" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+        </marker>
+      </defs>
+      
+      <path d="M150 10 L200 40 L150 70 L100 40 Z" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+      <text x="150" y="40" text-anchor="middle" dominant-baseline="central" font-size="9" font-weight="bold" fill="#1e40af">code ?</text>
+      
+      <g stroke="#94a3b8" stroke-width="1.5" fill="none">
+        <path d="M100 40 L40 40 L40 80" marker-end="url(#arrowhead4)"/>
+        <path d="M150 70 L150 100" marker-end="url(#arrowhead4)"/>
+        <path d="M200 40 L260 40 L260 80" marker-end="url(#arrowhead4)"/>
+        <path d="M200 55 L290 55 L290 130" stroke-dasharray="3" marker-end="url(#arrowhead4)"/>
+      </g>
+      
+      <text x="70" y="35" font-size="8" font-weight="bold" fill="#334155">1</text>
+      <text x="160" y="85" font-size="8" font-weight="bold" fill="#334155">2</text>
+      <text x="230" y="35" font-size="8" font-weight="bold" fill="#334155">3</text>
+      
+      <rect x="10" y="80" width="60" height="25" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+      <text x="40" y="92.5" text-anchor="middle" dominant-baseline="central" font-size="7">Café</text>
+      
+      <rect x="120" y="100" width="60" height="25" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+      <text x="150" y="112.5" text-anchor="middle" dominant-baseline="central" font-size="7">Thé</text>
+      
+      <rect x="230" y="80" width="60" height="25" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+      <text x="260" y="92.5" text-anchor="middle" dominant-baseline="central" font-size="7">Chocolat</text>
+      
+      <rect x="260" y="130" width="60" height="20" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+      <text x="290" y="140" text-anchor="middle" dominant-baseline="central" font-size="7" fill="#991b1b">Erreur</text>
+    </svg>
+  </div>
+</div>
+</section>
+
+<!-- SECTION VI : SÉRIE D'EXERCICES -->
+<section class="lesson-section">
+<h3 class="text-xl font-bold">VI. Série d'Exercices d'Entraînement</h3>
+
+<div class="space-y-6">
+  <!-- Exercice 1 -->
+  <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+    <p class="font-bold text-indigo-700 mb-2">Exercice 1 : Test de majorité</p>
+    <p class="text-sm text-gray-700 mb-4">Écrire un algorithme qui demande l'âge de l'utilisateur et affiche "Majeur" si l'âge est supérieur ou égal à 18, et "Mineur" sinon.</p>
+    
+    <div class="exercise-solution hidden mt-4 p-4 bg-slate-900 rounded-lg font-mono text-xs leading-relaxed">
+      <p class="text-pink-400">SI (age >= 18) ALORS</p>
+      <p class="text-indigo-100 pl-4">Afficher("Majeur")</p>
+      <p class="text-pink-400">SINON</p>
+      <p class="text-indigo-100 pl-4">Afficher("Mineur")</p>
+      <p class="text-pink-400">finSI</p>
+    </div>
+  </div>
+
+  <!-- Exercice 2 -->
+  <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+    <p class="font-bold text-indigo-700 mb-2">Exercice 2 : Comparaison de deux nombres</p>
+    <p class="text-sm text-gray-700 mb-4">Écrire un algorithme qui saisit deux nombres A et B, puis affiche lequel est le plus grand (ou s'ils sont égaux).</p>
+    
+    <div class="exercise-solution hidden mt-4 p-4 bg-slate-900 rounded-lg font-mono text-xs leading-relaxed">
+      <p class="text-pink-400">SI (A > B) ALORS</p>
+      <p class="text-indigo-100 pl-4">Afficher(A, " est plus grand")</p>
+      <p class="text-pink-400">SINON SI (A < B) ALORS</p>
+      <p class="text-indigo-100 pl-4">Afficher(B, " est plus grand")</p>
+      <p class="text-pink-400">SINON</p>
+      <p class="text-indigo-100 pl-4">Afficher("Les deux sont égaux")</p>
+      <p class="text-pink-400">finSI</p>
+    </div>
+  </div>
+
+  <!-- Exercice 3 -->
+  <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+    <p class="font-bold text-indigo-700 mb-2">Exercice 3 : Logique complexe (OU)</p>
+    <p class="text-sm text-gray-700 mb-2 italic">Qu'affiche l'algorithme suivant ?</p>
+    <div class="bg-gray-100 p-3 rounded font-mono text-xs mb-4">
+      Variables: A = 10, B = 20, C = VRAI<br/>
+      SI (A > B OU C == VRAI) ALORS<br/>
+      &nbsp;&nbsp;Afficher "Condition validée"<br/>
+      SINON<br/>
+      &nbsp;&nbsp;Afficher "Condition rejetée"<br/>
+      finSI
+    </div>
+    
+    <div class="exercise-solution hidden mt-4 p-4 bg-slate-900 rounded-lg font-mono text-xs leading-relaxed">
+      <p class="text-green-400">// Résultat : "Condition validée"</p>
+      <p class="text-indigo-100">Explication : Même si (10 > 20) est FAUX, la deuxième partie (C == VRAI) est VRAIE. Avec l'opérateur OU, une seule condition vraie suffit.</p>
+    </div>
+  </div>
+
+  <!-- Exercice 4 -->
+  <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+    <p class="font-bold text-indigo-700 mb-2">Exercice 4 : Sécurité du Mot de Passe (ET)</p>
+    <p class="text-sm text-gray-700 mb-4">Écrivez un algorithme qui accepte un mot de passe uniquement s'il fait au moins 8 caractères <strong>ET</strong> possède un caractère spécial (booléen). Sinon, afficher "Mot de passe trop faible".</p>
+    
+    <div class="exercise-solution hidden mt-4 p-4 bg-slate-900 rounded-lg font-mono text-xs leading-relaxed">
+      <p class="text-pink-400">SI (longueur >= 8 ET a_caractere_special == VRAI) ALORS</p>
+      <p class="text-indigo-100 pl-4">Afficher("Mot de passe accepté")</p>
+      <p class="text-pink-400">SINON</p>
+      <p class="text-indigo-100 pl-4">Afficher("Mot de passe trop faible")</p>
+      <p class="text-pink-400">finSI</p>
+    </div>
+  </div>
+
+  <!-- Exercice 5 -->
+  <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+    <p class="font-bold text-indigo-700 mb-2">Exercice 5 : Le Distributeur de Boissons (SELON)</p>
+    <p class="text-sm text-gray-700 mb-4">Écrire un algorithme qui demande un numéro de boisson (1, 2 ou 3) et affiche le nom correspondant (Café, Thé, Eau). Utiliser la structure <strong>SELON</strong>.</p>
+    
+    <div class="exercise-solution hidden mt-4 p-4 bg-slate-900 rounded-lg font-mono text-xs leading-relaxed">
+      <p class="text-pink-400">SELON (choix) FAIRE</p>
+      <p class="text-indigo-100 pl-4">CAS 1 : Afficher("Café")</p>
+      <p class="text-indigo-100 pl-4">CAS 2 : Afficher("Thé")</p>
+      <p class="text-indigo-100 pl-4">CAS 3 : Afficher("Eau")</p>
+      <p class="text-indigo-100 pl-4">AUTREMENT : Afficher("Choix invalide")</p>
+      <p class="text-pink-400">finSELON</p>
+    </div>
+  </div>
+
+  <!-- Exercice 6 -->
+  <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+    <p class="font-bold text-indigo-700 mb-2">Exercice 6 : État de l'eau (SI imbriqué)</p>
+    <p class="text-sm text-gray-700 mb-4">Écrire un algorithme qui demande la température de l'eau et affiche "Glace" (si T <= 0), "Vapeur" (si T >= 100) ou "Liquide" sinon.</p>
+    
+    <div class="exercise-solution hidden mt-4 p-4 bg-slate-900 rounded-lg font-mono text-xs leading-relaxed">
+      <p class="text-pink-400">SI (temp <= 0) ALORS</p>
+      <p class="text-indigo-100 pl-4">Afficher("Glace")</p>
+      <p class="text-pink-400">SINON SI (temp >= 100) ALORS</p>
+      <p class="text-indigo-100 pl-4">Afficher("Vapeur")</p>
+      <p class="text-pink-400">SINON</p>
+      <p class="text-indigo-100 pl-4">Afficher("Liquide")</p>
+      <p class="text-pink-400">finSI</p>
+    </div>
+  </div>
+</div>
+
+<!-- Bouton de Correction -->
+<div class="mt-8 flex justify-center">
+  <button onclick="toggleSolutions()" id="btn-solutions" class="px-6 py-3 bg-indigo-600 text-white font-bold rounded-full shadow-lg hover:bg-indigo-700 transition transform hover:scale-105 flex items-center">
+    <span class="mr-2">👁️</span> Afficher les Réponses
+  </button>
+</div>
+
+</section>
+
+</div>
+`,
+        koLink: {
+            url: "#",
+            label: "Télécharger l'Organisateur de Connaissances (KO - PDF)",
+        },
+        mindMapUrl: null,
+    },
+};
             // --- Fonctions de la Modale Carte Mentale (Maintenues mais inutilisées pour Leçon 1) ---
             window.closeMindMap = function () {
                 document
@@ -3387,6 +3848,36 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
                     console.log(
                         "Carte Mentale non disponible pour cette leçon.",
                     );
+                }
+            };
+
+            /**
+             * Affiche ou cache les solutions des exercices de la leçon.
+             */
+            window.toggleSolutions = function () {
+                const solutions = document.querySelectorAll(
+                    ".exercise-solution",
+                );
+                const btn = document.getElementById("btn-solutions");
+
+                if (solutions.length === 0) return;
+
+                const isHidden = solutions[0].classList.contains("hidden");
+
+                solutions.forEach((sol) => {
+                    if (isHidden) {
+                        sol.classList.remove("hidden");
+                    } else {
+                        sol.classList.add("hidden");
+                    }
+                });
+
+                if (isHidden) {
+                    btn.innerHTML =
+                        '<span class="mr-2">🙈</span> Cacher les Réponses';
+                } else {
+                    btn.innerHTML =
+                        '<span class="mr-2">👁️</span> Afficher les Réponses';
                 }
             };
 
@@ -3960,12 +4451,12 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
                                             href: "M3-sequence01-L1",
                                         },
                                         {
-                                            title: "Leçon 2 : Instructions de base",
+                                            title: "Leçon 2 : Variables, Affectation et E/S",
                                             href: "M3-sequence01-L2",
                                         },
                                         {
-                                            title: "Leçon 3 : Structures de contrôle (conditionnelles et répétitives)",
-                                            href: "sequence01-L3",
+                                            title: "Leçon 3 : Les Structures de Contrôle",
+                                            href: "M3-sequence01-L3",
                                         },
                                     ],
                                 },
@@ -4142,18 +4633,14 @@ sous le nom de <strong>schéma fonctionnel</strong> qui décrit les différentes
                     generateLessonPage("M3-sequence01-L1"),
                 "M3-sequence01-L2": () =>
                     generateLessonPage("M3-sequence01-L2"),
+                "M3-sequence01-L3": () =>
+                    generateLessonPage("M3-sequence01-L3"),
                 "sequence02-S3-L1": () =>
                     `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
                 "sequence02-S3-L2": () =>
                     `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
                 "sequence02-S3-L3": () =>
                     `<div class="p-8 text-center text-gray-600">Contenu pour M02-S03-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
-                "sequence03-S1-L1": () =>
-                    `<div class="p-8 text-center text-gray-600">Contenu pour M03-S01-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
-                "sequence03-S1-L2": () =>
-                    `<div class="p-8 text-center text-gray-600">Contenu pour M03-S01-L02 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
-                "sequence03-S1-L3": () =>
-                    `<div class="p-8 text-center text-gray-600">Contenu pour M03-S01-L03 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
                 "sequence03-S2-L1": () =>
                     `<div class="p-8 text-center text-gray-600">Contenu pour M03-S02-L01 à venir... <button onclick="navigateTo('modules')" class="text-teal-600 hover:underline">Retour aux modules</button></div>`,
                 "sequence03-S2-L2": () =>
